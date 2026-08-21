@@ -357,7 +357,13 @@ sb.auth.onAuthStateChange(async()=>{await updateAuthUI();});
 
 
 function save(){ localStorage.setItem(DBKEY,JSON.stringify(db)); renderAll(); if(currentUser){ pushCloud().catch(()=>{}); } }
-function hoy(){ return new Date().toISOString().slice(0,10); }
+function hoy(){
+  const d = new Date();
+  const y = d.getFullYear();
+  const m = String(d.getMonth()+1).padStart(2,'0');
+  const day = String(d.getDate()).padStart(2,'0');
+  return `${y}-${m}-${day}`;
+}
 function fmtDate(s){ if(!s)return ''; const [y,m,d]=s.split('-'); return `${d}/${m}/${y}`; }
 function num(v){ const n=parseFloat(v); return Number.isFinite(n)?n:null; }
 function uid(){ return Date.now().toString(36)+Math.random().toString(36).slice(2,7); }
