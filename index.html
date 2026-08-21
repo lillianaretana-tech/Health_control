@@ -1,0 +1,530 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Control Salud & Nutrición</title>
+<style>
+:root{
+  --bg:#f7f7f4; --card:#ffffff; --ink:#1f2a38; --muted:#6f7784;
+  --line:#dfe5ec; --accent:#173b6c; --accent2:#d88a72; --soft:#e8eef7;
+  --good:#245b9c; --warn:#9b6b16;
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;background:var(--bg);color:var(--ink)}
+header{padding:26px 18px;background:linear-gradient(135deg,#102a4c,#1d4f8f);color:white}
+header .wrap{max-width:1180px;margin:auto}
+h1{margin:0 0 6px;font-size:clamp(1.6rem,3vw,2.35rem)}
+header p{margin:0;opacity:.9}
+.wrap{max-width:1180px;margin:auto;padding:18px}
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+.tab{border:0;background:#e8edf4;color:#26364a;padding:10px 14px;border-radius:999px;cursor:pointer;font-weight:700}
+.tab.active{background:var(--accent);color:#fff}
+.panel{display:none}.panel.active{display:block}
+.grid{display:grid;grid-template-columns:repeat(12,1fr);gap:14px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px;box-shadow:0 4px 18px rgba(0,0,0,.035)}
+.span12{grid-column:span 12}.span8{grid-column:span 8}.span6{grid-column:span 6}.span4{grid-column:span 4}.span3{grid-column:span 3}
+@media(max-width:800px){.span8,.span6,.span4,.span3{grid-column:span 12}}
+h2,h3{margin-top:0}
+label{display:block;font-size:.86rem;font-weight:700;margin-bottom:5px}
+input,select,textarea,button{font:inherit}
+input,select,textarea{width:100%;border:1px solid #ccd5e0;border-radius:10px;padding:10px;background:white;color:var(--ink)}
+textarea{min-height:84px;resize:vertical}
+.formgrid{display:grid;grid-template-columns:repeat(12,1fr);gap:10px}
+.f6{grid-column:span 6}.f4{grid-column:span 4}.f3{grid-column:span 3}.f12{grid-column:span 12}
+@media(max-width:700px){.f6,.f4,.f3{grid-column:span 12}}
+button{border:0;border-radius:10px;padding:10px 14px;cursor:pointer;font-weight:750}
+.primary{background:var(--accent);color:white}.secondary{background:#e9eef5;color:#223f66}.danger{background:#f7e6e2;color:#7b3829}
+.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.stat{font-size:1.7rem;font-weight:800;margin-top:4px}.small{font-size:.84rem;color:var(--muted)}
+.kpi{background:#fafbfd;border:1px solid var(--line);border-radius:14px;padding:13px}
+table{width:100%;border-collapse:collapse;font-size:.9rem}
+th,td{padding:9px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+th{background:#f1f4f8;position:sticky;top:0}
+.tablewrap{overflow:auto;max-height:430px;border:1px solid var(--line);border-radius:12px}
+.badge{display:inline-block;padding:4px 8px;border-radius:999px;background:var(--soft);color:#244a79;font-size:.78rem;font-weight:700}
+canvas{width:100%;height:280px;border-radius:12px;background:#fff}
+.notice{background:#fff8e7;border:1px solid #ead9aa;border-radius:12px;padding:12px;color:#6a5423}
+hr{border:0;border-top:1px solid var(--line);margin:18px 0}
+.footer{padding:18px;color:var(--muted);text-align:center;font-size:.82rem}
+@media print{
+  header,.tabs,.noprint,.actions{display:none!important}
+  body{background:white}.panel{display:none!important}.panel.active{display:block!important}
+  .card{box-shadow:none;border-color:#bbb}
+}
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <h1>Control Salud & Nutrición</h1>
+    <p>Peso, medidas, alimentación y evolución en un solo lugar.</p>
+  </div>
+</header>
+
+<main class="wrap">
+  <div class="tabs noprint">
+    <button class="tab active" data-tab="inicio">Resumen</button>
+    <button class="tab" data-tab="medidas">Peso y medidas</button>
+    <button class="tab" data-tab="comidas">Alimentación</button>
+    <button class="tab" data-tab="reportes">Reportes</button>
+    <button class="tab" data-tab="respaldo">Respaldo</button>
+<button class="tab" data-tab="cuenta">Cuenta / Nube</button>
+  </div>
+
+  <section id="inicio" class="panel active">
+    <div class="grid">
+      <div class="card span3"><div class="small">Último peso</div><div class="stat" id="kPeso">—</div><div class="small" id="kPesoFecha"></div></div>
+      <div class="card span3"><div class="small">Cambio acumulado</div><div class="stat" id="kCambio">—</div><div class="small">desde el primer registro</div></div>
+      <div class="card span3"><div class="small">Cintura actual</div><div class="stat" id="kCintura">—</div><div class="small">última medición disponible</div></div>
+      <div class="card span3"><div class="small">Días con comidas</div><div class="stat" id="kDiasComida">0</div><div class="small">días registrados</div></div>
+      <div class="card span8">
+        <h3>Evolución del peso</h3>
+        <canvas id="chartPeso" width="900" height="300"></canvas>
+      </div>
+      <div class="card span4">
+        <h3>Esta semana</h3>
+        <div id="semanaResumen" class="small">Todavía no hay datos suficientes.</div>
+      </div>
+      <div class="card span12 notice">
+        Los datos se guardan en este navegador mediante almacenamiento local. Usa la pestaña <b>Respaldo</b> periódicamente para descargar una copia.
+      </div>
+    </div>
+  </section>
+
+  <section id="medidas" class="panel">
+    <div class="grid">
+      <div class="card span4">
+        <h2>Registrar peso y medidas</h2>
+        <form id="formMedidas">
+          <div class="formgrid">
+            <div class="f6"><label>Fecha</label><input type="date" id="mFecha" required></div>
+            <div class="f6"><label>Peso (kg)</label><input type="number" step="0.1" min="20" max="300" id="mPeso"></div>
+            <div class="f6"><label>Cintura (cm)</label><input type="number" step="0.1" id="mCintura"></div>
+            <div class="f6"><label>Cadera (cm)</label><input type="number" step="0.1" id="mCadera"></div>
+            <div class="f6"><label>Muslo (cm)</label><input type="number" step="0.1" id="mMuslo"></div>
+            <div class="f6"><label>Brazo (cm)</label><input type="number" step="0.1" id="mBrazo"></div>
+            <div class="f12"><label>Notas</label><textarea id="mNotas" placeholder="Ej.: dormí bien, retención de líquido, entrenamiento fuerte..."></textarea></div>
+          </div>
+          <div class="actions"><button class="primary" type="submit">Guardar registro</button><button class="secondary" type="reset">Limpiar</button></div>
+        </form>
+      </div>
+      <div class="card span8">
+        <h2>Historial</h2>
+        <div class="tablewrap"><table>
+          <thead><tr><th>Fecha</th><th>Peso</th><th>Cintura</th><th>Cadera</th><th>Muslo</th><th>Brazo</th><th>Notas</th><th></th></tr></thead>
+          <tbody id="tablaMedidas"></tbody>
+        </table></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="comidas" class="panel">
+    <div class="grid">
+      <div class="card span4">
+        <h2>Registrar alimentación</h2>
+        <form id="formComida">
+          <div class="formgrid">
+            <div class="f6"><label>Fecha</label><input type="date" id="cFecha" required></div>
+            <div class="f6"><label>Tipo</label>
+              <select id="cTipo"><option>Desayuno</option><option>Merienda AM</option><option>Almuerzo</option><option>Merienda PM</option><option>Cena</option><option>Extra</option></select>
+            </div>
+            <div class="f12"><label>¿Qué comí?</label><textarea id="cDetalle" required placeholder="Ej.: 2 huevos, gallo pinto, café con leche..."></textarea></div>
+            <div class="f6"><label>Porción / cantidad</label><input id="cPorcion" placeholder="Ej.: 1 taza, 120 g, 2 unidades"></div>
+            <div class="f6"><label>Hambre antes (1-10)</label><input type="number" min="1" max="10" id="cHambre"></div>
+            <div class="f6"><label>Agua (vasos)</label><input type="number" min="0" step="1" id="cAgua"></div>
+            <div class="f6"><label>Proteína aprox. (g)</label><input type="number" min="0" step="1" id="cProteina"></div>
+            <div class="f6"><label>Calorías aprox.</label><input type="number" min="0" step="1" id="cCalorias"></div>
+            <div class="f6"><label>Estado</label>
+              <select id="cEstado"><option value="">—</option><option>Bien planificado</option><option>Improvisado</option><option>Antojo</option><option>Evento social</option></select>
+            </div>
+            <div class="f12"><label>Notas</label><textarea id="cNotas" placeholder="Saciedad, antojos, digestión, energía, etc."></textarea></div>
+          </div>
+          <div class="actions"><button class="primary" type="submit">Guardar comida</button><button class="secondary" type="reset">Limpiar</button></div>
+        </form>
+      </div>
+      <div class="card span8">
+        <div style="display:flex;gap:10px;justify-content:space-between;align-items:end;flex-wrap:wrap">
+          <div><h2 style="margin-bottom:3px">Diario de alimentación</h2><div class="small">Puedes usar calorías y proteína solo si quieres; no son obligatorias.</div></div>
+          <div style="min-width:190px"><label>Filtrar por fecha</label><input type="date" id="filtroComida"></div>
+        </div>
+        <div class="tablewrap" style="margin-top:12px"><table>
+          <thead><tr><th>Fecha</th><th>Tipo</th><th>Detalle</th><th>Porción</th><th>Prot.</th><th>Kcal</th><th>Estado</th><th></th></tr></thead>
+          <tbody id="tablaComidas"></tbody>
+        </table></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="reportes" class="panel">
+    <div class="grid">
+      <div class="card span12">
+        <h2>Reportes</h2>
+        <div class="formgrid noprint">
+          <div class="f4"><label>Periodo</label><select id="rPeriodo"><option value="semana">Semana</option><option value="mes">Mes</option><option value="anio">Año</option></select></div>
+          <div class="f4"><label>Fecha de referencia</label><input type="date" id="rFecha"></div>
+          <div class="f4" style="display:flex;align-items:end"><button class="primary" id="btnReporte" type="button" style="width:100%">Generar reporte</button></div>
+        </div>
+        <hr>
+        <div id="reporteSalida"></div>
+        <div class="actions noprint">
+          <button class="secondary" type="button" onclick="window.print()">Imprimir / Guardar PDF</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="respaldo" class="panel">
+    <div class="grid">
+      <div class="card span6">
+        <h2>Respaldo completo</h2>
+        <p class="small">Descarga todos tus registros en un archivo JSON. Luego puedes restaurarlo en este u otro navegador.</p>
+        <div class="actions"><button class="primary" id="exportJson">Descargar respaldo</button><label class="secondary" style="display:inline-flex;align-items:center;cursor:pointer;padding:10px 14px;border-radius:10px;font-weight:750">Restaurar respaldo<input type="file" id="importJson" accept=".json,application/json" hidden></label></div>
+      </div>
+      <div class="card span6">
+        <h2>Exportar para Excel</h2>
+        <p class="small">Descarga archivos CSV separados para medidas y alimentación.</p>
+        <div class="actions"><button class="secondary" id="exportMedidas">Medidas CSV</button><button class="secondary" id="exportComidas">Comidas CSV</button></div>
+      </div>
+      <div class="card span12">
+        <h3>Zona de seguridad</h3>
+        <p class="small">Esto elimina todos los datos almacenados en este navegador.</p>
+        <button class="danger" id="borrarTodo">Borrar todos los datos</button>
+      </div>
+    </div>
+  </section>
+
+  <section id="cuenta" class="panel">
+    <div class="grid">
+      <div class="card span6">
+        <h2>Cuenta y sincronización</h2>
+        <p class="small">Conecta este control a Supabase para guardar tus datos en la nube y acceder desde otros dispositivos.</p>
+        <div id="authLoggedOut">
+          <div class="formgrid">
+            <div class="f12"><label>Correo</label><input type="email" id="authEmail" placeholder="tu@correo.com"></div>
+            <div class="f12"><label>Contraseña</label><input type="password" id="authPassword" placeholder="Mínimo 6 caracteres"></div>
+          </div>
+          <div class="actions">
+            <button class="primary" id="btnLogin" type="button">Iniciar sesión</button>
+            <button class="secondary" id="btnSignup" type="button">Crear cuenta</button>
+          </div>
+        </div>
+        <div id="authLoggedIn" style="display:none">
+          <p>Sesión activa: <b id="authUserEmail"></b></p>
+          <div class="actions">
+            <button class="primary" id="btnSync" type="button">Sincronizar ahora</button>
+            <button class="secondary" id="btnPull" type="button">Traer datos de la nube</button>
+            <button class="secondary" id="btnPush" type="button">Subir datos locales</button>
+            <button class="danger" id="btnLogout" type="button">Cerrar sesión</button>
+          </div>
+        </div>
+        <div id="syncStatus" class="notice" style="margin-top:14px">Modo local activo.</div>
+      </div>
+      <div class="card span6">
+        <h2>Cómo funciona</h2>
+        <p class="small">Tus datos siguen guardándose localmente. Cuando inicias sesión, puedes sincronizarlos con las tablas exclusivas de esta app en Supabase.</p>
+        <p class="small">La seguridad usa <b>Row Level Security (RLS)</b>: cada usuario solo puede leer y modificar sus propios registros.</p>
+      </div>
+    </div>
+  </section>
+
+</main>
+<div class="footer">Control personal de salud y nutrición · HTML local</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.112.3/dist/umd/supabase.min.js"></script>
+<script>
+const DBKEY='saludNutricion_v1';
+let db = JSON.parse(localStorage.getItem(DBKEY) || '{"medidas":[],"comidas":[]}');
+
+const SUPABASE_URL = "https://vgkyoyosjewdygxtnqvu.supabase.co";
+const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZna3lveW9zamV3ZHlneHRucXZ1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODI2NTAxNDAsImV4cCI6MjA5ODIyNjE0MH0.oDxSWg61UFLqMh2MeEW6yxarZAjobhEA6TWm0KS_7CA";
+const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY, {
+  auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true }
+});
+let currentUser = null;
+
+async function updateAuthUI(){
+  const { data } = await sb.auth.getSession();
+  currentUser = data?.session?.user || null;
+  const out = document.getElementById('authLoggedOut');
+  const inn = document.getElementById('authLoggedIn');
+  if(!out || !inn) return;
+  out.style.display = currentUser ? 'none' : 'block';
+  inn.style.display = currentUser ? 'block' : 'none';
+  document.getElementById('authUserEmail').textContent = currentUser?.email || '';
+  document.getElementById('syncStatus').textContent = currentUser
+    ? 'Conectado a Supabase. Tus registros pueden sincronizarse con la nube.'
+    : 'Modo local activo. Inicia sesión para sincronizar.';
+}
+
+function status(msg, error=false){
+  const el=document.getElementById('syncStatus'); if(!el)return;
+  el.textContent=msg;
+  el.style.background=error?'#fdebea':'#fff8e7';
+  el.style.borderColor=error?'#efc7c2':'#ead9aa';
+}
+
+async function login(){
+  const email=document.getElementById('authEmail').value.trim();
+  const password=document.getElementById('authPassword').value;
+  if(!email||!password){status('Ingresa correo y contraseña.',true);return;}
+  status('Conectando...');
+  const {error}=await sb.auth.signInWithPassword({email,password});
+  if(error){status('No se pudo iniciar sesión: '+error.message,true);return;}
+  await updateAuthUI(); status('Sesión iniciada correctamente.');
+}
+
+async function signup(){
+  const email=document.getElementById('authEmail').value.trim();
+  const password=document.getElementById('authPassword').value;
+  if(!email||password.length<6){status('Ingresa un correo válido y una contraseña de al menos 6 caracteres.',true);return;}
+  status('Creando cuenta...');
+  const {data,error}=await sb.auth.signUp({email,password});
+  if(error){status('No se pudo crear la cuenta: '+error.message,true);return;}
+  await updateAuthUI();
+  status(data?.session ? 'Cuenta creada y sesión iniciada.' : 'Cuenta creada. Revisa tu correo si Supabase solicita confirmación.');
+}
+
+async function logout(){
+  await sb.auth.signOut(); currentUser=null; await updateAuthUI(); status('Sesión cerrada. Modo local activo.');
+}
+
+function toCloudMedida(x){
+  return {
+    id:x.id, user_id:currentUser.id, fecha:x.fecha, peso:x.peso, cintura:x.cintura,
+    cadera:x.cadera, muslo:x.muslo, brazo:x.brazo, notas:x.notas||''
+  };
+}
+function toCloudComida(x){
+  return {
+    id:x.id, user_id:currentUser.id, fecha:x.fecha, tipo:x.tipo, detalle:x.detalle,
+    porcion:x.porcion||'', hambre:x.hambre, agua:x.agua, proteina:x.proteina,
+    calorias:x.calorias, estado:x.estado||'', notas:x.notas||''
+  };
+}
+function fromCloudMedida(x){return {id:x.id,fecha:x.fecha,peso:x.peso,cintura:x.cintura,cadera:x.cadera,muslo:x.muslo,brazo:x.brazo,notas:x.notas||''}}
+function fromCloudComida(x){return {id:x.id,fecha:x.fecha,tipo:x.tipo,detalle:x.detalle,porcion:x.porcion||'',hambre:x.hambre,agua:x.agua,proteina:x.proteina,calorias:x.calorias,estado:x.estado||'',notas:x.notas||''}}
+
+async function pushCloud(){
+  if(!currentUser){status('Primero inicia sesión.',true);return;}
+  status('Subiendo datos locales...');
+  if(db.medidas.length){
+    const {error}=await sb.from('lt_health_measurements').upsert(db.medidas.map(toCloudMedida),{onConflict:'id'});
+    if(error){status('Error subiendo medidas: '+error.message,true);return;}
+  }
+  if(db.comidas.length){
+    const {error}=await sb.from('lt_health_meals').upsert(db.comidas.map(toCloudComida),{onConflict:'id'});
+    if(error){status('Error subiendo comidas: '+error.message,true);return;}
+  }
+  status('Datos locales subidos a Supabase.');
+}
+
+async function pullCloud(){
+  if(!currentUser){status('Primero inicia sesión.',true);return;}
+  status('Descargando datos de la nube...');
+  const [m,c]=await Promise.all([
+    sb.from('lt_health_measurements').select('*').order('fecha',{ascending:true}),
+    sb.from('lt_health_meals').select('*').order('fecha',{ascending:true})
+  ]);
+  if(m.error){status('Error leyendo medidas: '+m.error.message,true);return;}
+  if(c.error){status('Error leyendo comidas: '+c.error.message,true);return;}
+  db.medidas=(m.data||[]).map(fromCloudMedida);
+  db.comidas=(c.data||[]).map(fromCloudComida);
+  localStorage.setItem(DBKEY,JSON.stringify(db)); renderAll();
+  status('Datos descargados de Supabase.');
+}
+
+async function syncCloud(){
+  if(!currentUser){status('Primero inicia sesión.',true);return;}
+  status('Sincronizando...');
+  const [m,c]=await Promise.all([
+    sb.from('lt_health_measurements').select('*'),
+    sb.from('lt_health_meals').select('*')
+  ]);
+  if(m.error||c.error){status('No se pudo leer Supabase. Verifica que hayas ejecutado el SQL de instalación.',true);return;}
+  const mergedM=new Map((m.data||[]).map(x=>[x.id,fromCloudMedida(x)]));
+  db.medidas.forEach(x=>mergedM.set(x.id,x));
+  const mergedC=new Map((c.data||[]).map(x=>[x.id,fromCloudComida(x)]));
+  db.comidas.forEach(x=>mergedC.set(x.id,x));
+  db.medidas=[...mergedM.values()];
+  db.comidas=[...mergedC.values()];
+  localStorage.setItem(DBKEY,JSON.stringify(db)); renderAll();
+  await pushCloud();
+  status('Sincronización completa.');
+}
+
+sb.auth.onAuthStateChange(async()=>{await updateAuthUI();});
+
+
+function save(){ localStorage.setItem(DBKEY,JSON.stringify(db)); renderAll(); if(currentUser){ pushCloud().catch(()=>{}); } }
+function hoy(){ return new Date().toISOString().slice(0,10); }
+function fmtDate(s){ if(!s)return ''; const [y,m,d]=s.split('-'); return `${d}/${m}/${y}`; }
+function num(v){ const n=parseFloat(v); return Number.isFinite(n)?n:null; }
+function uid(){ return Date.now().toString(36)+Math.random().toString(36).slice(2,7); }
+function esc(s=''){ return String(s).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m])); }
+
+document.querySelectorAll('.tab').forEach(b=>b.addEventListener('click',()=>{
+  document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));
+  document.querySelectorAll('.panel').forEach(x=>x.classList.remove('active'));
+  b.classList.add('active'); document.getElementById(b.dataset.tab).classList.add('active');
+  if(b.dataset.tab==='inicio') drawWeightChart();
+}));
+
+document.getElementById('mFecha').value=hoy();
+document.getElementById('cFecha').value=hoy();
+document.getElementById('rFecha').value=hoy();
+
+document.getElementById('formMedidas').addEventListener('submit',e=>{
+  e.preventDefault();
+  const item={id:uid(),fecha:mFecha.value,peso:num(mPeso.value),cintura:num(mCintura.value),cadera:num(mCadera.value),muslo:num(mMuslo.value),brazo:num(mBrazo.value),notas:mNotas.value.trim()};
+  if([item.peso,item.cintura,item.cadera,item.muslo,item.brazo].every(v=>v===null)){alert('Ingresa al menos un dato de peso o medida.');return}
+  db.medidas.push(item); save(); e.target.reset(); mFecha.value=hoy();
+});
+
+document.getElementById('formComida').addEventListener('submit',e=>{
+  e.preventDefault();
+  db.comidas.push({id:uid(),fecha:cFecha.value,tipo:cTipo.value,detalle:cDetalle.value.trim(),porcion:cPorcion.value.trim(),hambre:num(cHambre.value),agua:num(cAgua.value),proteina:num(cProteina.value),calorias:num(cCalorias.value),estado:cEstado.value,notas:cNotas.value.trim()});
+  save(); e.target.reset(); cFecha.value=hoy();
+});
+
+document.getElementById('filtroComida').addEventListener('change',renderComidas);
+
+window.delMedida=id=>{ if(confirm('¿Eliminar este registro?')){db.medidas=db.medidas.filter(x=>x.id!==id);save();}};
+window.delComida=id=>{ if(confirm('¿Eliminar esta comida?')){db.comidas=db.comidas.filter(x=>x.id!==id);save();}};
+
+function renderMedidas(){
+  const arr=[...db.medidas].sort((a,b)=>b.fecha.localeCompare(a.fecha));
+  tablaMedidas.innerHTML=arr.map(x=>`<tr><td>${fmtDate(x.fecha)}</td><td>${x.peso??'—'}</td><td>${x.cintura??'—'}</td><td>${x.cadera??'—'}</td><td>${x.muslo??'—'}</td><td>${x.brazo??'—'}</td><td>${esc(x.notas)}</td><td><button class="danger" onclick="delMedida('${x.id}')">×</button></td></tr>`).join('')||'<tr><td colspan="8" class="small">Sin registros.</td></tr>';
+}
+
+function renderComidas(){
+  const f=filtroComida.value;
+  const arr=[...db.comidas].filter(x=>!f||x.fecha===f).sort((a,b)=>b.fecha.localeCompare(a.fecha));
+  tablaComidas.innerHTML=arr.map(x=>`<tr><td>${fmtDate(x.fecha)}</td><td><span class="badge">${esc(x.tipo)}</span></td><td>${esc(x.detalle)}</td><td>${esc(x.porcion)}</td><td>${x.proteina??'—'}</td><td>${x.calorias??'—'}</td><td>${esc(x.estado)}</td><td><button class="danger" onclick="delComida('${x.id}')">×</button></td></tr>`).join('')||'<tr><td colspan="8" class="small">Sin registros.</td></tr>';
+}
+
+function lastMetric(key){
+  return [...db.medidas].filter(x=>x[key]!=null).sort((a,b)=>b.fecha.localeCompare(a.fecha))[0];
+}
+function firstMetric(key){
+  return [...db.medidas].filter(x=>x[key]!=null).sort((a,b)=>a.fecha.localeCompare(b.fecha))[0];
+}
+
+function renderInicio(){
+  const lp=lastMetric('peso'), fp=firstMetric('peso'), lc=lastMetric('cintura');
+  kPeso.textContent=lp?`${lp.peso.toFixed(1)} kg`:'—';
+  kPesoFecha.textContent=lp?fmtDate(lp.fecha):'';
+  if(lp&&fp){const d=lp.peso-fp.peso;kCambio.textContent=`${d>0?'+':''}${d.toFixed(1)} kg`;}else kCambio.textContent='—';
+  kCintura.textContent=lc?`${lc.cintura.toFixed(1)} cm`:'—';
+  kDiasComida.textContent=new Set(db.comidas.map(x=>x.fecha)).size;
+  const [ini,fin]=periodBounds('semana',hoy());
+  const ms=db.medidas.filter(x=>x.fecha>=ini&&x.fecha<=fin&&x.peso!=null);
+  const cs=db.comidas.filter(x=>x.fecha>=ini&&x.fecha<=fin);
+  const prot=cs.reduce((s,x)=>s+(x.proteina||0),0);
+  const kcal=cs.reduce((s,x)=>s+(x.calorias||0),0);
+  semanaResumen.innerHTML=`<p><b>${fmtDate(ini)}–${fmtDate(fin)}</b></p>
+  <p>Pesajes: <b>${ms.length}</b><br>Comidas registradas: <b>${cs.length}</b><br>Proteína registrada: <b>${prot||0} g</b><br>Calorías registradas: <b>${kcal||0}</b></p>
+  <p>Recuerda: si no registras calorías o proteína, esos totales no representan tu consumo real.</p>`;
+  drawWeightChart();
+}
+
+function drawWeightChart(){
+  const c=document.getElementById('chartPeso'),ctx=c.getContext('2d'), W=c.width,H=c.height;
+  ctx.clearRect(0,0,W,H); ctx.fillStyle='#fff';ctx.fillRect(0,0,W,H);
+  const arr=[...db.medidas].filter(x=>x.peso!=null).sort((a,b)=>a.fecha.localeCompare(b.fecha));
+  if(arr.length<2){ctx.fillStyle='#6f7b8b';ctx.font='16px sans-serif';ctx.fillText('Agrega al menos dos registros de peso para ver la gráfica.',30,50);return}
+  const vals=arr.map(x=>x.peso), min=Math.min(...vals)-1,max=Math.max(...vals)+1;
+  const pad={l:55,r:25,t:25,b:45}, iw=W-pad.l-pad.r, ih=H-pad.t-pad.b;
+  ctx.strokeStyle='#dfe5ec';ctx.lineWidth=1;
+  for(let i=0;i<5;i++){let y=pad.t+ih*i/4;ctx.beginPath();ctx.moveTo(pad.l,y);ctx.lineTo(W-pad.r,y);ctx.stroke();
+    const v=max-(max-min)*i/4;ctx.fillStyle='#687587';ctx.font='12px sans-serif';ctx.fillText(v.toFixed(1),8,y+4);}
+  ctx.strokeStyle='#173b6c';ctx.lineWidth=3;ctx.beginPath();
+  arr.forEach((x,i)=>{const px=pad.l+iw*(i/(arr.length-1)),py=pad.t+ih*((max-x.peso)/(max-min));i?ctx.lineTo(px,py):ctx.moveTo(px,py)});
+  ctx.stroke();
+  ctx.fillStyle='#173b6c';arr.forEach((x,i)=>{const px=pad.l+iw*(i/(arr.length-1)),py=pad.t+ih*((max-x.peso)/(max-min));ctx.beginPath();ctx.arc(px,py,4,0,Math.PI*2);ctx.fill()});
+  ctx.fillStyle='#687587';ctx.font='12px sans-serif';
+  const shown=[0,Math.floor((arr.length-1)/2),arr.length-1];
+  [...new Set(shown)].forEach(i=>{const px=pad.l+iw*(i/(arr.length-1));ctx.fillText(fmtDate(arr[i].fecha),Math.max(5,px-28),H-15)});
+}
+
+function periodBounds(periodo,fecha){
+  const d=new Date(fecha+'T12:00:00');
+  let a,b;
+  if(periodo==='semana'){
+    const day=(d.getDay()+6)%7; a=new Date(d); a.setDate(d.getDate()-day); b=new Date(a); b.setDate(a.getDate()+6);
+  } else if(periodo==='mes'){
+    a=new Date(d.getFullYear(),d.getMonth(),1,12); b=new Date(d.getFullYear(),d.getMonth()+1,0,12);
+  } else {
+    a=new Date(d.getFullYear(),0,1,12); b=new Date(d.getFullYear(),11,31,12);
+  }
+  const iso=x=>`${x.getFullYear()}-${String(x.getMonth()+1).padStart(2,'0')}-${String(x.getDate()).padStart(2,'0')}`;
+  return [iso(a),iso(b)];
+}
+
+function avg(arr){return arr.length?arr.reduce((a,b)=>a+b,0)/arr.length:null}
+function generateReport(){
+  const [ini,fin]=periodBounds(rPeriodo.value,rFecha.value||hoy());
+  const ms=[...db.medidas].filter(x=>x.fecha>=ini&&x.fecha<=fin).sort((a,b)=>a.fecha.localeCompare(b.fecha));
+  const cs=db.comidas.filter(x=>x.fecha>=ini&&x.fecha<=fin);
+  const pesos=ms.filter(x=>x.peso!=null);
+  const p0=pesos[0]?.peso,p1=pesos[pesos.length-1]?.peso;
+  const cintura=ms.filter(x=>x.cintura!=null);
+  const w0=cintura[0]?.cintura,w1=cintura[cintura.length-1]?.cintura;
+  const days=[...new Set(cs.map(x=>x.fecha))];
+  const proteins=cs.filter(x=>x.proteina!=null).map(x=>x.proteina), calories=cs.filter(x=>x.calorias!=null).map(x=>x.calorias);
+  const byType={}; cs.forEach(x=>byType[x.tipo]=(byType[x.tipo]||0)+1);
+  const change=(a,b,u)=>a!=null&&b!=null?`${b-a>0?'+':''}${(b-a).toFixed(1)} ${u}`:'—';
+  reporteSalida.innerHTML=`
+    <h3>${rPeriodo.options[rPeriodo.selectedIndex].text}: ${fmtDate(ini)} al ${fmtDate(fin)}</h3>
+    <div class="grid">
+      <div class="span3 kpi"><div class="small">Peso inicial</div><div class="stat">${p0!=null?p0.toFixed(1)+' kg':'—'}</div></div>
+      <div class="span3 kpi"><div class="small">Peso final</div><div class="stat">${p1!=null?p1.toFixed(1)+' kg':'—'}</div></div>
+      <div class="span3 kpi"><div class="small">Cambio peso</div><div class="stat">${change(p0,p1,'kg')}</div></div>
+      <div class="span3 kpi"><div class="small">Cambio cintura</div><div class="stat">${change(w0,w1,'cm')}</div></div>
+      <div class="span4 kpi"><div class="small">Comidas registradas</div><div class="stat">${cs.length}</div></div>
+      <div class="span4 kpi"><div class="small">Días con registro</div><div class="stat">${days.length}</div></div>
+      <div class="span4 kpi"><div class="small">Pesajes</div><div class="stat">${pesos.length}</div></div>
+    </div>
+    <hr>
+    <h3>Resumen de alimentación</h3>
+    <p>Proteína registrada: <b>${proteins.reduce((a,b)=>a+b,0).toFixed(0)} g</b> · Calorías registradas: <b>${calories.reduce((a,b)=>a+b,0).toFixed(0)}</b></p>
+    <p class="small">Promedios por día con comida registrada: proteína <b>${days.length?(proteins.reduce((a,b)=>a+b,0)/days.length).toFixed(0):0} g</b> · calorías <b>${days.length?(calories.reduce((a,b)=>a+b,0)/days.length).toFixed(0):0}</b>. Solo cuentan los valores que hayas ingresado.</p>
+    <p>${Object.entries(byType).map(([k,v])=>`<span class="badge">${esc(k)}: ${v}</span>`).join(' ')||'Sin comidas registradas.'}</p>
+    <hr>
+    <h3>Mediciones del periodo</h3>
+    <div class="tablewrap"><table><thead><tr><th>Fecha</th><th>Peso</th><th>Cintura</th><th>Cadera</th><th>Muslo</th><th>Brazo</th></tr></thead><tbody>
+    ${ms.map(x=>`<tr><td>${fmtDate(x.fecha)}</td><td>${x.peso??'—'}</td><td>${x.cintura??'—'}</td><td>${x.cadera??'—'}</td><td>${x.muslo??'—'}</td><td>${x.brazo??'—'}</td></tr>`).join('')||'<tr><td colspan="6">Sin datos.</td></tr>'}
+    </tbody></table></div>`;
+}
+document.getElementById('btnReporte').addEventListener('click',generateReport);
+
+function download(name,text,type='text/plain'){
+  const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([text],{type}));a.download=name;a.click();URL.revokeObjectURL(a.href);
+}
+document.getElementById('exportJson').onclick=()=>download(`respaldo_salud_${hoy()}.json`,JSON.stringify(db,null,2),'application/json');
+document.getElementById('importJson').onchange=async e=>{
+  const f=e.target.files[0];if(!f)return;
+  try{const data=JSON.parse(await f.text());if(!Array.isArray(data.medidas)||!Array.isArray(data.comidas))throw new Error();db=data;save();alert('Respaldo restaurado.');}
+  catch{alert('El archivo no parece ser un respaldo válido.');}
+  e.target.value='';
+};
+function csv(rows,cols){
+  const q=v=>`"${String(v??'').replaceAll('"','""')}"`; return [cols.map(c=>q(c[0])).join(','),...rows.map(r=>cols.map(c=>q(r[c[1]])).join(','))].join('\n');
+}
+document.getElementById('exportMedidas').onclick=()=>download(`medidas_${hoy()}.csv`,'\ufeff'+csv(db.medidas,[['Fecha','fecha'],['Peso kg','peso'],['Cintura cm','cintura'],['Cadera cm','cadera'],['Muslo cm','muslo'],['Brazo cm','brazo'],['Notas','notas']]),'text/csv;charset=utf-8');
+document.getElementById('exportComidas').onclick=()=>download(`comidas_${hoy()}.csv`,'\ufeff'+csv(db.comidas,[['Fecha','fecha'],['Tipo','tipo'],['Detalle','detalle'],['Porción','porcion'],['Hambre','hambre'],['Agua vasos','agua'],['Proteína g','proteina'],['Calorías','calorias'],['Estado','estado'],['Notas','notas']]),'text/csv;charset=utf-8');
+document.getElementById('borrarTodo').onclick=()=>{if(confirm('¿Seguro? Se eliminarán TODOS los registros de este navegador.')){db={medidas:[],comidas:[]};save();}};
+function renderAll(){renderMedidas();renderComidas();renderInicio();}
+
+document.getElementById('btnLogin')?.addEventListener('click',login);
+document.getElementById('btnSignup')?.addEventListener('click',signup);
+document.getElementById('btnLogout')?.addEventListener('click',logout);
+document.getElementById('btnSync')?.addEventListener('click',syncCloud);
+document.getElementById('btnPull')?.addEventListener('click',pullCloud);
+document.getElementById('btnPush')?.addEventListener('click',pushCloud);
+updateAuthUI();
+
+renderAll();generateReport();
+</script>
+</body>
+</html>
