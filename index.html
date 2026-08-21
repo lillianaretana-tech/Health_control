@@ -122,7 +122,7 @@ hr{border:0;border-top:1px solid var(--line);margin:18px 0}
   <section id="comidas" class="panel">
     <div class="grid">
       <div class="card span4">
-        <h2>Registrar alimentación</h2>
+        <h2 id="tituloFormComida">Registrar alimentación</h2>
         <form id="formComida">
           <div class="formgrid">
             <div class="f6"><label>Fecha</label><input type="date" id="cFecha" required></div>
@@ -142,7 +142,11 @@ hr{border:0;border-top:1px solid var(--line);margin:18px 0}
             </div>
             <div class="f12"><label>Notas</label><textarea id="cNotas" placeholder="Saciedad, antojos, digestión, energía, etc."></textarea></div>
           </div>
-          <div class="actions"><button class="primary" type="submit">Guardar comida</button><button class="secondary" type="reset">Limpiar</button></div>
+          <div class="actions">
+            <button class="primary" id="btnGuardarComida" type="submit">Guardar comida</button>
+            <button class="secondary" id="btnCancelarEdicion" type="button" style="display:none">Cancelar edición</button>
+            <button class="secondary" type="reset">Limpiar</button>
+          </div>
         </form>
       </div>
       <div class="card span8">
@@ -403,16 +407,108 @@ document.getElementById('formMedidas').addEventListener('submit',e=>{
   db.medidas.push(item); save(); e.target.reset(); mFecha.value=hoy();
 });
 
+let editingMealId = null;
+
+function resetMealEditor(){
+  editingMealId = null;
+  const form = document.getElementById('formComida');
+  form.reset();
+  cFecha.value = hoy();
+  document.getElementById('tituloFormComida').textContent = 'Registrar alimentación';
+  document.getElementById('btnGuardarComida').textContent = 'Guardar comida';
+  document.getElementById('btnCancelarEdicion').style.display = 'none';
+}
+
+window.editComida = id => {
+  const x = db.comidas.find(c => c.id === id);
+  if(!x) return;
+  editingMealId = id;
+
+  cFecha.value = x.fecha || hoy();
+  cTipo.value = x.tipo || 'Desayuno';
+  cDetalle.value = x.detalle || '';
+  cPorcion.value = x.porcion || '';
+  cHambre.value = x.hambre ?? '';
+  cAgua.value = x.agua ?? '';
+  cProteina.value = x.proteina ?? '';
+  cCarbohidratos.value = x.carbohidratos ?? '';
+  cGrasa.value = x.grasa ?? '';
+  cCalorias.value = x.calorias ?? '';
+  cEstado.value = x.estado || '';
+  cNotas.value = x.notas || '';
+
+  document.getElementById('tituloFormComida').textContent = 'Editar alimentación';
+  document.getElementById('btnGuardarComida').textContent = 'Actualizar comida';
+  document.getElementById('btnCancelarEdicion').style.display = 'inline-block';
+
+  document.getElementById('formComida').scrollIntoView({behavior:'smooth', block:'start'});
+};
+
+document.getElementById('btnCancelarEdicion').addEventListener('click', resetMealEditor);
+
 document.getElementById('formComida').addEventListener('submit',e=>{
   e.preventDefault();
-  db.comidas.push({id:uid(),fecha:cFecha.value,tipo:cTipo.value,detalle:cDetalle.value.trim(),porcion:cPorcion.value.trim(),hambre:num(cHambre.value),agua:num(cAgua.value),proteina:num(cProteina.value),carbohidratos:num(cCarbohidratos.value),grasa:num(cGrasa.value),calorias:num(cCalorias.value),estado:cEstado.value,notas:cNotas.value.trim()});
-  save(); e.target.reset(); cFecha.value=hoy();
+
+  const payload = {
+    fecha:cFecha.value,
+    tipo:cTipo.value,
+    detalle:cDetalle.value.trim(),
+    porcion:cPorcion.value.trim(),
+    hambre:num(cHambre.value),
+    agua:num(cAgua.value),
+    proteina:num(cProteina.value),
+    carbohidratos:num(cCarbohidratos.value),
+    grasa:num(cGrasa.value),
+    calorias:num(cCalorias.value),
+    estado:cEstado.value,
+    notas:cNotas.value.trim()
+  };
+
+  if(editingMealId){
+    const idx = db.comidas.findIndex(x => x.id === editingMealId);
+    if(idx >= 0){
+      db.comidas[idx] = {...db.comidas[idx], ...payload};
+    }
+  } else {
+    db.comidas.push({id:uid(), ...payload});
+  }
+
+  save();
+  resetMealEditor();
 });
 
 document.getElementById('filtroComida').addEventListener('change',renderComidas);
+document.getElementById('formComida').addEventListener('reset',()=>{
+  setTimeout(()=>{
+    if(editingMealId){
+      editingMealId = null;
+      cFecha.value = hoy();
+      document.getElementById('tituloFormComida').textContent = 'Registrar alimentación';
+      document.getElementById('btnGuardarComida').textContent = 'Guardar comida';
+      document.getElementById('btnCancelarEdicion').style.display = 'none';
+    } else {
+      cFecha.value = hoy();
+    }
+  },0);
+});
 
 window.delMedida=id=>{ if(confirm('¿Eliminar este registro?')){db.medidas=db.medidas.filter(x=>x.id!==id);save();}};
-window.delComida=id=>{ if(confirm('¿Eliminar esta comida?')){db.comidas=db.comidas.filter(x=>x.id!==id);save();}};
+window.delComida=async id=>{
+  if(!confirm('¿Eliminar esta comida?')) return;
+
+  db.comidas=db.comidas.filter(x=>x.id!==id);
+  localStorage.setItem(DBKEY,JSON.stringify(db));
+  renderAll();
+
+  if(currentUser){
+    const {error}=await sb.from('lt_health_meals').delete().eq('id',id);
+    if(error){
+      status('La comida se eliminó localmente, pero hubo un error al eliminarla de Supabase: '+error.message,true);
+    } else {
+      status('Comida eliminada correctamente.');
+    }
+  }
+};
 
 function renderMedidas(){
   const arr=[...db.medidas].sort((a,b)=>b.fecha.localeCompare(a.fecha));
@@ -422,7 +518,7 @@ function renderMedidas(){
 function renderComidas(){
   const f=filtroComida.value;
   const arr=[...db.comidas].filter(x=>!f||x.fecha===f).sort((a,b)=>b.fecha.localeCompare(a.fecha));
-  tablaComidas.innerHTML=arr.map(x=>`<tr><td>${fmtDate(x.fecha)}</td><td><span class="badge">${esc(x.tipo)}</span></td><td>${esc(x.detalle)}</td><td>${esc(x.porcion)}</td><td>${x.proteina??'—'}</td><td>${x.carbohidratos??'—'}</td><td>${x.grasa??'—'}</td><td>${x.calorias??'—'}</td><td>${esc(x.estado)}</td><td><button class="danger" onclick="delComida('${x.id}')">×</button></td></tr>`).join('')||'<tr><td colspan="10" class="small">Sin registros.</td></tr>';
+  tablaComidas.innerHTML=arr.map(x=>`<tr><td>${fmtDate(x.fecha)}</td><td><span class="badge">${esc(x.tipo)}</span></td><td>${esc(x.detalle)}</td><td>${esc(x.porcion)}</td><td>${x.proteina??'—'}</td><td>${x.carbohidratos??'—'}</td><td>${x.grasa??'—'}</td><td>${x.calorias??'—'}</td><td>${esc(x.estado)}</td><td><div style="display:flex;gap:6px;flex-wrap:wrap"><button class="secondary" type="button" onclick="editComida('${x.id}')" title="Editar">✏️</button><button class="danger" type="button" onclick="delComida('${x.id}')" title="Eliminar">×</button></div></td></tr>`).join('')||'<tr><td colspan="10" class="small">Sin registros.</td></tr>';
 }
 
 function lastMetric(key){
