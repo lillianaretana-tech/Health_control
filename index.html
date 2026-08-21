@@ -133,7 +133,9 @@ hr{border:0;border-top:1px solid var(--line);margin:18px 0}
             <div class="f6"><label>Porción / cantidad</label><input id="cPorcion" placeholder="Ej.: 1 taza, 120 g, 2 unidades"></div>
             <div class="f6"><label>Hambre antes (1-10)</label><input type="number" min="1" max="10" id="cHambre"></div>
             <div class="f6"><label>Agua (vasos)</label><input type="number" min="0" step="1" id="cAgua"></div>
-            <div class="f6"><label>Proteína aprox. (g)</label><input type="number" min="0" step="1" id="cProteina"></div>
+            <div class="f6"><label>Proteína aprox. (g)</label><input type="number" min="0" step="0.1" id="cProteina"></div>
+            <div class="f6"><label>Carbohidratos aprox. (g)</label><input type="number" min="0" step="0.1" id="cCarbohidratos"></div>
+            <div class="f6"><label>Grasa aprox. (g)</label><input type="number" min="0" step="0.1" id="cGrasa"></div>
             <div class="f6"><label>Calorías aprox.</label><input type="number" min="0" step="1" id="cCalorias"></div>
             <div class="f6"><label>Estado</label>
               <select id="cEstado"><option value="">—</option><option>Bien planificado</option><option>Improvisado</option><option>Antojo</option><option>Evento social</option></select>
@@ -149,9 +151,23 @@ hr{border:0;border-top:1px solid var(--line);margin:18px 0}
           <div style="min-width:190px"><label>Filtrar por fecha</label><input type="date" id="filtroComida"></div>
         </div>
         <div class="tablewrap" style="margin-top:12px"><table>
-          <thead><tr><th>Fecha</th><th>Tipo</th><th>Detalle</th><th>Porción</th><th>Prot.</th><th>Kcal</th><th>Estado</th><th></th></tr></thead>
+          <thead><tr><th>Fecha</th><th>Tipo</th><th>Detalle</th><th>Porción</th><th>Prot.</th><th>Carb.</th><th>Grasa</th><th>Kcal</th><th>Estado</th><th></th></tr></thead>
           <tbody id="tablaComidas"></tbody>
         </table></div>
+
+        <hr>
+        <h3>Importar estimación de ChatGPT</h3>
+        <p class="small">Pega aquí el bloque que te entregue ChatGPT. El sistema buscará las comidas por fecha y tipo, y actualizará sus valores nutricionales.</p>
+        <textarea id="importEstimacion" placeholder='Ejemplo:
+[
+  {"fecha":"2026-08-20","tipo":"Desayuno","proteina":18,"carbohidratos":42,"grasa":14,"calorias":370},
+  {"fecha":"2026-08-20","tipo":"Almuerzo","proteina":25,"carbohidratos":55,"grasa":20,"calorias":510}
+]'></textarea>
+        <div class="actions">
+          <button class="primary" type="button" id="btnImportEstimacion">Importar estimación</button>
+          <button class="secondary" type="button" id="btnEjemploEstimacion">Ver ejemplo</button>
+        </div>
+        <div id="importEstimacionStatus" class="small" style="margin-top:8px"></div>
       </div>
     </div>
   </section>
@@ -299,11 +315,11 @@ function toCloudComida(x){
   return {
     id:x.id, user_id:currentUser.id, fecha:x.fecha, tipo:x.tipo, detalle:x.detalle,
     porcion:x.porcion||'', hambre:x.hambre, agua:x.agua, proteina:x.proteina,
-    calorias:x.calorias, estado:x.estado||'', notas:x.notas||''
+    calorias:x.calorias, carbohidratos:x.carbohidratos, grasa:x.grasa, estado:x.estado||'', notas:x.notas||''
   };
 }
 function fromCloudMedida(x){return {id:x.id,fecha:x.fecha,peso:x.peso,cintura:x.cintura,cadera:x.cadera,muslo:x.muslo,brazo:x.brazo,notas:x.notas||''}}
-function fromCloudComida(x){return {id:x.id,fecha:x.fecha,tipo:x.tipo,detalle:x.detalle,porcion:x.porcion||'',hambre:x.hambre,agua:x.agua,proteina:x.proteina,calorias:x.calorias,estado:x.estado||'',notas:x.notas||''}}
+function fromCloudComida(x){return {id:x.id,fecha:x.fecha,tipo:x.tipo,detalle:x.detalle,porcion:x.porcion||'',hambre:x.hambre,agua:x.agua,proteina:x.proteina,carbohidratos:x.carbohidratos,grasa:x.grasa,calorias:x.calorias,estado:x.estado||'',notas:x.notas||''}}
 
 async function pushCloud(){
   if(!currentUser){status('Primero inicia sesión.',true);return;}
@@ -389,7 +405,7 @@ document.getElementById('formMedidas').addEventListener('submit',e=>{
 
 document.getElementById('formComida').addEventListener('submit',e=>{
   e.preventDefault();
-  db.comidas.push({id:uid(),fecha:cFecha.value,tipo:cTipo.value,detalle:cDetalle.value.trim(),porcion:cPorcion.value.trim(),hambre:num(cHambre.value),agua:num(cAgua.value),proteina:num(cProteina.value),calorias:num(cCalorias.value),estado:cEstado.value,notas:cNotas.value.trim()});
+  db.comidas.push({id:uid(),fecha:cFecha.value,tipo:cTipo.value,detalle:cDetalle.value.trim(),porcion:cPorcion.value.trim(),hambre:num(cHambre.value),agua:num(cAgua.value),proteina:num(cProteina.value),carbohidratos:num(cCarbohidratos.value),grasa:num(cGrasa.value),calorias:num(cCalorias.value),estado:cEstado.value,notas:cNotas.value.trim()});
   save(); e.target.reset(); cFecha.value=hoy();
 });
 
@@ -406,7 +422,7 @@ function renderMedidas(){
 function renderComidas(){
   const f=filtroComida.value;
   const arr=[...db.comidas].filter(x=>!f||x.fecha===f).sort((a,b)=>b.fecha.localeCompare(a.fecha));
-  tablaComidas.innerHTML=arr.map(x=>`<tr><td>${fmtDate(x.fecha)}</td><td><span class="badge">${esc(x.tipo)}</span></td><td>${esc(x.detalle)}</td><td>${esc(x.porcion)}</td><td>${x.proteina??'—'}</td><td>${x.calorias??'—'}</td><td>${esc(x.estado)}</td><td><button class="danger" onclick="delComida('${x.id}')">×</button></td></tr>`).join('')||'<tr><td colspan="8" class="small">Sin registros.</td></tr>';
+  tablaComidas.innerHTML=arr.map(x=>`<tr><td>${fmtDate(x.fecha)}</td><td><span class="badge">${esc(x.tipo)}</span></td><td>${esc(x.detalle)}</td><td>${esc(x.porcion)}</td><td>${x.proteina??'—'}</td><td>${x.carbohidratos??'—'}</td><td>${x.grasa??'—'}</td><td>${x.calorias??'—'}</td><td>${esc(x.estado)}</td><td><button class="danger" onclick="delComida('${x.id}')">×</button></td></tr>`).join('')||'<tr><td colspan="10" class="small">Sin registros.</td></tr>';
 }
 
 function lastMetric(key){
@@ -427,9 +443,11 @@ function renderInicio(){
   const ms=db.medidas.filter(x=>x.fecha>=ini&&x.fecha<=fin&&x.peso!=null);
   const cs=db.comidas.filter(x=>x.fecha>=ini&&x.fecha<=fin);
   const prot=cs.reduce((s,x)=>s+(x.proteina||0),0);
+  const carb=cs.reduce((s,x)=>s+(x.carbohidratos||0),0);
+  const fat=cs.reduce((s,x)=>s+(x.grasa||0),0);
   const kcal=cs.reduce((s,x)=>s+(x.calorias||0),0);
   semanaResumen.innerHTML=`<p><b>${fmtDate(ini)}–${fmtDate(fin)}</b></p>
-  <p>Pesajes: <b>${ms.length}</b><br>Comidas registradas: <b>${cs.length}</b><br>Proteína registrada: <b>${prot||0} g</b><br>Calorías registradas: <b>${kcal||0}</b></p>
+  <p>Pesajes: <b>${ms.length}</b><br>Comidas registradas: <b>${cs.length}</b><br>Proteína registrada: <b>${prot||0} g</b><br>Carbohidratos registrados: <b>${carb||0} g</b><br>Grasa registrada: <b>${fat||0} g</b><br>Calorías registradas: <b>${kcal||0}</b></p>
   <p>Recuerda: si no registras calorías o proteína, esos totales no representan tu consumo real.</p>`;
   drawWeightChart();
 }
@@ -477,7 +495,10 @@ function generateReport(){
   const cintura=ms.filter(x=>x.cintura!=null);
   const w0=cintura[0]?.cintura,w1=cintura[cintura.length-1]?.cintura;
   const days=[...new Set(cs.map(x=>x.fecha))];
-  const proteins=cs.filter(x=>x.proteina!=null).map(x=>x.proteina), calories=cs.filter(x=>x.calorias!=null).map(x=>x.calorias);
+  const proteins=cs.filter(x=>x.proteina!=null).map(x=>x.proteina),
+        carbs=cs.filter(x=>x.carbohidratos!=null).map(x=>x.carbohidratos),
+        fats=cs.filter(x=>x.grasa!=null).map(x=>x.grasa),
+        calories=cs.filter(x=>x.calorias!=null).map(x=>x.calorias);
   const byType={}; cs.forEach(x=>byType[x.tipo]=(byType[x.tipo]||0)+1);
   const change=(a,b,u)=>a!=null&&b!=null?`${b-a>0?'+':''}${(b-a).toFixed(1)} ${u}`:'—';
   reporteSalida.innerHTML=`
@@ -493,8 +514,8 @@ function generateReport(){
     </div>
     <hr>
     <h3>Resumen de alimentación</h3>
-    <p>Proteína registrada: <b>${proteins.reduce((a,b)=>a+b,0).toFixed(0)} g</b> · Calorías registradas: <b>${calories.reduce((a,b)=>a+b,0).toFixed(0)}</b></p>
-    <p class="small">Promedios por día con comida registrada: proteína <b>${days.length?(proteins.reduce((a,b)=>a+b,0)/days.length).toFixed(0):0} g</b> · calorías <b>${days.length?(calories.reduce((a,b)=>a+b,0)/days.length).toFixed(0):0}</b>. Solo cuentan los valores que hayas ingresado.</p>
+    <p>Proteína registrada: <b>${proteins.reduce((a,b)=>a+b,0).toFixed(0)} g</b> · Carbohidratos: <b>${carbs.reduce((a,b)=>a+b,0).toFixed(0)} g</b> · Grasa: <b>${fats.reduce((a,b)=>a+b,0).toFixed(0)} g</b> · Calorías: <b>${calories.reduce((a,b)=>a+b,0).toFixed(0)}</b></p>
+    <p class="small">Promedios por día con comida registrada: proteína <b>${days.length?(proteins.reduce((a,b)=>a+b,0)/days.length).toFixed(0):0} g</b> · carbohidratos <b>${days.length?(carbs.reduce((a,b)=>a+b,0)/days.length).toFixed(0):0} g</b> · grasa <b>${days.length?(fats.reduce((a,b)=>a+b,0)/days.length).toFixed(0):0} g</b> · calorías <b>${days.length?(calories.reduce((a,b)=>a+b,0)/days.length).toFixed(0):0}</b>. Solo cuentan los valores que hayas ingresado.</p>
     <p>${Object.entries(byType).map(([k,v])=>`<span class="badge">${esc(k)}: ${v}</span>`).join(' ')||'Sin comidas registradas.'}</p>
     <hr>
     <h3>Mediciones del periodo</h3>
@@ -518,8 +539,62 @@ function csv(rows,cols){
   const q=v=>`"${String(v??'').replaceAll('"','""')}"`; return [cols.map(c=>q(c[0])).join(','),...rows.map(r=>cols.map(c=>q(r[c[1]])).join(','))].join('\n');
 }
 document.getElementById('exportMedidas').onclick=()=>download(`medidas_${hoy()}.csv`,'\ufeff'+csv(db.medidas,[['Fecha','fecha'],['Peso kg','peso'],['Cintura cm','cintura'],['Cadera cm','cadera'],['Muslo cm','muslo'],['Brazo cm','brazo'],['Notas','notas']]),'text/csv;charset=utf-8');
-document.getElementById('exportComidas').onclick=()=>download(`comidas_${hoy()}.csv`,'\ufeff'+csv(db.comidas,[['Fecha','fecha'],['Tipo','tipo'],['Detalle','detalle'],['Porción','porcion'],['Hambre','hambre'],['Agua vasos','agua'],['Proteína g','proteina'],['Calorías','calorias'],['Estado','estado'],['Notas','notas']]),'text/csv;charset=utf-8');
+document.getElementById('exportComidas').onclick=()=>download(`comidas_${hoy()}.csv`,'\ufeff'+csv(db.comidas,[['Fecha','fecha'],['Tipo','tipo'],['Detalle','detalle'],['Porción','porcion'],['Hambre','hambre'],['Agua vasos','agua'],['Proteína g','proteina'],['Carbohidratos g','carbohidratos'],['Grasa g','grasa'],['Calorías','calorias'],['Estado','estado'],['Notas','notas']]),'text/csv;charset=utf-8');
 document.getElementById('borrarTodo').onclick=()=>{if(confirm('¿Seguro? Se eliminarán TODOS los registros de este navegador.')){db={medidas:[],comidas:[]};save();}};
+
+function normalizarTipo(s=''){
+  return String(s).trim().toLowerCase()
+    .normalize('NFD').replace(/[\u0300-\u036f]/g,'');
+}
+
+function importarEstimacion(){
+  const raw=document.getElementById('importEstimacion').value.trim();
+  const msg=document.getElementById('importEstimacionStatus');
+  if(!raw){msg.textContent='Pega primero el bloque de estimación.';return;}
+  let data;
+  try{
+    data=JSON.parse(raw);
+  }catch(e){
+    msg.textContent='No pude leer el bloque. Pídeme que te lo entregue en formato JSON para importar.';
+    return;
+  }
+  if(!Array.isArray(data)){data=[data];}
+  let actualizadas=0, noEncontradas=[];
+  data.forEach(item=>{
+    if(!item.fecha || !item.tipo){noEncontradas.push('Registro sin fecha/tipo');return;}
+    const matches=db.comidas.filter(x=>x.fecha===item.fecha && normalizarTipo(x.tipo)===normalizarTipo(item.tipo));
+    if(!matches.length){noEncontradas.push(`${item.fecha} · ${item.tipo}`);return;}
+    let target=matches[0];
+    if(item.detalle){
+      const exact=matches.find(x=>normalizarTipo(x.detalle).includes(normalizarTipo(item.detalle)) || normalizarTipo(item.detalle).includes(normalizarTipo(x.detalle)));
+      if(exact) target=exact;
+    }
+    if(item.proteina!=null) target.proteina=num(item.proteina);
+    if(item.carbohidratos!=null) target.carbohidratos=num(item.carbohidratos);
+    if(item.grasa!=null) target.grasa=num(item.grasa);
+    if(item.calorias!=null) target.calorias=num(item.calorias);
+    if(item.notas_estimacion){
+      target.notas = (target.notas ? target.notas + ' | ' : '') + 'Estimación: ' + item.notas_estimacion;
+    }
+    actualizadas++;
+  });
+  localStorage.setItem(DBKEY,JSON.stringify(db));
+  renderAll();
+  if(currentUser){pushCloud().catch(()=>{});}
+  msg.textContent=`Actualizadas: ${actualizadas}` + (noEncontradas.length ? ` · No encontradas: ${noEncontradas.join(', ')}` : ' · Importación completa.');
+}
+
+function ejemploEstimacion(){
+  const fecha=document.getElementById('cFecha').value || hoy();
+  document.getElementById('importEstimacion').value=JSON.stringify([
+    {"fecha":fecha,"tipo":"Desayuno","proteina":18,"carbohidratos":42,"grasa":14,"calorias":370},
+    {"fecha":fecha,"tipo":"Almuerzo","proteina":25,"carbohidratos":55,"grasa":20,"calorias":510}
+  ],null,2);
+}
+
+document.getElementById('btnImportEstimacion')?.addEventListener('click',importarEstimacion);
+document.getElementById('btnEjemploEstimacion')?.addEventListener('click',ejemploEstimacion);
+
 function renderAll(){renderMedidas();renderComidas();renderInicio();}
 
 document.getElementById('btnLogin')?.addEventListener('click',login);
