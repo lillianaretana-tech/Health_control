@@ -58,16 +58,27 @@ hr{border:0;border-top:1px solid var(--line);margin:18px 0}
   .ai-status{margin-top:9px;font-size:.9rem;color:#526173}
   @media(max-width:700px){.ai-result-grid{grid-template-columns:repeat(2,1fr)}}
 
+
+.motivation-card{margin:14px 0 18px;padding:18px;border-radius:18px;background:linear-gradient(135deg,#102f59,#245d9b);color:white;box-shadow:0 10px 28px rgba(20,55,95,.16)}
+.motivation-card .mot-kicker{font-size:.78rem;letter-spacing:.08em;text-transform:uppercase;opacity:.82;font-weight:800}
+.motivation-card .mot-text{font-size:1.08rem;line-height:1.45;margin-top:7px;font-weight:700}
+.motivation-card .mot-sub{font-size:.86rem;opacity:.86;margin-top:7px}
+.collapse-toggle{margin-left:auto;border:0;background:#edf4fb;color:#173b6c;border-radius:10px;padding:7px 10px;cursor:pointer;font-weight:800}
+.card.collapsible-card>.card-collapse-body{display:block}.card.collapsible-card.is-collapsed>.card-collapse-body{display:none}
+.card.collapsible-card .collapse-head{display:flex;align-items:center;gap:10px;cursor:pointer;user-select:none}
+.card.collapsible-card .collapse-head>h2,.card.collapsible-card .collapse-head>h3{margin:0;flex:1}
+@media(max-width:700px){.motivation-card{padding:15px;margin:10px 0 14px}.motivation-card .mot-text{font-size:1rem}.card.collapsible-card{padding:13px}}
+
 @media print{
   header,.tabs,.noprint,.actions{display:none!important}
   body{background:white}.panel{display:none!important}.panel.active{display:block!important}
   .card{box-shadow:none;border-color:#bbb}
 }
 
-/* Proyecto Lilly 90 días v3.1 */
+/* Proyecto Lilly 90 días v3.2 */
 .version{font-size:.76rem;opacity:.72;margin-top:7px}.heroGoal{background:linear-gradient(135deg,#102a4c,#1d4f8f);color:#fff;border:0}.heroGoal .small{color:#dbe8f7}.progress{height:12px;background:#dfe7f0;border-radius:999px;overflow:hidden;margin:10px 0}.progress>div{height:100%;background:#fff;border-radius:999px}.coach{border-left:5px solid var(--accent);background:#f7faff}.coachText{font-size:1.05rem;line-height:1.55}.choice{background:#edf3fa;color:#173b6c}.rest{background:#eef4fb;border-color:#cbd9ea;color:#173b6c}.minirow{display:flex;gap:8px;flex-wrap:wrap;align-items:center}.minirow>*{flex:1;min-width:130px}.check{display:flex;gap:8px;align-items:center}.check input{width:auto}.pill{display:inline-block;padding:5px 9px;border-radius:999px;background:#e8eef7;margin:2px;font-size:.8rem;font-weight:700}.dangerText{color:#8b3c2c}.goodText{color:#245b9c}
 
-/* v3.1 · foto + IA */
+/* v3.2 · foto + IA */
 body{background:
  radial-gradient(circle at 8% 5%,rgba(82,157,230,.16),transparent 24%),
  radial-gradient(circle at 92% 18%,rgba(244,182,93,.15),transparent 22%),
@@ -98,11 +109,16 @@ header .wrap{position:relative;z-index:1}
 <header>
   <div class="wrap">
     <h1>Control Salud & Nutrición</h1>
-    <p>Tu acompañamiento para bajar de peso, moverte y sostener el proceso.</p><div class="version">Proyecto Lilly · 90 días · v3.1</div>
+    <p>Tu acompañamiento para bajar de peso, moverte y sostener el proceso.</p><div class="version">Proyecto Lilly · 90 días · v3.2</div>
   </div>
 </header>
 
 <main class="wrap">
+<section class="motivation-card" id="dailyMotivation">
+<div class="mot-kicker">💙 Mensaje de hoy</div>
+<div class="mot-text" id="motivationText">Hoy no necesitás hacerlo perfecto. Necesitás seguir aquí.</div>
+<div class="mot-sub" id="motivationSub">Proyecto Lilly · No desaparecer del proceso.</div>
+</section>
   <div class="tabs noprint">
     <button class="tab active" data-tab="inicio">Hoy</button>
     <button class="tab" data-tab="movimiento">Movimiento</button>
@@ -1024,6 +1040,78 @@ document.getElementById('btnPush')?.addEventListener('click',pushCloud);
 updateAuthUI();
 
 renderAll();generateReport();
+
+const MOTIVATION_MESSAGES=[
+"Hoy no necesitás hacerlo perfecto. Necesitás seguir aquí.",
+"La misión de hoy es sencilla: no desaparecer del proceso.",
+"Un día difícil también cuenta si lo registramos y seguimos.",
+"La báscula de hoy es un dato. Lo que manda es la tendencia.",
+"No buscamos una Lilly más bonita. Esa ya existe. Construimos una Lilly más fuerte, ligera y saludable.",
+"Comer de más no borra el plan. Registramos y seguimos.",
+"Hoy hacemos lo que podamos con el día que tenemos.",
+"Cada decisión pequeña cuenta más que una semana perfecta seguida de tres semanas desaparecida.",
+"Meta 75. Sin carreras absurdas, sin castigos y sin abandonar a mitad del camino.",
+"Si hoy toca poco, hacemos poco. Pero seguimos conectadas con el proceso.",
+"Tu trabajo no es ganar todo el camino hoy. Es completar el día de hoy.",
+"La constancia también se ve así: volver rápido después de un tropiezo.",
+"No necesitás compensar una comida. Necesitás continuar con la siguiente decisión.",
+"La foto no juzga y el registro tampoco. Son datos para ayudarte a decidir.",
+"No negociamos con el «ya casi». Celebramos cada avance y seguimos hacia 75.",
+"Hoy puede ser un día normal y aun así acercarte a la meta.",
+"Tu cuerpo no necesita castigo; necesita un plan que puedas sostener.",
+"Si el día se complicó, todavía podemos salvarlo con una decisión sencilla.",
+"La Lilly de 60 se construye con los días comunes como este. 💙",
+"Una comida no define la semana. Seguimos.",
+"Lo importante no es no desviarse nunca; es no convertir un desvío en desaparición.",
+"Hoy miramos datos, no excusas ni culpas.",
+"Lo que buscamos no es bajar rápido y volver. Es llegar y quedarnos.",
+"Menos peso que cargar, más fuerza para vivir.",
+"La perfección es pésima compañera de viaje. La constancia sí llega a 75.",
+"Cuando el espejo diga «ya estamos regias», contestamos: sí… y seguimos. 😏",
+"No escondamos la hamburguesa. 😂 Foto, registro y seguimos.",
+"Tu plan tiene espacio para la vida real. Por eso puede durar.",
+"Hoy sumamos evidencia de que esta vez no vamos a desaparecer.",
+"No estás empezando otra dieta. Estás construyendo una forma de cuidarte que continúa después de 75.",
+"Si ayer no salió como queríamos, hoy no pagamos ninguna deuda. Simplemente retomamos.",
+"Hoy: comer con intención, movernos según el día y registrar con sinceridad.",
+"No esperemos al lunes ni a sentirnos inspiradas. El próximo paso sirve.",
+"No vamos a dejar que 93 se convierta en la nueva normalidad. Estamos de paso.",
+"Cada registro honesto vale más que un día «perfecto» que nunca ocurrió.",
+"El objetivo no es ganarle a nadie. Es acercarte a la Lilly que querés ser."
+];
+function lillyDateKey(){const d=new Date();return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`}
+function lillyHash(s){let h=0;for(let i=0;i<s.length;i++)h=((h<<5)-h)+s.charCodeAt(i)|0;return Math.abs(h)}
+function lillyLatestWeight(){try{const a=(db?.medidas||[]).filter(x=>Number.isFinite(Number(x.peso))).sort((a,b)=>String(b.fecha).localeCompare(String(a.fecha)));return a.length?Number(a[0].peso):null}catch(_){return null}}
+function renderDailyMotivation(){
+ const el=document.getElementById('motivationText'),sub=document.getElementById('motivationSub');if(!el)return;
+ const d=new Date(),day=d.getDay(),hour=d.getHours(),w=lillyLatestWeight(),today=lillyDateKey();
+ let meals=0;try{meals=(db?.comidas||[]).filter(x=>x.fecha===today).length}catch(_){}
+ let msg;
+ if(day===5)msg="Viernes de descanso. 💙 Descansar también forma parte del plan. Hoy no hay ejercicio que compensar ni culpa que pagar.";
+ else if(w!==null&&w<=75)msg="Llegamos a 75. 🎉 Ahora empieza la parte que antes faltaba: mantener lo logrado sin desaparecer del proceso.";
+ else if(w!==null&&w<=80)msg="80 kg. 💙 Ya recorriste muchísimo, pero todavía no cerramos: destino 75 y luego mantenimiento.";
+ else if(w!==null&&w<=85)msg="85 kg: esto ya no es entusiasmo de inicio, es progreso sostenido. Celebramos… y seguimos hacia 75.";
+ else if(w!==null&&w<=89)msg="Sí, estás regia. 😏 Y aquí antes aparecía el «ya estuvo». Esta vez celebramos 89 y seguimos. Meta: 75.";
+ else if(hour>=15&&meals===0)msg="Hola Lili 👀 Hoy todavía no veo comidas registradas. Sea ensalada o hamburguesa con papas: la registramos y seguimos.";
+ else msg=MOTIVATION_MESSAGES[lillyHash(today)%MOTIVATION_MESSAGES.length];
+ el.textContent=msg;if(sub)sub.textContent=day===5?"Hoy toca vivir el viernes, sin deuda de ejercicio.":"Proyecto Lilly · No desaparecer del proceso.";
+}
+function setupCollapsibleModules(){
+ [...document.querySelectorAll('main .card')].forEach((card,idx)=>{
+  if(card.dataset.collapseReady==="1")return;
+  const h=card.querySelector(':scope > h2, :scope > h3');if(!h)return;
+  const head=document.createElement('div');head.className='collapse-head';card.insertBefore(head,h);head.appendChild(h);
+  const btn=document.createElement('button');btn.type='button';btn.className='collapse-toggle';head.appendChild(btn);
+  const body=document.createElement('div');body.className='card-collapse-body';while(head.nextSibling)body.appendChild(head.nextSibling);card.appendChild(body);
+  card.classList.add('collapsible-card');card.dataset.collapseReady="1";
+  const key='lillyCollapse_'+(card.id||h.textContent.trim().slice(0,40)||idx);
+  const apply=()=>{const c=localStorage.getItem(key)==='1';card.classList.toggle('is-collapsed',c);btn.textContent=c?'+':'−';btn.setAttribute('aria-expanded',String(!c))};
+  const toggle=e=>{e?.preventDefault();localStorage.setItem(key,card.classList.contains('is-collapsed')?'0':'1');apply()};
+  btn.onclick=toggle;head.addEventListener('click',e=>{if(e.target!==btn)toggle(e)});apply();
+ });
+}
+document.addEventListener('DOMContentLoaded',()=>{setupCollapsibleModules();renderDailyMotivation()});
+
 </script>
 </body>
 </html>
