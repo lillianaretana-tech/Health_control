@@ -47,16 +47,27 @@ canvas{width:100%;height:280px;border-radius:12px;background:#fff}
 .notice{background:#fff8e7;border:1px solid #ead9aa;border-radius:12px;padding:12px;color:#6a5423}
 hr{border:0;border-top:1px solid var(--line);margin:18px 0}
 .footer{padding:18px;color:var(--muted);text-align:center;font-size:.82rem}
+
+  .ai-photo-box{margin-top:14px;padding:16px;border:1px solid #d7e3f2;border-radius:16px;background:linear-gradient(135deg,#f7fbff,#eef5ff)}
+  .ai-photo-title{display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+  .ai-photo-preview{display:none;margin-top:12px;max-width:100%;max-height:300px;border-radius:14px;object-fit:cover;border:1px solid #d7e3f2}
+  .ai-result{display:none;margin-top:12px;padding:14px;border-radius:14px;background:#fff;border:1px solid #d7e3f2}
+  .ai-result-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:10px 0}
+  .ai-metric{padding:9px;border-radius:11px;background:#f5f8fc;text-align:center}
+  .ai-metric b{display:block;font-size:1.05rem;color:#173b6c}
+  .ai-status{margin-top:9px;font-size:.9rem;color:#526173}
+  @media(max-width:700px){.ai-result-grid{grid-template-columns:repeat(2,1fr)}}
+
 @media print{
   header,.tabs,.noprint,.actions{display:none!important}
   body{background:white}.panel{display:none!important}.panel.active{display:block!important}
   .card{box-shadow:none;border-color:#bbb}
 }
 
-/* Proyecto Lilly 90 días v3.0 */
+/* Proyecto Lilly 90 días v3.1 */
 .version{font-size:.76rem;opacity:.72;margin-top:7px}.heroGoal{background:linear-gradient(135deg,#102a4c,#1d4f8f);color:#fff;border:0}.heroGoal .small{color:#dbe8f7}.progress{height:12px;background:#dfe7f0;border-radius:999px;overflow:hidden;margin:10px 0}.progress>div{height:100%;background:#fff;border-radius:999px}.coach{border-left:5px solid var(--accent);background:#f7faff}.coachText{font-size:1.05rem;line-height:1.55}.choice{background:#edf3fa;color:#173b6c}.rest{background:#eef4fb;border-color:#cbd9ea;color:#173b6c}.minirow{display:flex;gap:8px;flex-wrap:wrap;align-items:center}.minirow>*{flex:1;min-width:130px}.check{display:flex;gap:8px;align-items:center}.check input{width:auto}.pill{display:inline-block;padding:5px 9px;border-radius:999px;background:#e8eef7;margin:2px;font-size:.8rem;font-weight:700}.dangerText{color:#8b3c2c}.goodText{color:#245b9c}
 
-/* v3.0 · experiencia Lilly */
+/* v3.1 · foto + IA */
 body{background:
  radial-gradient(circle at 8% 5%,rgba(82,157,230,.16),transparent 24%),
  radial-gradient(circle at 92% 18%,rgba(244,182,93,.15),transparent 22%),
@@ -87,7 +98,7 @@ header .wrap{position:relative;z-index:1}
 <header>
   <div class="wrap">
     <h1>Control Salud & Nutrición</h1>
-    <p>Tu acompañamiento para bajar de peso, moverte y sostener el proceso.</p><div class="version">Proyecto Lilly · 90 días · v3.0</div>
+    <p>Tu acompañamiento para bajar de peso, moverte y sostener el proceso.</p><div class="version">Proyecto Lilly · 90 días · v3.1</div>
   </div>
 </header>
 
@@ -227,6 +238,42 @@ header .wrap{position:relative;z-index:1}
           <thead><tr><th>Fecha</th><th>Tipo</th><th>Detalle</th><th>Porción</th><th>Prot.</th><th>Carb.</th><th>Grasa</th><th>Kcal</th><th>Estado</th><th></th></tr></thead>
           <tbody id="tablaComidas"></tbody>
         </table></div>
+
+        <hr>
+        <div class="ai-photo-box">
+          <div class="ai-photo-title">
+            <div>
+              <h3 style="margin:0">📸 Analizar comida con IA</h3>
+              <div class="small">Toma una foto o elige una de tu galería. La IA estima alimentos, porciones y macros; tú confirmas antes de registrar.</div>
+            </div>
+          </div>
+          <div class="actions">
+            <label class="primary" style="display:inline-block;cursor:pointer">
+              📷 Tomar / elegir foto
+              <input id="mealPhoto" type="file" accept="image/*" capture="environment" style="display:none">
+            </label>
+            <button class="secondary" type="button" id="btnAnalyzeMeal" disabled>🤖 Analizar foto</button>
+            <button class="secondary" type="button" id="btnClearMealPhoto">Limpiar foto</button>
+          </div>
+          <img id="mealPhotoPreview" class="ai-photo-preview" alt="Vista previa de la comida">
+          <div id="mealAiStatus" class="ai-status"></div>
+          <div id="mealAiResult" class="ai-result">
+            <div id="mealAiSummary"></div>
+            <div class="ai-result-grid">
+              <div class="ai-metric"><span>Calorías</span><b id="aiKcal">—</b></div>
+              <div class="ai-metric"><span>Proteína</span><b id="aiProtein">—</b></div>
+              <div class="ai-metric"><span>Carbos</span><b id="aiCarbs">—</b></div>
+              <div class="ai-metric"><span>Grasa</span><b id="aiFat">—</b></div>
+            </div>
+            <div class="small"><b>Porciones estimadas:</b> <span id="aiPortions">—</span></div>
+            <div class="small" style="margin-top:6px"><b>Confianza:</b> <span id="aiConfidence">—</span></div>
+            <div class="small" style="margin-top:6px"><b>¿Algo que no se ve?</b> aceite, aderezo, salsa, azúcar/bebida u otro ingrediente puede cambiar la estimación.</div>
+            <div class="actions">
+              <button class="primary" type="button" id="btnUseMealAnalysis">✅ Pasar al registro</button>
+              <button class="secondary" type="button" id="btnAnalyzeAgain">🔄 Volver a analizar</button>
+            </div>
+          </div>
+        </div>
 
         <hr>
         <h3>Importar estimación de ChatGPT</h3>
@@ -658,6 +705,111 @@ function maybeNotify(){
 document.getElementById('enableNotifications').onclick=requestNotifications;
 document.getElementById('checkNow').onclick=()=>{renderReminder();alert(currentPrompt());};
 setInterval(maybeNotify,60000);
+
+
+let mealPhotoDataUrl=null;
+let mealAiData=null;
+
+function compressMealImage(file,maxSide=1280,quality=.82){
+  return new Promise((resolve,reject)=>{
+    const reader=new FileReader();
+    reader.onerror=()=>reject(new Error('No se pudo leer la foto.'));
+    reader.onload=()=>{
+      const img=new Image();
+      img.onerror=()=>reject(new Error('No se pudo abrir la imagen.'));
+      img.onload=()=>{
+        let w=img.width,h=img.height;
+        const scale=Math.min(1,maxSide/Math.max(w,h));
+        w=Math.round(w*scale);h=Math.round(h*scale);
+        const canvas=document.createElement('canvas');canvas.width=w;canvas.height=h;
+        canvas.getContext('2d').drawImage(img,0,0,w,h);
+        resolve(canvas.toDataURL('image/jpeg',quality));
+      };
+      img.src=reader.result;
+    };
+    reader.readAsDataURL(file);
+  });
+}
+
+async function chooseMealPhoto(file){
+  if(!file)return;
+  mealAiData=null;
+  mealAiResult.style.display='none';
+  mealAiStatus.textContent='Preparando foto…';
+  try{
+    mealPhotoDataUrl=await compressMealImage(file);
+    mealPhotoPreview.src=mealPhotoDataUrl;
+    mealPhotoPreview.style.display='block';
+    btnAnalyzeMeal.disabled=false;
+    mealAiStatus.textContent='Foto lista. Toca “Analizar foto”.';
+  }catch(e){
+    mealAiStatus.textContent=e.message||'No se pudo preparar la foto.';
+  }
+}
+
+function clearMealPhoto(){
+  mealPhotoDataUrl=null;mealAiData=null;mealPhoto.value='';
+  mealPhotoPreview.removeAttribute('src');mealPhotoPreview.style.display='none';
+  mealAiResult.style.display='none';mealAiStatus.textContent='';
+  btnAnalyzeMeal.disabled=true;
+}
+
+async function analyzeMealPhoto(){
+  if(!mealPhotoDataUrl)return;
+  const {data:{session}}=await sb.auth.getSession();
+  if(!session){
+    mealAiStatus.textContent='Inicia sesión en Cuenta / Nube para usar el análisis con IA.';
+    return;
+  }
+  btnAnalyzeMeal.disabled=true;
+  mealAiStatus.textContent='🤖 Analizando el plato…';
+  try{
+    const resp=await fetch(`${SUPABASE_URL}/functions/v1/analyze-meal`,{
+      method:'POST',
+      headers:{
+        'Content-Type':'application/json',
+        'Authorization':`Bearer ${session.access_token}`,
+        'apikey':SUPABASE_KEY
+      },
+      body:JSON.stringify({image:mealPhotoDataUrl, meal_type:cTipo.value})
+    });
+    const raw=await resp.text();
+    let result={};try{result=JSON.parse(raw)}catch(_){}
+    if(!resp.ok)throw new Error(result.error||raw||`Error ${resp.status}`);
+    mealAiData=result;
+    mealAiSummary.innerHTML=`<b>${esc(result.summary||'Comida analizada')}</b>${result.question?`<div class="small" style="margin-top:6px">💬 ${esc(result.question)}</div>`:''}`;
+    aiKcal.textContent=result.calories!=null?Math.round(result.calories):'—';
+    aiProtein.textContent=result.protein_g!=null?`${Math.round(result.protein_g)} g`:'—';
+    aiCarbs.textContent=result.carbs_g!=null?`${Math.round(result.carbs_g)} g`:'—';
+    aiFat.textContent=result.fat_g!=null?`${Math.round(result.fat_g)} g`:'—';
+    aiPortions.textContent=(result.items||[]).map(x=>`${x.name}${x.portion?' · '+x.portion:''}`).join(' | ')||'—';
+    aiConfidence.textContent=result.confidence||'media';
+    mealAiResult.style.display='block';
+    mealAiStatus.textContent='Estimación lista. Revísala antes de registrarla.';
+  }catch(e){
+    mealAiStatus.textContent='No se pudo analizar: '+(e.message||e);
+  }finally{btnAnalyzeMeal.disabled=false;}
+}
+
+function useMealAnalysis(){
+  if(!mealAiData)return;
+  cDetalle.value=mealAiData.summary||((mealAiData.items||[]).map(x=>x.name).join(', '));
+  cPorcion.value=(mealAiData.items||[]).map(x=>`${x.name}: ${x.portion||'estimada'}`).join(' | ');
+  cProteina.value=mealAiData.protein_g??'';
+  cCarbohidratos.value=mealAiData.carbs_g??'';
+  cGrasa.value=mealAiData.fat_g??'';
+  cCalorias.value=mealAiData.calories??'';
+  const note=`Estimación por IA desde foto${mealAiData.confidence?' · confianza '+mealAiData.confidence:''}${mealAiData.assumptions?.length?' · Supuestos: '+mealAiData.assumptions.join('; '):''}`;
+  cNotas.value=[cNotas.value,note].filter(Boolean).join('\n');
+  document.getElementById('formComida').scrollIntoView({behavior:'smooth',block:'start'});
+  mealAiStatus.textContent='Datos pasados al registro. Puedes corregirlos y luego tocar “Guardar comida”.';
+}
+
+mealPhoto.addEventListener('change',e=>chooseMealPhoto(e.target.files?.[0]));
+btnClearMealPhoto.onclick=clearMealPhoto;
+btnAnalyzeMeal.onclick=analyzeMealPhoto;
+btnAnalyzeAgain.onclick=analyzeMealPhoto;
+btnUseMealAnalysis.onclick=useMealAnalysis;
 
 function aiContext(){const lp=lastMetric('peso'),lc=lastMetric('cintura'),moves=[...db.movimiento].sort((a,b)=>b.fecha.localeCompare(a.fecha)).slice(0,7),meals=[...db.comidas].sort((a,b)=>b.fecha.localeCompare(a.fecha)).slice(0,20);return {fecha:hoy(),objetivo:{peso_actual:lp?.peso??null,peso_meta:db.config.goal,primera_etapa:db.config.stage,cintura:lc?.cintura??null,edad:db.config.age,estatura_cm:db.config.height,meta_calorica:db.config.calories},reglas:{viernes_descanso:true,prioridad:'pérdida de peso real preservando fuerza y adherencia',estrategia:'si no cabe Plan A, proponer Plan B de movimiento',patron:'no permitir declarar victoria tras perder 3–4 kg; sostener hasta la meta',registro_honesto:'preguntar por comidas faltantes sin culpa ni juicio; omitir registro puede ser evitación',comparacion:'no comparar con otras personas; usar tendencia propia y meta personal'},movimiento_reciente:moves,alimentacion_reciente:meals};}
 
