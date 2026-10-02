@@ -52,19 +52,23 @@ hr{border:0;border-top:1px solid var(--line);margin:18px 0}
   body{background:white}.panel{display:none!important}.panel.active{display:block!important}
   .card{box-shadow:none;border-color:#bbb}
 }
+
+/* Proyecto Lilly 90 días v2.0 */
+.version{font-size:.76rem;opacity:.72;margin-top:7px}.heroGoal{background:linear-gradient(135deg,#102a4c,#1d4f8f);color:#fff;border:0}.heroGoal .small{color:#dbe8f7}.progress{height:12px;background:#dfe7f0;border-radius:999px;overflow:hidden;margin:10px 0}.progress>div{height:100%;background:#fff;border-radius:999px}.coach{border-left:5px solid var(--accent);background:#f7faff}.coachText{font-size:1.05rem;line-height:1.55}.choice{background:#edf3fa;color:#173b6c}.rest{background:#eef4fb;border-color:#cbd9ea;color:#173b6c}.minirow{display:flex;gap:8px;flex-wrap:wrap;align-items:center}.minirow>*{flex:1;min-width:130px}.check{display:flex;gap:8px;align-items:center}.check input{width:auto}.pill{display:inline-block;padding:5px 9px;border-radius:999px;background:#e8eef7;margin:2px;font-size:.8rem;font-weight:700}.dangerText{color:#8b3c2c}.goodText{color:#245b9c}
 </style>
 </head>
 <body>
 <header>
   <div class="wrap">
     <h1>Control Salud & Nutrición</h1>
-    <p>Peso, medidas, alimentación y evolución en un solo lugar.</p>
+    <p>Tu acompañamiento para bajar de peso, moverte y sostener el proceso.</p><div class="version">Proyecto Lilly · 90 días · v2.0</div>
   </div>
 </header>
 
 <main class="wrap">
   <div class="tabs noprint">
-    <button class="tab active" data-tab="inicio">Resumen</button>
+    <button class="tab active" data-tab="inicio">Hoy</button>
+    <button class="tab" data-tab="movimiento">Movimiento</button>
     <button class="tab" data-tab="medidas">Peso y medidas</button>
     <button class="tab" data-tab="comidas">Alimentación</button>
     <button class="tab" data-tab="reportes">Reportes</button>
@@ -75,6 +79,11 @@ hr{border:0;border-top:1px solid var(--line);margin:18px 0}
 
   <section id="inicio" class="panel active">
     <div class="grid">
+      <div class="card span12 heroGoal">
+        <div class="small">OBJETIVO ACTUAL</div><div style="display:flex;justify-content:space-between;gap:16px;align-items:end;flex-wrap:wrap"><div><div class="stat" id="goalHeadline">—</div><div id="goalSub" class="small"></div></div><div style="min-width:240px;flex:1;max-width:520px"><div class="progress"><div id="goalBar" style="width:0%"></div></div><div class="small" id="goalProgressText"></div></div></div>
+      </div>
+      <div class="card span8 coach"><h3>💙 Tu acompañamiento de hoy</h3><div id="coachMessage" class="coachText"></div><div class="actions" id="coachActions"></div></div>
+      <div class="card span4"><h3>Movimiento de hoy</h3><div class="minirow"><div><label>Pasos</label><input type="number" id="quickSteps" min="0" step="100" placeholder="Ej. 6500"></div><div><label>Energía 1–5</label><select id="quickEnergy"><option value="">—</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option></select></div></div><div class="actions"><button class="primary" id="quickSave" type="button">Actualizar mi día</button></div><div id="todayMoveStatus" class="small" style="margin-top:8px"></div></div>
       <div class="card span3"><div class="small">Último peso</div><div class="stat" id="kPeso">—</div><div class="small" id="kPesoFecha"></div></div>
       <div class="card span3"><div class="small">Cambio acumulado</div><div class="stat" id="kCambio">—</div><div class="small">desde el primer registro</div></div>
       <div class="card span3"><div class="small">Cintura actual</div><div class="stat" id="kCintura">—</div><div class="small">última medición disponible</div></div>
@@ -90,6 +99,20 @@ hr{border:0;border-top:1px solid var(--line);margin:18px 0}
       <div class="card span12 notice">
         Los datos se guardan en este navegador mediante almacenamiento local. Usa la pestaña <b>Respaldo</b> periódicamente para descargar una copia.
       </div>
+    </div>
+  </section>
+
+
+  <section id="movimiento" class="panel">
+    <div class="grid">
+      <div class="card span4"><h2>Registrar movimiento</h2><form id="formMovimiento"><div class="formgrid">
+        <div class="f6"><label>Fecha</label><input type="date" id="eFecha" required></div><div class="f6"><label>Pasos</label><input type="number" min="0" step="100" id="ePasos"></div>
+        <div class="f6"><label>Actividad</label><select id="eTipo"><option>Sin entrenamiento</option><option>Caminata</option><option>Gimnasio - pesas</option><option>Gimnasio - pesas + cardio</option><option>Bicicleta</option><option>Escaleras / movimiento extra</option><option>Otro</option><option>Descanso</option></select></div>
+        <div class="f6"><label>Minutos</label><input type="number" min="0" step="1" id="eMinutos"></div><div class="f6"><label>Energía (1–5)</label><input type="number" min="1" max="5" id="eEnergia"></div><div class="f6"><label>Esfuerzo (1–10)</label><input type="number" min="1" max="10" id="eEsfuerzo"></div>
+        <div class="f12"><label>¿Cómo estuvo el día?</label><textarea id="eNotas" placeholder="Cansancio, trabajo pesado, lluvia, ganas, dolor, etc."></textarea></div>
+      </div><div class="actions"><button class="primary" type="submit">Guardar movimiento</button><button class="secondary" type="reset">Limpiar</button></div></form></div>
+      <div class="card span8"><h2>Historial de movimiento</h2><div class="tablewrap"><table><thead><tr><th>Fecha</th><th>Pasos</th><th>Actividad</th><th>Min.</th><th>Energía</th><th>Notas</th><th></th></tr></thead><tbody id="tablaMovimiento"></tbody></table></div></div>
+      <div class="card span12"><h3>Regla del programa</h3><p id="movementRule">El objetivo no es hacer un entrenamiento perfecto todos los días. El objetivo es evitar varios días seguidos de inactividad buscando un Plan B realista.</p><div class="notice rest"><b>Viernes:</b> descanso programado. No hay deuda de ejercicio ni obligación de completar pasos.</div></div>
     </div>
   </section>
 
@@ -224,7 +247,7 @@ hr{border:0;border-top:1px solid var(--line);margin:18px 0}
       <div class="card span6">
         <h2>Exportar para Excel</h2>
         <p class="small">Descarga archivos CSV separados para medidas y alimentación.</p>
-        <div class="actions"><button class="secondary" id="exportMedidas">Medidas CSV</button><button class="secondary" id="exportComidas">Comidas CSV</button></div>
+        <div class="actions"><button class="secondary" id="exportMedidas">Medidas CSV</button><button class="secondary" id="exportComidas">Comidas CSV</button><button class="secondary" id="exportMovimiento">Movimiento CSV</button></div>
       </div>
       <div class="card span12">
         <h3>Zona de seguridad</h3>
@@ -261,7 +284,7 @@ hr{border:0;border-top:1px solid var(--line);margin:18px 0}
         <div id="syncStatus" class="notice" style="margin-top:14px">Modo local activo.</div>
       </div>
       <div class="card span6">
-        <h2>Cómo funciona</h2>
+        <h2>Meta personal</h2><div class="formgrid"><div class="f6"><label>Peso meta (kg)</label><input type="number" step="0.1" id="cfgGoal" value="73"></div><div class="f6"><label>Primera etapa (kg)</label><input type="number" step="0.1" id="cfgStage" value="88"></div><div class="f12"><button class="secondary" type="button" id="saveConfig">Guardar meta</button></div></div><hr><h2>Cómo funciona</h2>
         <p class="small">Tus datos siguen guardándose localmente. Cuando inicias sesión, puedes sincronizarlos con las tablas exclusivas de esta app en Supabase.</p>
         <p class="small">La seguridad usa <b>Row Level Security (RLS)</b>: cada usuario solo puede leer y modificar sus propios registros.</p>
       </div>
@@ -274,7 +297,8 @@ hr{border:0;border-top:1px solid var(--line);margin:18px 0}
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.112.3/dist/umd/supabase.min.js"></script>
 <script>
 const DBKEY='saludNutricion_v1';
-let db = JSON.parse(localStorage.getItem(DBKEY) || '{"medidas":[],"comidas":[]}');
+let db = JSON.parse(localStorage.getItem(DBKEY) || '{"medidas":[],"comidas":[],"movimiento":[],"config":{"goal":73,"stage":88}}');
+db.movimiento=db.movimiento||[]; db.config=db.config||{goal:73,stage:88};
 
 const SUPABASE_URL = "https://vgkyoyosjewdygxtnqvu.supabase.co";
 const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZna3lveW9zamV3ZHlneHRucXZ1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODI2NTAxNDAsImV4cCI6MjA5ODIyNjE0MH0.oDxSWg61UFLqMh2MeEW6yxarZAjobhEA6TWm0KS_7CA";
@@ -419,6 +443,7 @@ document.querySelectorAll('.tab').forEach(b=>b.addEventListener('click',()=>{
 document.getElementById('mFecha').value=hoy();
 document.getElementById('cFecha').value=hoy();
 document.getElementById('rFecha').value=hoy();
+document.getElementById('eFecha').value=hoy();
 
 document.getElementById('formMedidas').addEventListener('submit',e=>{
   e.preventDefault();
@@ -511,6 +536,19 @@ document.getElementById('formComida').addEventListener('reset',()=>{
     }
   },0);
 });
+
+
+document.getElementById('formMovimiento').addEventListener('submit',e=>{e.preventDefault();db.movimiento.push({id:uid(),fecha:eFecha.value,pasos:num(ePasos.value),tipo:eTipo.value,minutos:num(eMinutos.value),energia:num(eEnergia.value),esfuerzo:num(eEsfuerzo.value),notas:eNotas.value.trim()});save();e.target.reset();eFecha.value=hoy();});
+window.delMovimiento=id=>{if(confirm('¿Eliminar este registro de movimiento?')){db.movimiento=db.movimiento.filter(x=>x.id!==id);save();}};
+function renderMovimiento(){const arr=[...db.movimiento].sort((a,b)=>b.fecha.localeCompare(a.fecha));tablaMovimiento.innerHTML=arr.map(x=>`<tr><td>${fmtDate(x.fecha)}</td><td>${x.pasos??'—'}</td><td><span class="badge">${esc(x.tipo)}</span></td><td>${x.minutos??'—'}</td><td>${x.energia??'—'}</td><td>${esc(x.notas||'')}</td><td><button class="danger" onclick="delMovimiento('${x.id}')">×</button></td></tr>`).join('')||'<tr><td colspan="7" class="small">Sin registros.</td></tr>';}
+function todayMove(){return [...db.movimiento].filter(x=>x.fecha===hoy()).sort((a,b)=>String(b.id).localeCompare(String(a.id)))[0]||null;}
+function consecutiveInactive(){let n=0,d=new Date();for(let i=0;i<7;i++){const iso=`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;if(d.getDay()===5){d.setDate(d.getDate()-1);continue;}const x=db.movimiento.find(v=>v.fecha===iso);if(x && ((x.minutos||0)>0 || (x.pasos||0)>=7000))break;n++;d.setDate(d.getDate()-1);}return n;}
+function renderCoach(){const d=new Date(),fri=d.getDay()===5,x=todayMove(),steps=x?.pasos||0,energy=x?.energia||null,inactive=consecutiveInactive();let msg='',actions=[];if(fri){msg='<b>Viernes de descanso.</b> Hoy no hay entrenamiento pendiente. Descansá sin culpa; mañana seguimos. 🌙';}else if((x?.minutos||0)>=20 || steps>=8000){msg=`Bien. Hoy ya hay movimiento real${steps?` (${steps.toLocaleString()} pasos)`:''}. No necesito inventarte más trabajo; mantené el día y cerramos bien.`; }else if(inactive>=2){msg=`Llevamos <b>${inactive} días</b> sin suficiente movimiento. Hoy sí quiero que hagamos algo. No tiene que ser perfecto: elegí una opción y rompemos la racha.`;actions=['Caminar 20 min','Gimnasio corto','Bicicleta 20–30 min'];}else if(energy && energy<=2){msg='Veo que la energía está baja. No voy a pedirte una gran sesión, pero tampoco quiero perder el hábito. ¿Me das 10–20 minutos suaves?';actions=['Caminar 15 min','Movilidad + 10 min','Hoy necesito descanso real'];}else{msg='Hoy todavía tenemos margen. La prioridad es movernos de alguna forma que sí quepa en tu día.';actions=['Caminar 20–30 min','Gimnasio / pesas','Bicicleta','Escaleras / movimiento extra'];}coachMessage.innerHTML=msg;coachActions.innerHTML=actions.map(a=>`<button type="button" class="choice" onclick="choosePlan('${a.replaceAll("'","\\'")}')">${a}</button>`).join('');todayMoveStatus.textContent=x?`${steps?steps.toLocaleString()+' pasos · ':''}${x.tipo||''}${x.minutos?` · ${x.minutos} min`:''}`:'Todavía no has actualizado el movimiento de hoy.';quickSteps.value=x?.pasos??'';quickEnergy.value=x?.energia??'';}
+window.choosePlan=a=>{alert('Plan elegido: '+a+'\n\nLa meta de esta versión es ayudarte a decidir y registrar. En la siguiente conexión con IA, este contexto podrá generar seguimiento personalizado.');};
+document.getElementById('quickSave').onclick=()=>{let x=todayMove();if(x){x.pasos=num(quickSteps.value);x.energia=num(quickEnergy.value);}else db.movimiento.push({id:uid(),fecha:hoy(),pasos:num(quickSteps.value),tipo:'Sin entrenamiento',minutos:null,energia:num(quickEnergy.value),esfuerzo:null,notas:''});save();};
+document.getElementById('saveConfig').onclick=()=>{db.config.goal=num(cfgGoal.value)||73;db.config.stage=num(cfgStage.value)||88;save();};
+function renderGoal(){cfgGoal.value=db.config.goal||73;cfgStage.value=db.config.stage||88;const lp=lastMetric('peso'),fp=firstMetric('peso');if(!lp){goalHeadline.textContent='Registrá tu peso para comenzar';goalSub.textContent='La balanza será una medida principal del objetivo.';goalProgressText.textContent='';goalBar.style.width='0%';return;}const start=fp?.peso??lp.peso,goal=db.config.goal||73,stage=db.config.stage||88,lost=start-lp.peso,total=start-goal,pct=total>0?Math.max(0,Math.min(100,lost/total*100)):0;goalHeadline.textContent=`${lp.peso.toFixed(1)} kg → ${goal.toFixed(1)} kg`;goalSub.textContent=`Primera etapa: ${stage.toFixed(1)} kg · faltan ${Math.max(0,lp.peso-stage).toFixed(1)} kg para alcanzarla`;goalProgressText.textContent=`${Math.max(0,lost).toFixed(1)} kg bajados desde el inicio · objetivo total ${Math.max(0,total).toFixed(1)} kg`;goalBar.style.width=pct+'%';}
+function aiContext(){const lp=lastMetric('peso'),lc=lastMetric('cintura'),moves=[...db.movimiento].sort((a,b)=>b.fecha.localeCompare(a.fecha)).slice(0,7),meals=[...db.comidas].sort((a,b)=>b.fecha.localeCompare(a.fecha)).slice(0,20);return {fecha:hoy(),objetivo:{peso_actual:lp?.peso??null,peso_meta:db.config.goal,primera_etapa:db.config.stage,cintura:lc?.cintura??null},reglas:{viernes_descanso:true,prioridad:'pérdida de peso real preservando fuerza y adherencia',estrategia:'si no cabe Plan A, proponer Plan B de movimiento'},movimiento_reciente:moves,alimentacion_reciente:meals};}
 
 window.delMedida=id=>{ if(confirm('¿Eliminar este registro?')){db.medidas=db.medidas.filter(x=>x.id!==id);save();}};
 window.delComida=async id=>{
@@ -647,7 +685,7 @@ function download(name,text,type='text/plain'){
 document.getElementById('exportJson').onclick=()=>download(`respaldo_salud_${hoy()}.json`,JSON.stringify(db,null,2),'application/json');
 document.getElementById('importJson').onchange=async e=>{
   const f=e.target.files[0];if(!f)return;
-  try{const data=JSON.parse(await f.text());if(!Array.isArray(data.medidas)||!Array.isArray(data.comidas))throw new Error();db=data;save();alert('Respaldo restaurado.');}
+  try{const data=JSON.parse(await f.text());if(!Array.isArray(data.medidas)||!Array.isArray(data.comidas))throw new Error();db=data;db.movimiento=db.movimiento||[];db.config=db.config||{goal:73,stage:88};save();alert('Respaldo restaurado.');}
   catch{alert('El archivo no parece ser un respaldo válido.');}
   e.target.value='';
 };
@@ -655,8 +693,9 @@ function csv(rows,cols){
   const q=v=>`"${String(v??'').replaceAll('"','""')}"`; return [cols.map(c=>q(c[0])).join(','),...rows.map(r=>cols.map(c=>q(r[c[1]])).join(','))].join('\n');
 }
 document.getElementById('exportMedidas').onclick=()=>download(`medidas_${hoy()}.csv`,'\ufeff'+csv(db.medidas,[['Fecha','fecha'],['Peso kg','peso'],['Cintura cm','cintura'],['Cadera cm','cadera'],['Muslo cm','muslo'],['Brazo cm','brazo'],['Notas','notas']]),'text/csv;charset=utf-8');
+document.getElementById('exportMovimiento').onclick=()=>download(`movimiento_${hoy()}.csv`,'\ufeff'+csv(db.movimiento,[['Fecha','fecha'],['Pasos','pasos'],['Actividad','tipo'],['Minutos','minutos'],['Energía','energia'],['Esfuerzo','esfuerzo'],['Notas','notas']]),'text/csv;charset=utf-8');
 document.getElementById('exportComidas').onclick=()=>download(`comidas_${hoy()}.csv`,'\ufeff'+csv(db.comidas,[['Fecha','fecha'],['Tipo','tipo'],['Detalle','detalle'],['Porción','porcion'],['Hambre','hambre'],['Agua vasos','agua'],['Proteína g','proteina'],['Carbohidratos g','carbohidratos'],['Grasa g','grasa'],['Calorías','calorias'],['Estado','estado'],['Notas','notas']]),'text/csv;charset=utf-8');
-document.getElementById('borrarTodo').onclick=()=>{if(confirm('¿Seguro? Se eliminarán TODOS los registros de este navegador.')){db={medidas:[],comidas:[]};save();}};
+document.getElementById('borrarTodo').onclick=()=>{if(confirm('¿Seguro? Se eliminarán TODOS los registros de este navegador.')){db={medidas:[],comidas:[],movimiento:[],config:{goal:73,stage:88}};save();}};
 
 function normalizarTipo(s=''){
   return String(s).trim().toLowerCase()
@@ -711,7 +750,7 @@ function ejemploEstimacion(){
 document.getElementById('btnImportEstimacion')?.addEventListener('click',importarEstimacion);
 document.getElementById('btnEjemploEstimacion')?.addEventListener('click',ejemploEstimacion);
 
-function renderAll(){renderMedidas();renderComidas();renderInicio();}
+function renderAll(){renderMedidas();renderComidas();renderMovimiento();renderInicio();renderGoal();renderCoach();}
 
 document.getElementById('btnLogin')?.addEventListener('click',login);
 document.getElementById('btnSignup')?.addEventListener('click',signup);
