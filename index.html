@@ -53,15 +53,41 @@ hr{border:0;border-top:1px solid var(--line);margin:18px 0}
   .card{box-shadow:none;border-color:#bbb}
 }
 
-/* Proyecto Lilly 90 días v2.0 */
+/* Proyecto Lilly 90 días v3.0 */
 .version{font-size:.76rem;opacity:.72;margin-top:7px}.heroGoal{background:linear-gradient(135deg,#102a4c,#1d4f8f);color:#fff;border:0}.heroGoal .small{color:#dbe8f7}.progress{height:12px;background:#dfe7f0;border-radius:999px;overflow:hidden;margin:10px 0}.progress>div{height:100%;background:#fff;border-radius:999px}.coach{border-left:5px solid var(--accent);background:#f7faff}.coachText{font-size:1.05rem;line-height:1.55}.choice{background:#edf3fa;color:#173b6c}.rest{background:#eef4fb;border-color:#cbd9ea;color:#173b6c}.minirow{display:flex;gap:8px;flex-wrap:wrap;align-items:center}.minirow>*{flex:1;min-width:130px}.check{display:flex;gap:8px;align-items:center}.check input{width:auto}.pill{display:inline-block;padding:5px 9px;border-radius:999px;background:#e8eef7;margin:2px;font-size:.8rem;font-weight:700}.dangerText{color:#8b3c2c}.goodText{color:#245b9c}
+
+/* v3.0 · experiencia Lilly */
+body{background:
+ radial-gradient(circle at 8% 5%,rgba(82,157,230,.16),transparent 24%),
+ radial-gradient(circle at 92% 18%,rgba(244,182,93,.15),transparent 22%),
+ linear-gradient(180deg,#f4f8fc 0%,#fbfdff 45%,#f5f8fb 100%)}
+header{position:relative;overflow:hidden;background:linear-gradient(120deg,#0c2748,#174f86 62%,#2877ad)}
+header:after{content:"";position:absolute;width:260px;height:260px;border:44px solid rgba(255,255,255,.08);border-radius:50%;right:-80px;top:-120px}
+header .wrap{position:relative;z-index:1}
+.card{border-radius:18px;box-shadow:0 8px 24px rgba(19,55,91,.07)}
+.heroGoal{position:relative;overflow:hidden;background:linear-gradient(135deg,#102a4c,#245e9d 68%,#3687b9)}
+.heroGoal:after{content:"🌿";position:absolute;right:22px;top:12px;font-size:4rem;opacity:.16;transform:rotate(-12deg)}
+.coach{background:linear-gradient(145deg,#fff,#f1f7ff);border-left:5px solid #3f86c7}
+.dayBudget{background:linear-gradient(145deg,#fff9ef,#fff);border-color:#f0d9ac}
+.kcalRing{width:118px;height:118px;border-radius:50%;display:grid;place-items:center;margin:auto;background:conic-gradient(#2f77b7 var(--pct,0%),#e7edf4 0);position:relative}
+.kcalRing:after{content:"";position:absolute;inset:10px;border-radius:50%;background:#fff}
+.kcalRing .inside{position:relative;z-index:1;text-align:center}.kcalRing b{font-size:1.45rem;color:#173b6c}
+.reminderCard{background:linear-gradient(135deg,#fff,#f5f9ff);border:1px solid #d8e6f4}
+.reminderBubble{padding:12px 14px;border-radius:15px;background:#eaf3fd;margin:8px 0;line-height:1.45}
+.illustration{display:flex;gap:12px;align-items:center;background:linear-gradient(135deg,#f2f8ff,#fff8ed);border:1px solid #e1e9f1;border-radius:18px;padding:15px}
+.illustration .art{font-size:3.2rem;line-height:1}.illustration strong{color:#173b6c}
+.milestones{display:flex;gap:7px;flex-wrap:wrap;margin-top:10px}.milestone{padding:7px 10px;border-radius:999px;background:#eaf1f9;color:#244a79;font-weight:800;font-size:.8rem}.milestone.current{background:#173b6c;color:white}
+.truth{border-left:5px solid #e3a84c;background:#fffaf0}
+.notificationDot{display:inline-block;width:9px;height:9px;border-radius:50%;background:#d0d8e2;margin-right:6px}.notificationDot.on{background:#4d9a66}
+@media(max-width:700px){.heroGoal:after{display:none}.kcalRing{width:105px;height:105px}}
+
 </style>
 </head>
 <body>
 <header>
   <div class="wrap">
     <h1>Control Salud & Nutrición</h1>
-    <p>Tu acompañamiento para bajar de peso, moverte y sostener el proceso.</p><div class="version">Proyecto Lilly · 90 días · v2.0</div>
+    <p>Tu acompañamiento para bajar de peso, moverte y sostener el proceso.</p><div class="version">Proyecto Lilly · 90 días · v3.0</div>
   </div>
 </header>
 
@@ -84,6 +110,24 @@ hr{border:0;border-top:1px solid var(--line);margin:18px 0}
       </div>
       <div class="card span8 coach"><h3>💙 Tu acompañamiento de hoy</h3><div id="coachMessage" class="coachText"></div><div class="actions" id="coachActions"></div></div>
       <div class="card span4"><h3>Movimiento de hoy</h3><div class="minirow"><div><label>Pasos</label><input type="number" id="quickSteps" min="0" step="100" placeholder="Ej. 6500"></div><div><label>Energía 1–5</label><select id="quickEnergy"><option value="">—</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option></select></div></div><div class="actions"><button class="primary" id="quickSave" type="button">Actualizar mi día</button></div><div id="todayMoveStatus" class="small" style="margin-top:8px"></div></div>
+      <div class="card span6 dayBudget">
+        <h3>🍽️ Presupuesto de hoy</h3>
+        <div style="display:grid;grid-template-columns:130px 1fr;gap:18px;align-items:center">
+          <div class="kcalRing" id="kcalRing"><div class="inside"><b id="kcalRemaining">—</b><div class="small">restantes</div></div></div>
+          <div><div class="small">Meta diaria</div><div class="stat" id="kcalTarget">1.600</div>
+          <div style="margin-top:7px">Consumidas registradas: <b id="kcalConsumed">0 kcal</b></div>
+          <div>Proteína registrada: <b id="proteinToday">0 g</b></div>
+          <div id="foodCompleteness" class="small" style="margin-top:7px"></div></div>
+        </div>
+      </div>
+      <div class="card span6 reminderCard">
+        <h3>🔔 Lilly, no te me escondás 😄</h3>
+        <div id="reminderStatus" class="reminderBubble">Revisando cómo vamos hoy…</div>
+        <div class="actions"><button class="primary" type="button" id="enableNotifications">Activar notificaciones</button><button class="secondary" type="button" id="checkNow">Revisar mi día ahora</button></div>
+        <div class="small" style="margin-top:8px"><span id="notifDot" class="notificationDot"></span><span id="notifState">Notificaciones del navegador sin activar.</span></div>
+      </div>
+      <div class="card span12 illustration"><div class="art">👟🥗💪🐾</div><div><strong>Destino: Lilly a los 60</strong><div class="small">Más ligera, fuerte, con energía y sin cargar “un Bruno” extra. Verse regia no cancela la meta. Los datos mandan; la culpa no.</div><div class="milestones"><span class="milestone">93</span><span class="milestone">89</span><span class="milestone">85</span><span class="milestone">80</span><span class="milestone">77</span><span class="milestone">75 kg 🎯</span></div></div></div>
+
       <div class="card span3"><div class="small">Último peso</div><div class="stat" id="kPeso">—</div><div class="small" id="kPesoFecha"></div></div>
       <div class="card span3"><div class="small">Cambio acumulado</div><div class="stat" id="kCambio">—</div><div class="small">desde el primer registro</div></div>
       <div class="card span3"><div class="small">Cintura actual</div><div class="stat" id="kCintura">—</div><div class="small">última medición disponible</div></div>
@@ -96,6 +140,7 @@ hr{border:0;border-top:1px solid var(--line);margin:18px 0}
         <h3>Esta semana</h3>
         <div id="semanaResumen" class="small">Todavía no hay datos suficientes.</div>
       </div>
+      <div class="card span12 truth"><h3>🧭 Regla de oro</h3><div id="truthMessage">No nos comparamos con otras personas ni declaramos victoria porque 3–4 kg ya se noten. Si algo no se registró, lo preguntamos. Si hubo hamburguesa y papas, también se registran: <b>el dato nunca es una falta.</b></div></div>
       <div class="card span12 notice">
         Los datos se guardan en este navegador mediante almacenamiento local. Usa la pestaña <b>Respaldo</b> periódicamente para descargar una copia.
       </div>
@@ -284,7 +329,14 @@ hr{border:0;border-top:1px solid var(--line);margin:18px 0}
         <div id="syncStatus" class="notice" style="margin-top:14px">Modo local activo.</div>
       </div>
       <div class="card span6">
-        <h2>Meta personal</h2><div class="formgrid"><div class="f6"><label>Peso meta (kg)</label><input type="number" step="0.1" id="cfgGoal" value="73"></div><div class="f6"><label>Primera etapa (kg)</label><input type="number" step="0.1" id="cfgStage" value="88"></div><div class="f12"><button class="secondary" type="button" id="saveConfig">Guardar meta</button></div></div><hr><h2>Cómo funciona</h2>
+        <h2>Perfil y meta personal</h2><div class="formgrid">
+<div class="f4"><label>Edad</label><input type="number" id="cfgAge" value="58"></div>
+<div class="f4"><label>Estatura (cm)</label><input type="number" id="cfgHeight" value="168"></div>
+<div class="f4"><label>Meta calórica diaria</label><input type="number" id="cfgCalories" value="1600"></div>
+<div class="f6"><label>Peso meta (kg)</label><input type="number" step="0.1" id="cfgGoal" value="75"></div>
+<div class="f6"><label>Primera etapa (kg)</label><input type="number" step="0.1" id="cfgStage" value="89"></div>
+<div class="f12"><button class="secondary" type="button" id="saveConfig">Guardar perfil y meta</button></div></div>
+<hr><h3>Recordatorios</h3><p class="small">Desayuno 11:00 · Almuerzo 16:00 · Cena 20:30 · Movimiento 21:30. Los viernes no se persigue ejercicio.</p><hr><h2>Cómo funciona</h2>
         <p class="small">Tus datos siguen guardándose localmente. Cuando inicias sesión, puedes sincronizarlos con las tablas exclusivas de esta app en Supabase.</p>
         <p class="small">La seguridad usa <b>Row Level Security (RLS)</b>: cada usuario solo puede leer y modificar sus propios registros.</p>
       </div>
@@ -297,8 +349,11 @@ hr{border:0;border-top:1px solid var(--line);margin:18px 0}
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.112.3/dist/umd/supabase.min.js"></script>
 <script>
 const DBKEY='saludNutricion_v1';
-let db = JSON.parse(localStorage.getItem(DBKEY) || '{"medidas":[],"comidas":[],"movimiento":[],"config":{"goal":73,"stage":88}}');
-db.movimiento=db.movimiento||[]; db.config=db.config||{goal:73,stage:88};
+let db = JSON.parse(localStorage.getItem(DBKEY) || '{"medidas":[],"comidas":[],"movimiento":[],"config":{"goal":75,"stage":89,"age":58,"height":168,"calories":1600}}');
+db.movimiento=db.movimiento||[]; db.config=db.config||{};
+if(!db.config.v3Migrated){db.config.goal=75;db.config.stage=89;db.config.age=db.config.age||58;db.config.height=db.config.height||168;db.config.calories=1600;db.config.v3Migrated=true;}
+db.config.goal=db.config.goal||75; db.config.stage=db.config.stage||89; db.config.age=db.config.age||58; db.config.height=db.config.height||168; db.config.calories=db.config.calories||1600;
+db.reminders=db.reminders||{};
 
 const SUPABASE_URL = "https://vgkyoyosjewdygxtnqvu.supabase.co";
 const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZna3lveW9zamV3ZHlneHRucXZ1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODI2NTAxNDAsImV4cCI6MjA5ODIyNjE0MH0.oDxSWg61UFLqMh2MeEW6yxarZAjobhEA6TWm0KS_7CA";
@@ -546,9 +601,65 @@ function consecutiveInactive(){let n=0,d=new Date();for(let i=0;i<7;i++){const i
 function renderCoach(){const d=new Date(),fri=d.getDay()===5,x=todayMove(),steps=x?.pasos||0,energy=x?.energia||null,inactive=consecutiveInactive();let msg='',actions=[];if(fri){msg='<b>Viernes de descanso.</b> Hoy no hay entrenamiento pendiente. Descansá sin culpa; mañana seguimos. 🌙';}else if((x?.minutos||0)>=20 || steps>=8000){msg=`Bien. Hoy ya hay movimiento real${steps?` (${steps.toLocaleString()} pasos)`:''}. No necesito inventarte más trabajo; mantené el día y cerramos bien.`; }else if(inactive>=2){msg=`Llevamos <b>${inactive} días</b> sin suficiente movimiento. Hoy sí quiero que hagamos algo. No tiene que ser perfecto: elegí una opción y rompemos la racha.`;actions=['Caminar 20 min','Gimnasio corto','Bicicleta 20–30 min'];}else if(energy && energy<=2){msg='Veo que la energía está baja. No voy a pedirte una gran sesión, pero tampoco quiero perder el hábito. ¿Me das 10–20 minutos suaves?';actions=['Caminar 15 min','Movilidad + 10 min','Hoy necesito descanso real'];}else{msg='Hoy todavía tenemos margen. La prioridad es movernos de alguna forma que sí quepa en tu día.';actions=['Caminar 20–30 min','Gimnasio / pesas','Bicicleta','Escaleras / movimiento extra'];}coachMessage.innerHTML=msg;coachActions.innerHTML=actions.map(a=>`<button type="button" class="choice" onclick="choosePlan('${a.replaceAll("'","\\'")}')">${a}</button>`).join('');todayMoveStatus.textContent=x?`${steps?steps.toLocaleString()+' pasos · ':''}${x.tipo||''}${x.minutos?` · ${x.minutos} min`:''}`:'Todavía no has actualizado el movimiento de hoy.';quickSteps.value=x?.pasos??'';quickEnergy.value=x?.energia??'';}
 window.choosePlan=a=>{alert('Plan elegido: '+a+'\n\nLa meta de esta versión es ayudarte a decidir y registrar. En la siguiente conexión con IA, este contexto podrá generar seguimiento personalizado.');};
 document.getElementById('quickSave').onclick=()=>{let x=todayMove();if(x){x.pasos=num(quickSteps.value);x.energia=num(quickEnergy.value);}else db.movimiento.push({id:uid(),fecha:hoy(),pasos:num(quickSteps.value),tipo:'Sin entrenamiento',minutos:null,energia:num(quickEnergy.value),esfuerzo:null,notas:''});save();};
-document.getElementById('saveConfig').onclick=()=>{db.config.goal=num(cfgGoal.value)||73;db.config.stage=num(cfgStage.value)||88;save();};
-function renderGoal(){cfgGoal.value=db.config.goal||73;cfgStage.value=db.config.stage||88;const lp=lastMetric('peso'),fp=firstMetric('peso');if(!lp){goalHeadline.textContent='Registrá tu peso para comenzar';goalSub.textContent='La balanza será una medida principal del objetivo.';goalProgressText.textContent='';goalBar.style.width='0%';return;}const start=fp?.peso??lp.peso,goal=db.config.goal||73,stage=db.config.stage||88,lost=start-lp.peso,total=start-goal,pct=total>0?Math.max(0,Math.min(100,lost/total*100)):0;goalHeadline.textContent=`${lp.peso.toFixed(1)} kg → ${goal.toFixed(1)} kg`;goalSub.textContent=`Primera etapa: ${stage.toFixed(1)} kg · faltan ${Math.max(0,lp.peso-stage).toFixed(1)} kg para alcanzarla`;goalProgressText.textContent=`${Math.max(0,lost).toFixed(1)} kg bajados desde el inicio · objetivo total ${Math.max(0,total).toFixed(1)} kg`;goalBar.style.width=pct+'%';}
-function aiContext(){const lp=lastMetric('peso'),lc=lastMetric('cintura'),moves=[...db.movimiento].sort((a,b)=>b.fecha.localeCompare(a.fecha)).slice(0,7),meals=[...db.comidas].sort((a,b)=>b.fecha.localeCompare(a.fecha)).slice(0,20);return {fecha:hoy(),objetivo:{peso_actual:lp?.peso??null,peso_meta:db.config.goal,primera_etapa:db.config.stage,cintura:lc?.cintura??null},reglas:{viernes_descanso:true,prioridad:'pérdida de peso real preservando fuerza y adherencia',estrategia:'si no cabe Plan A, proponer Plan B de movimiento'},movimiento_reciente:moves,alimentacion_reciente:meals};}
+document.getElementById('saveConfig').onclick=()=>{db.config.goal=num(cfgGoal.value)||75;db.config.stage=num(cfgStage.value)||89;db.config.age=num(cfgAge.value)||58;db.config.height=num(cfgHeight.value)||168;db.config.calories=num(cfgCalories.value)||1600;save();};
+function renderGoal(){cfgGoal.value=db.config.goal||75;cfgStage.value=db.config.stage||89;cfgAge.value=db.config.age||58;cfgHeight.value=db.config.height||168;cfgCalories.value=db.config.calories||1600;const lp=lastMetric('peso'),fp=firstMetric('peso');if(!lp){goalHeadline.textContent='Registrá tu peso para comenzar';goalSub.textContent='La balanza será una medida principal del objetivo.';goalProgressText.textContent='';goalBar.style.width='0%';return;}const start=fp?.peso??lp.peso,goal=db.config.goal||75,stage=db.config.stage||89,lost=start-lp.peso,total=start-goal,pct=total>0?Math.max(0,Math.min(100,lost/total*100)):0;goalHeadline.textContent=`${lp.peso.toFixed(1)} kg → ${goal.toFixed(1)} kg`;goalSub.textContent=`Primera etapa: ${stage.toFixed(1)} kg · faltan ${Math.max(0,lp.peso-stage).toFixed(1)} kg para alcanzarla`;goalProgressText.textContent=`${Math.max(0,lost).toFixed(1)} kg bajados desde el inicio · objetivo total ${Math.max(0,total).toFixed(1)} kg`;goalBar.style.width=pct+'%';}
+
+function todayMeals(){return db.comidas.filter(x=>x.fecha===hoy());}
+function mealExists(type){return todayMeals().some(x=>String(x.tipo||'').toLowerCase()===type.toLowerCase());}
+function renderBudget(){
+  const meals=todayMeals(), consumed=meals.reduce((s,x)=>s+(Number(x.calorias)||0),0), prot=meals.reduce((s,x)=>s+(Number(x.proteina)||0),0);
+  const target=Number(db.config.calories)||1600, remaining=target-consumed, pct=Math.max(0,Math.min(100,consumed/target*100));
+  kcalTarget.textContent=target.toLocaleString('es-CR')+' kcal'; kcalConsumed.textContent=Math.round(consumed).toLocaleString('es-CR')+' kcal';
+  kcalRemaining.textContent=(remaining>=0?'':'−')+Math.abs(Math.round(remaining)).toLocaleString('es-CR')+' kcal';
+  proteinToday.textContent=Math.round(prot)+' g'; kcalRing.style.setProperty('--pct',pct+'%');
+  const missing=meals.filter(x=>x.calorias==null).length;
+  foodCompleteness.innerHTML=missing?`⚠️ Hay <b>${missing}</b> registro(s) de hoy sin calorías estimadas; el restante puede no ser real.`:
+    (meals.length?'✓ Todo lo registrado hoy tiene calorías.':'Todavía no hay comidas registradas hoy.');
+}
+function minutesNow(){const d=new Date();return d.getHours()*60+d.getMinutes();}
+function currentPrompt(){
+  const d=new Date(), min=minutesNow(), fri=d.getDay()===5, msgs=[];
+  if(min>=11*60 && !mealExists('Desayuno')) msgs.push('Hola Lili 💙, ya son más de las 11 y no veo desayuno. ¿No desayunaste o todavía no lo registraste? Sea lo que sea, lo anotamos sin juicio.');
+  if(min>=16*60 && !mealExists('Almuerzo')) msgs.push('Lili 👀, ¿qué almorzamos hoy? No veo almuerzo registrado. Si fue hamburguesa y papas, también cuentan: prefiero el dato verdadero a un día “perfecto” incompleto.');
+  if(min>=20*60+30 && !mealExists('Cena')) msgs.push('Lili 🌙, ¿no cenaste nada o se nos quedó la cena sin registrar? Contame qué hubo y cerramos el día completo.');
+  const mv=todayMove();
+  if(!fri && min>=21*60+30 && !(mv && ((mv.minutos||0)>=10 || (mv.pasos||0)>=7000))) msgs.push('Todavía no veo movimiento suficiente hoy. ¿Caminaste, te moviste bastante o hacemos un Plan B de 10–20 minutos?');
+  if(fri && min>=21*60) msgs.push('Hoy es viernes: descanso real. Nada de deuda de ejercicio. 💙');
+  return msgs.length?msgs[msgs.length-1]:'Vamos bien por ahora. Yo sigo pendiente de los registros de hoy. 💙';
+}
+function renderReminder(){reminderStatus.textContent=currentPrompt();updateNotifUI();}
+function updateNotifUI(){
+  if(!('Notification' in window)){notifState.textContent='Este navegador no admite notificaciones web.';enableNotifications.style.display='none';return}
+  const on=Notification.permission==='granted';notifDot.classList.toggle('on',on);
+  notifState.textContent=on?'Notificaciones del navegador activadas.':'Tocá “Activar notificaciones” para dar permiso.';
+  enableNotifications.textContent=on?'Notificaciones activadas ✓':'Activar notificaciones';
+}
+async function requestNotifications(){
+  if(!('Notification' in window)){alert('Este navegador no admite notificaciones web.');return}
+  const p=await Notification.requestPermission(); updateNotifUI();
+  if(p==='granted') new Notification('Proyecto Lilly 💙',{body:'Listo. Te voy a recordar tus registros cuando la app esté abierta o activa.'});
+}
+function maybeNotify(){
+  renderReminder();
+  if(!('Notification' in window)||Notification.permission!=='granted') return;
+  const d=new Date(), min=minutesNow(), fri=d.getDay()===5;
+  const slots=[
+    ['desayuno',11*60,()=>!mealExists('Desayuno'),'Lili, ¿y el desayuno?','No veo desayuno registrado. ¿Qué comimos hoy?'],
+    ['almuerzo',16*60,()=>!mealExists('Almuerzo'),'Lili, ¿qué almorzamos?','No veo el almuerzo. Aunque no haya sido perfecto, lo registramos 💙'],
+    ['cena',20*60+30,()=>!mealExists('Cena'),'¿Y la cena, Lili?','No veo cena registrada. Cerremos el día con datos reales.'],
+    ['movimiento',21*60+30,()=>!fri && !todayMove(),'¿Nos movimos hoy?','Si no hubo gimnasio, todavía puede existir un Plan B corto.']
+  ];
+  for(const [key,t,cond,title,body] of slots){
+    if(min>=t && min<t+120 && cond() && db.reminders[key]!==hoy()){
+      try{new Notification(title,{body});db.reminders[key]=hoy();localStorage.setItem(DBKEY,JSON.stringify(db));}catch(e){}
+    }
+  }
+}
+document.getElementById('enableNotifications').onclick=requestNotifications;
+document.getElementById('checkNow').onclick=()=>{renderReminder();alert(currentPrompt());};
+setInterval(maybeNotify,60000);
+
+function aiContext(){const lp=lastMetric('peso'),lc=lastMetric('cintura'),moves=[...db.movimiento].sort((a,b)=>b.fecha.localeCompare(a.fecha)).slice(0,7),meals=[...db.comidas].sort((a,b)=>b.fecha.localeCompare(a.fecha)).slice(0,20);return {fecha:hoy(),objetivo:{peso_actual:lp?.peso??null,peso_meta:db.config.goal,primera_etapa:db.config.stage,cintura:lc?.cintura??null,edad:db.config.age,estatura_cm:db.config.height,meta_calorica:db.config.calories},reglas:{viernes_descanso:true,prioridad:'pérdida de peso real preservando fuerza y adherencia',estrategia:'si no cabe Plan A, proponer Plan B de movimiento',patron:'no permitir declarar victoria tras perder 3–4 kg; sostener hasta la meta',registro_honesto:'preguntar por comidas faltantes sin culpa ni juicio; omitir registro puede ser evitación',comparacion:'no comparar con otras personas; usar tendencia propia y meta personal'},movimiento_reciente:moves,alimentacion_reciente:meals};}
 
 window.delMedida=id=>{ if(confirm('¿Eliminar este registro?')){db.medidas=db.medidas.filter(x=>x.id!==id);save();}};
 window.delComida=async id=>{
@@ -685,7 +796,7 @@ function download(name,text,type='text/plain'){
 document.getElementById('exportJson').onclick=()=>download(`respaldo_salud_${hoy()}.json`,JSON.stringify(db,null,2),'application/json');
 document.getElementById('importJson').onchange=async e=>{
   const f=e.target.files[0];if(!f)return;
-  try{const data=JSON.parse(await f.text());if(!Array.isArray(data.medidas)||!Array.isArray(data.comidas))throw new Error();db=data;db.movimiento=db.movimiento||[];db.config=db.config||{goal:73,stage:88};save();alert('Respaldo restaurado.');}
+  try{const data=JSON.parse(await f.text());if(!Array.isArray(data.medidas)||!Array.isArray(data.comidas))throw new Error();db=data;db.movimiento=db.movimiento||[];db.config=db.config||{goal:75,stage:89,age:58,height:168,calories:1600};save();alert('Respaldo restaurado.');}
   catch{alert('El archivo no parece ser un respaldo válido.');}
   e.target.value='';
 };
@@ -695,7 +806,7 @@ function csv(rows,cols){
 document.getElementById('exportMedidas').onclick=()=>download(`medidas_${hoy()}.csv`,'\ufeff'+csv(db.medidas,[['Fecha','fecha'],['Peso kg','peso'],['Cintura cm','cintura'],['Cadera cm','cadera'],['Muslo cm','muslo'],['Brazo cm','brazo'],['Notas','notas']]),'text/csv;charset=utf-8');
 document.getElementById('exportMovimiento').onclick=()=>download(`movimiento_${hoy()}.csv`,'\ufeff'+csv(db.movimiento,[['Fecha','fecha'],['Pasos','pasos'],['Actividad','tipo'],['Minutos','minutos'],['Energía','energia'],['Esfuerzo','esfuerzo'],['Notas','notas']]),'text/csv;charset=utf-8');
 document.getElementById('exportComidas').onclick=()=>download(`comidas_${hoy()}.csv`,'\ufeff'+csv(db.comidas,[['Fecha','fecha'],['Tipo','tipo'],['Detalle','detalle'],['Porción','porcion'],['Hambre','hambre'],['Agua vasos','agua'],['Proteína g','proteina'],['Carbohidratos g','carbohidratos'],['Grasa g','grasa'],['Calorías','calorias'],['Estado','estado'],['Notas','notas']]),'text/csv;charset=utf-8');
-document.getElementById('borrarTodo').onclick=()=>{if(confirm('¿Seguro? Se eliminarán TODOS los registros de este navegador.')){db={medidas:[],comidas:[],movimiento:[],config:{goal:73,stage:88}};save();}};
+document.getElementById('borrarTodo').onclick=()=>{if(confirm('¿Seguro? Se eliminarán TODOS los registros de este navegador.')){db={medidas:[],comidas:[],movimiento:[],config:{goal:75,stage:89,age:58,height:168,calories:1600},reminders:{}};save();}};
 
 function normalizarTipo(s=''){
   return String(s).trim().toLowerCase()
@@ -750,7 +861,7 @@ function ejemploEstimacion(){
 document.getElementById('btnImportEstimacion')?.addEventListener('click',importarEstimacion);
 document.getElementById('btnEjemploEstimacion')?.addEventListener('click',ejemploEstimacion);
 
-function renderAll(){renderMedidas();renderComidas();renderMovimiento();renderInicio();renderGoal();renderCoach();}
+function renderAll(){renderMedidas();renderComidas();renderMovimiento();renderInicio();renderGoal();renderCoach();renderBudget();renderReminder();}
 
 document.getElementById('btnLogin')?.addEventListener('click',login);
 document.getElementById('btnSignup')?.addEventListener('click',signup);
