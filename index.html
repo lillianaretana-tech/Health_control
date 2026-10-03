@@ -75,10 +75,10 @@ hr{border:0;border-top:1px solid var(--line);margin:18px 0}
   .card{box-shadow:none;border-color:#bbb}
 }
 
-/* Proyecto Lilly 90 días v3.2 */
+/* Proyecto Lilly 90 días v3.3 */
 .version{font-size:.76rem;opacity:.72;margin-top:7px}.heroGoal{background:linear-gradient(135deg,#102a4c,#1d4f8f);color:#fff;border:0}.heroGoal .small{color:#dbe8f7}.progress{height:12px;background:#dfe7f0;border-radius:999px;overflow:hidden;margin:10px 0}.progress>div{height:100%;background:#fff;border-radius:999px}.coach{border-left:5px solid var(--accent);background:#f7faff}.coachText{font-size:1.05rem;line-height:1.55}.choice{background:#edf3fa;color:#173b6c}.rest{background:#eef4fb;border-color:#cbd9ea;color:#173b6c}.minirow{display:flex;gap:8px;flex-wrap:wrap;align-items:center}.minirow>*{flex:1;min-width:130px}.check{display:flex;gap:8px;align-items:center}.check input{width:auto}.pill{display:inline-block;padding:5px 9px;border-radius:999px;background:#e8eef7;margin:2px;font-size:.8rem;font-weight:700}.dangerText{color:#8b3c2c}.goodText{color:#245b9c}
 
-/* v3.2 · foto + IA */
+/* v3.3 · IA corregible + varias fotos + meta semanal */
 body{background:
  radial-gradient(circle at 8% 5%,rgba(82,157,230,.16),transparent 24%),
  radial-gradient(circle at 92% 18%,rgba(244,182,93,.15),transparent 22%),
@@ -109,7 +109,7 @@ header .wrap{position:relative;z-index:1}
 <header>
   <div class="wrap">
     <h1>Control Salud & Nutrición</h1>
-    <p>Tu acompañamiento para bajar de peso, moverte y sostener el proceso.</p><div class="version">Proyecto Lilly · 90 días · v3.2</div>
+    <p>Tu acompañamiento para bajar de peso, moverte y sostener el proceso.</p><div class="version">Proyecto Lilly · 90 días · v3.3</div>
   </div>
 </header>
 
@@ -136,7 +136,7 @@ header .wrap{position:relative;z-index:1}
         <div class="small">OBJETIVO ACTUAL</div><div style="display:flex;justify-content:space-between;gap:16px;align-items:end;flex-wrap:wrap"><div><div class="stat" id="goalHeadline">—</div><div id="goalSub" class="small"></div></div><div style="min-width:240px;flex:1;max-width:520px"><div class="progress"><div id="goalBar" style="width:0%"></div></div><div class="small" id="goalProgressText"></div></div></div>
       </div>
       <div class="card span8 coach"><h3>💙 Tu acompañamiento de hoy</h3><div id="coachMessage" class="coachText"></div><div class="actions" id="coachActions"></div></div>
-      <div class="card span4"><h3>Movimiento de hoy</h3><div class="minirow"><div><label>Pasos</label><input type="number" id="quickSteps" min="0" step="100" placeholder="Ej. 6500"></div><div><label>Energía 1–5</label><select id="quickEnergy"><option value="">—</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option></select></div></div><div class="actions"><button class="primary" id="quickSave" type="button">Actualizar mi día</button></div><div id="todayMoveStatus" class="small" style="margin-top:8px"></div></div>
+      <div class="card span4"><h3>Movimiento de hoy</h3><div class="minirow"><div><label>Pasos</label><input type="number" id="quickSteps" min="0" step="100" placeholder="Ej. 6500"></div><div><label>¿Cómo estuvo mi energía hoy? (1–5)</label><select id="quickEnergy"><option value="">—</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option></select></div></div><div class="actions"><button class="primary" id="quickSave" type="button">Actualizar mi día</button></div><div id="todayMoveStatus" class="small" style="margin-top:8px"></div></div>
       <div class="card span6 dayBudget">
         <h3>🍽️ Presupuesto de hoy</h3>
         <div style="display:grid;grid-template-columns:130px 1fr;gap:18px;align-items:center">
@@ -177,10 +177,20 @@ header .wrap{position:relative;z-index:1}
 
   <section id="movimiento" class="panel">
     <div class="grid">
+      <div class="card span12" id="weeklyMovementCard">
+        <h2>🏃‍♀️ Mi movimiento de la semana</h2>
+        <div class="small">Los días son flexibles. Sugerencia para fuerza: lunes · miércoles · sábado. Si un día no se puede, se mueve; no se pierde.</div>
+        <div class="ai-result-grid" style="margin-top:12px">
+          <div class="ai-metric"><span>🏋️ Fuerza cuerpo completo</span><b id="weekStrength">0 / 3</b></div>
+          <div class="ai-metric"><span>❤️ Cardio</span><b id="weekCardio">0 / 180 min</b></div>
+        </div>
+        <div class="small" id="weekMovementMessage" style="margin-top:10px"></div>
+        <div class="notice rest" style="margin-top:10px"><b>Viernes:</b> descanso programado. Lo que no se hizo esta semana no se convierte en deuda para la siguiente.</div>
+      </div>
       <div class="card span4"><h2>Registrar movimiento</h2><form id="formMovimiento"><div class="formgrid">
         <div class="f6"><label>Fecha</label><input type="date" id="eFecha" required></div><div class="f6"><label>Pasos</label><input type="number" min="0" step="100" id="ePasos"></div>
-        <div class="f6"><label>Actividad</label><select id="eTipo"><option>Sin entrenamiento</option><option>Caminata</option><option>Gimnasio - pesas</option><option>Gimnasio - pesas + cardio</option><option>Bicicleta</option><option>Escaleras / movimiento extra</option><option>Otro</option><option>Descanso</option></select></div>
-        <div class="f6"><label>Minutos</label><input type="number" min="0" step="1" id="eMinutos"></div><div class="f6"><label>Energía (1–5)</label><input type="number" min="1" max="5" id="eEnergia"></div><div class="f6"><label>Esfuerzo (1–10)</label><input type="number" min="1" max="10" id="eEsfuerzo"></div>
+        <div class="f6"><label>Actividad</label><select id="eTipo"><option>Sin entrenamiento</option><option>Caminata</option><option>Trote</option><option>Fuerza cuerpo completo</option><option>Gimnasio - pesas</option><option>Gimnasio - pesas + cardio</option><option>Bicicleta</option><option>Escaleras / movimiento extra</option><option>Otro</option><option>Descanso</option></select></div>
+        <div class="f6"><label>Minutos</label><input type="number" min="0" step="1" id="eMinutos"></div><div class="f6"><label>¿Cómo estuvo mi energía hoy? (1–5)</label><input type="number" min="1" max="5" id="eEnergia"></div><div class="f6"><label>Esfuerzo (1–10)</label><input type="number" min="1" max="10" id="eEsfuerzo"></div>
         <div class="f12"><label>¿Cómo estuvo el día?</label><textarea id="eNotas" placeholder="Cansancio, trabajo pesado, lluvia, ganas, dolor, etc."></textarea></div>
       </div><div class="actions"><button class="primary" type="submit">Guardar movimiento</button><button class="secondary" type="reset">Limpiar</button></div></form></div>
       <div class="card span8"><h2>Historial de movimiento</h2><div class="tablewrap"><table><thead><tr><th>Fecha</th><th>Pasos</th><th>Actividad</th><th>Min.</th><th>Energía</th><th>Notas</th><th></th></tr></thead><tbody id="tablaMovimiento"></tbody></table></div></div>
@@ -260,18 +270,24 @@ header .wrap{position:relative;z-index:1}
           <div class="ai-photo-title">
             <div>
               <h3 style="margin:0">📸 Analizar comida con IA</h3>
-              <div class="small">Toma una foto o elige una de tu galería. La IA estima alimentos, porciones y macros; tú confirmas antes de registrar.</div>
+              <div class="small">Puedes agregar hasta 3 fotos de la misma comida: plato completo, detalle, empaque o etiqueta. La IA las analiza juntas y tú confirmas antes de registrar.</div>
             </div>
           </div>
           <div class="actions">
             <label class="primary" style="display:inline-block;cursor:pointer">
-              📷 Tomar / elegir foto
+              📷 Agregar foto
               <input id="mealPhoto" type="file" accept="image/*" capture="environment" style="display:none">
             </label>
             <button class="secondary" type="button" id="btnAnalyzeMeal" disabled>🤖 Analizar foto</button>
             <button class="secondary" type="button" id="btnClearMealPhoto">Limpiar foto</button>
           </div>
-          <img id="mealPhotoPreview" class="ai-photo-preview" alt="Vista previa de la comida">
+          <div id="mealPhotoGallery" style="display:flex;gap:8px;flex-wrap:wrap;margin-top:10px"></div>
+          <img id="mealPhotoPreview" class="ai-photo-preview" alt="Vista previa de la comida" style="display:none">
+          <div class="small" id="mealPhotoCount" style="margin-top:6px">0 / 3 fotos</div>
+          <div style="margin-top:12px">
+            <label>✏️ Corrección o dato que la foto no puede saber</label>
+            <textarea id="mealCorrection" placeholder="Ej.: Es chayote, no papa. Son 2 huevos. El pan tiene Numar Light. No hay pepino ni zucchini."></textarea>
+          </div>
           <div id="mealAiStatus" class="ai-status"></div>
           <div id="mealAiResult" class="ai-result">
             <div id="mealAiSummary"></div>
@@ -286,7 +302,7 @@ header .wrap{position:relative;z-index:1}
             <div class="small" style="margin-top:6px"><b>¿Algo que no se ve?</b> aceite, aderezo, salsa, azúcar/bebida u otro ingrediente puede cambiar la estimación.</div>
             <div class="actions">
               <button class="primary" type="button" id="btnUseMealAnalysis">✅ Pasar al registro</button>
-              <button class="secondary" type="button" id="btnAnalyzeAgain">🔄 Volver a analizar</button>
+              <button class="secondary" type="button" id="btnAnalyzeAgain">🔄 Recalcular con mi corrección</button>
             </div>
           </div>
         </div>
@@ -658,7 +674,29 @@ document.getElementById('formComida').addEventListener('reset',()=>{
 
 document.getElementById('formMovimiento').addEventListener('submit',e=>{e.preventDefault();db.movimiento.push({id:uid(),fecha:eFecha.value,pasos:num(ePasos.value),tipo:eTipo.value,minutos:num(eMinutos.value),energia:num(eEnergia.value),esfuerzo:num(eEsfuerzo.value),notas:eNotas.value.trim()});save();e.target.reset();eFecha.value=hoy();});
 window.delMovimiento=id=>{if(confirm('¿Eliminar este registro de movimiento?')){db.movimiento=db.movimiento.filter(x=>x.id!==id);save();}};
-function renderMovimiento(){const arr=[...db.movimiento].sort((a,b)=>b.fecha.localeCompare(a.fecha));tablaMovimiento.innerHTML=arr.map(x=>`<tr><td>${fmtDate(x.fecha)}</td><td>${x.pasos??'—'}</td><td><span class="badge">${esc(x.tipo)}</span></td><td>${x.minutos??'—'}</td><td>${x.energia??'—'}</td><td>${esc(x.notas||'')}</td><td><button class="danger" onclick="delMovimiento('${x.id}')">×</button></td></tr>`).join('')||'<tr><td colspan="7" class="small">Sin registros.</td></tr>';}
+function weekBounds(){
+  const d=new Date(); const day=(d.getDay()+6)%7;
+  const mon=new Date(d); mon.setDate(d.getDate()-day); mon.setHours(0,0,0,0);
+  const sun=new Date(mon); sun.setDate(mon.getDate()+6); sun.setHours(23,59,59,999);
+  const iso=x=>`${x.getFullYear()}-${String(x.getMonth()+1).padStart(2,'0')}-${String(x.getDate()).padStart(2,'0')}`;
+  return [iso(mon),iso(sun)];
+}
+function renderWeeklyMovement(){
+  const [a,b]=weekBounds();
+  const arr=db.movimiento.filter(x=>x.fecha>=a&&x.fecha<=b);
+  const strength=arr.filter(x=>/pesas|fuerza cuerpo completo/i.test(x.tipo||'') && (x.minutos||0)>0).length;
+  const cardio=arr.filter(x=>/caminata|trote|bicicleta|pesas \+ cardio|escaleras/i.test(x.tipo||''))
+                  .reduce((s,x)=>s+(Number(x.minutos)||0),0);
+  if(window.weekStrength) weekStrength.textContent=`${Math.min(strength,3)} / 3`;
+  if(window.weekCardio) weekCardio.textContent=`${cardio} / 180 min`;
+  if(window.weekMovementMessage){
+    const sf=Math.max(0,3-strength), cm=Math.max(0,180-cardio);
+    weekMovementMessage.textContent=(sf===0&&cm===0)
+      ?'🎉 Meta semanal completada. No hay que “pagar” ejercicio extra.'
+      :`Esta semana quedan ${sf} sesión(es) de fuerza y ${cm} min de cardio. Puedes repartirlos como mejor te funcione.`;
+  }
+}
+function renderMovimiento(){const arr=[...db.movimiento].sort((a,b)=>b.fecha.localeCompare(a.fecha));tablaMovimiento.innerHTML=arr.map(x=>`<tr><td>${fmtDate(x.fecha)}</td><td>${x.pasos??'—'}</td><td><span class="badge">${esc(x.tipo)}</span></td><td>${x.minutos??'—'}</td><td>${x.energia??'—'}</td><td>${esc(x.notas||'')}</td><td><button class="danger" onclick="delMovimiento('${x.id}')">×</button></td></tr>`).join('')||'<tr><td colspan="7" class="small">Sin registros.</td></tr>';renderWeeklyMovement();}
 function todayMove(){return [...db.movimiento].filter(x=>x.fecha===hoy()).sort((a,b)=>String(b.id).localeCompare(String(a.id)))[0]||null;}
 function consecutiveInactive(){let n=0,d=new Date();for(let i=0;i<7;i++){const iso=`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;if(d.getDay()===5){d.setDate(d.getDate()-1);continue;}const x=db.movimiento.find(v=>v.fecha===iso);if(x && ((x.minutos||0)>0 || (x.pasos||0)>=7000))break;n++;d.setDate(d.getDate()-1);}return n;}
 function renderCoach(){const d=new Date(),fri=d.getDay()===5,x=todayMove(),steps=x?.pasos||0,energy=x?.energia||null,inactive=consecutiveInactive();let msg='',actions=[];if(fri){msg='<b>Viernes de descanso.</b> Hoy no hay entrenamiento pendiente. Descansá sin culpa; mañana seguimos. 🌙';}else if((x?.minutos||0)>=20 || steps>=8000){msg=`Bien. Hoy ya hay movimiento real${steps?` (${steps.toLocaleString()} pasos)`:''}. No necesito inventarte más trabajo; mantené el día y cerramos bien.`; }else if(inactive>=2){msg=`Llevamos <b>${inactive} días</b> sin suficiente movimiento. Hoy sí quiero que hagamos algo. No tiene que ser perfecto: elegí una opción y rompemos la racha.`;actions=['Caminar 20 min','Gimnasio corto','Bicicleta 20–30 min'];}else if(energy && energy<=2){msg='Veo que la energía está baja. No voy a pedirte una gran sesión, pero tampoco quiero perder el hábito. ¿Me das 10–20 minutos suaves?';actions=['Caminar 15 min','Movilidad + 10 min','Hoy necesito descanso real'];}else{msg='Hoy todavía tenemos margen. La prioridad es movernos de alguna forma que sí quepa en tu día.';actions=['Caminar 20–30 min','Gimnasio / pesas','Bicicleta','Escaleras / movimiento extra'];}coachMessage.innerHTML=msg;coachActions.innerHTML=actions.map(a=>`<button type="button" class="choice" onclick="choosePlan('${a.replaceAll("'","\\'")}')">${a}</button>`).join('');todayMoveStatus.textContent=x?`${steps?steps.toLocaleString()+' pasos · ':''}${x.tipo||''}${x.minutos?` · ${x.minutos} min`:''}`:'Todavía no has actualizado el movimiento de hoy.';quickSteps.value=x?.pasos??'';quickEnergy.value=x?.energia??'';}
@@ -723,7 +761,8 @@ document.getElementById('checkNow').onclick=()=>{renderReminder();alert(currentP
 setInterval(maybeNotify,60000);
 
 
-let mealPhotoDataUrl=null;
+
+let mealPhotoDataUrls=[];
 let mealAiData=null;
 
 function compressMealImage(file,maxSide=1280,quality=.82){
@@ -747,38 +786,64 @@ function compressMealImage(file,maxSide=1280,quality=.82){
   });
 }
 
+function renderMealPhotos(){
+  mealPhotoGallery.innerHTML=mealPhotoDataUrls.map((src,i)=>`
+    <div style="position:relative;width:92px">
+      <img src="${src}" alt="Foto ${i+1}" style="width:92px;height:92px;object-fit:cover;border-radius:14px;border:1px solid #dbe4ef">
+      <button type="button" onclick="removeMealPhoto(${i})" aria-label="Quitar foto"
+        style="position:absolute;right:-5px;top:-7px;border:0;border-radius:999px;width:25px;height:25px;padding:0;background:#fff;color:#8b3c2c;box-shadow:0 2px 8px #0002">×</button>
+    </div>`).join('');
+  mealPhotoCount.textContent=`${mealPhotoDataUrls.length} / 3 fotos`;
+  btnAnalyzeMeal.disabled=mealPhotoDataUrls.length===0;
+}
+
+window.removeMealPhoto=i=>{
+  mealPhotoDataUrls.splice(i,1);
+  mealAiData=null; mealAiResult.style.display='none';
+  renderMealPhotos();
+  mealAiStatus.textContent=mealPhotoDataUrls.length?'Fotos listas. Puedes analizar cuando quieras.':'';
+};
+
 async function chooseMealPhoto(file){
   if(!file)return;
+  if(mealPhotoDataUrls.length>=3){
+    mealAiStatus.textContent='Puedes usar hasta 3 fotos por comida.';
+    mealPhoto.value='';
+    return;
+  }
   mealAiData=null;
   mealAiResult.style.display='none';
   mealAiStatus.textContent='Preparando foto…';
   try{
-    mealPhotoDataUrl=await compressMealImage(file);
-    mealPhotoPreview.src=mealPhotoDataUrl;
-    mealPhotoPreview.style.display='block';
-    btnAnalyzeMeal.disabled=false;
-    mealAiStatus.textContent='Foto lista. Toca “Analizar foto”.';
+    mealPhotoDataUrls.push(await compressMealImage(file));
+    renderMealPhotos();
+    mealAiStatus.textContent=mealPhotoDataUrls.length===1
+      ?'Foto lista. Puedes analizar o agregar otra foto del mismo plato/etiqueta.'
+      :`${mealPhotoDataUrls.length} fotos listas. La IA las analizará como una sola comida.`;
   }catch(e){
     mealAiStatus.textContent=e.message||'No se pudo preparar la foto.';
+  }finally{
+    mealPhoto.value='';
   }
 }
 
 function clearMealPhoto(){
-  mealPhotoDataUrl=null;mealAiData=null;mealPhoto.value='';
-  mealPhotoPreview.removeAttribute('src');mealPhotoPreview.style.display='none';
+  mealPhotoDataUrls=[];mealAiData=null;mealPhoto.value='';
+  mealCorrection.value='';
+  mealPhotoGallery.innerHTML='';mealPhotoCount.textContent='0 / 3 fotos';
   mealAiResult.style.display='none';mealAiStatus.textContent='';
   btnAnalyzeMeal.disabled=true;
 }
 
 async function analyzeMealPhoto(){
-  if(!mealPhotoDataUrl)return;
+  if(!mealPhotoDataUrls.length)return;
   const {data:{session}}=await sb.auth.getSession();
   if(!session){
     mealAiStatus.textContent='Inicia sesión en Cuenta / Nube para usar el análisis con IA.';
     return;
   }
   btnAnalyzeMeal.disabled=true;
-  mealAiStatus.textContent='🤖 Analizando el plato…';
+  mealAiStatus.textContent='🤖 Analizando todas las fotos y tus correcciones…';
   try{
     const resp=await fetch(`${SUPABASE_URL}/functions/v1/analyze-meal`,{
       method:'POST',
@@ -787,7 +852,12 @@ async function analyzeMealPhoto(){
         'Authorization':`Bearer ${session.access_token}`,
         'apikey':SUPABASE_KEY
       },
-      body:JSON.stringify({image:mealPhotoDataUrl, meal_type:cTipo.value})
+      body:JSON.stringify({
+        images:mealPhotoDataUrls,
+        image:mealPhotoDataUrls[0],
+        meal_type:cTipo.value,
+        correction:mealCorrection.value.trim()
+      })
     });
     const raw=await resp.text();
     let result={};try{result=JSON.parse(raw)}catch(_){}
@@ -801,7 +871,7 @@ async function analyzeMealPhoto(){
     aiPortions.textContent=(result.items||[]).map(x=>`${x.name}${x.portion?' · '+x.portion:''}`).join(' | ')||'—';
     aiConfidence.textContent=result.confidence||'media';
     mealAiResult.style.display='block';
-    mealAiStatus.textContent='Estimación lista. Revísala antes de registrarla.';
+    mealAiStatus.textContent='Estimación lista. Si algo está mal, escríbelo arriba y toca “Recalcular con mi corrección”.';
   }catch(e){
     mealAiStatus.textContent='No se pudo analizar: '+(e.message||e);
   }finally{btnAnalyzeMeal.disabled=false;}
@@ -815,7 +885,8 @@ function useMealAnalysis(){
   cCarbohidratos.value=mealAiData.carbs_g??'';
   cGrasa.value=mealAiData.fat_g??'';
   cCalorias.value=mealAiData.calories??'';
-  const note=`Estimación por IA desde foto${mealAiData.confidence?' · confianza '+mealAiData.confidence:''}${mealAiData.assumptions?.length?' · Supuestos: '+mealAiData.assumptions.join('; '):''}`;
+  const correction=mealCorrection.value.trim();
+  const note=`Estimación por IA desde ${mealPhotoDataUrls.length} foto(s)${mealAiData.confidence?' · confianza '+mealAiData.confidence:''}${correction?' · Corrección confirmada: '+correction:''}${mealAiData.assumptions?.length?' · Supuestos: '+mealAiData.assumptions.join('; '):''}`;
   cNotas.value=[cNotas.value,note].filter(Boolean).join('\n');
   document.getElementById('formComida').scrollIntoView({behavior:'smooth',block:'start'});
   mealAiStatus.textContent='Datos pasados al registro. Puedes corregirlos y luego tocar “Guardar comida”.';
@@ -826,6 +897,7 @@ btnClearMealPhoto.onclick=clearMealPhoto;
 btnAnalyzeMeal.onclick=analyzeMealPhoto;
 btnAnalyzeAgain.onclick=analyzeMealPhoto;
 btnUseMealAnalysis.onclick=useMealAnalysis;
+renderMealPhotos();
 
 function aiContext(){const lp=lastMetric('peso'),lc=lastMetric('cintura'),moves=[...db.movimiento].sort((a,b)=>b.fecha.localeCompare(a.fecha)).slice(0,7),meals=[...db.comidas].sort((a,b)=>b.fecha.localeCompare(a.fecha)).slice(0,20);return {fecha:hoy(),objetivo:{peso_actual:lp?.peso??null,peso_meta:db.config.goal,primera_etapa:db.config.stage,cintura:lc?.cintura??null,edad:db.config.age,estatura_cm:db.config.height,meta_calorica:db.config.calories},reglas:{viernes_descanso:true,prioridad:'pérdida de peso real preservando fuerza y adherencia',estrategia:'si no cabe Plan A, proponer Plan B de movimiento',patron:'no permitir declarar victoria tras perder 3–4 kg; sostener hasta la meta',registro_honesto:'preguntar por comidas faltantes sin culpa ni juicio; omitir registro puede ser evitación',comparacion:'no comparar con otras personas; usar tendencia propia y meta personal'},movimiento_reciente:moves,alimentacion_reciente:meals};}
 
