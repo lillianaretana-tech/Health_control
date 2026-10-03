@@ -75,10 +75,10 @@ hr{border:0;border-top:1px solid var(--line);margin:18px 0}
   .card{box-shadow:none;border-color:#bbb}
 }
 
-/* Proyecto Lilly 90 días v3.3 */
+/* Proyecto Lilly 90 días v3.4 */
 .version{font-size:.76rem;opacity:.72;margin-top:7px}.heroGoal{background:linear-gradient(135deg,#102a4c,#1d4f8f);color:#fff;border:0}.heroGoal .small{color:#dbe8f7}.progress{height:12px;background:#dfe7f0;border-radius:999px;overflow:hidden;margin:10px 0}.progress>div{height:100%;background:#fff;border-radius:999px}.coach{border-left:5px solid var(--accent);background:#f7faff}.coachText{font-size:1.05rem;line-height:1.55}.choice{background:#edf3fa;color:#173b6c}.rest{background:#eef4fb;border-color:#cbd9ea;color:#173b6c}.minirow{display:flex;gap:8px;flex-wrap:wrap;align-items:center}.minirow>*{flex:1;min-width:130px}.check{display:flex;gap:8px;align-items:center}.check input{width:auto}.pill{display:inline-block;padding:5px 9px;border-radius:999px;background:#e8eef7;margin:2px;font-size:.8rem;font-weight:700}.dangerText{color:#8b3c2c}.goodText{color:#245b9c}
 
-/* v3.3 · IA corregible + varias fotos + meta semanal */
+/* v3.4 · IA corregible + cámara/galería + varias fotos + movimiento flexible */
 body{background:
  radial-gradient(circle at 8% 5%,rgba(82,157,230,.16),transparent 24%),
  radial-gradient(circle at 92% 18%,rgba(244,182,93,.15),transparent 22%),
@@ -109,7 +109,7 @@ header .wrap{position:relative;z-index:1}
 <header>
   <div class="wrap">
     <h1>Control Salud & Nutrición</h1>
-    <p>Tu acompañamiento para bajar de peso, moverte y sostener el proceso.</p><div class="version">Proyecto Lilly · 90 días · v3.3</div>
+    <p>Tu acompañamiento para bajar de peso, moverte y sostener el proceso.</p><div class="version">Proyecto Lilly · 90 días · v3.4</div>
   </div>
 </header>
 
@@ -275,11 +275,15 @@ header .wrap{position:relative;z-index:1}
           </div>
           <div class="actions">
             <label class="primary" style="display:inline-block;cursor:pointer">
-              📷 Agregar foto
-              <input id="mealPhoto" type="file" accept="image/*" capture="environment" style="display:none">
+              📷 Tomar foto ahora
+              <input id="mealCameraPhoto" type="file" accept="image/*" capture="environment" style="display:none">
             </label>
-            <button class="secondary" type="button" id="btnAnalyzeMeal" disabled>🤖 Analizar foto</button>
-            <button class="secondary" type="button" id="btnClearMealPhoto">Limpiar foto</button>
+            <label class="secondary" style="display:inline-block;cursor:pointer">
+              🖼️ Elegir de mi galería
+              <input id="mealGalleryPhoto" type="file" accept="image/*" multiple style="display:none">
+            </label>
+            <button class="secondary" type="button" id="btnAnalyzeMeal" disabled>🤖 Analizar foto(s)</button>
+            <button class="secondary" type="button" id="btnClearMealPhoto">Limpiar fotos</button>
           </div>
           <div id="mealPhotoGallery" style="display:flex;gap:8px;flex-wrap:wrap;margin-top:10px"></div>
           <img id="mealPhotoPreview" class="ai-photo-preview" alt="Vista previa de la comida" style="display:none">
@@ -808,7 +812,8 @@ async function chooseMealPhoto(file){
   if(!file)return;
   if(mealPhotoDataUrls.length>=3){
     mealAiStatus.textContent='Puedes usar hasta 3 fotos por comida.';
-    mealPhoto.value='';
+    if(window.mealCameraPhoto) mealCameraPhoto.value='';
+    if(window.mealGalleryPhoto) mealGalleryPhoto.value='';
     return;
   }
   mealAiData=null;
@@ -823,12 +828,15 @@ async function chooseMealPhoto(file){
   }catch(e){
     mealAiStatus.textContent=e.message||'No se pudo preparar la foto.';
   }finally{
-    mealPhoto.value='';
+    if(window.mealCameraPhoto) mealCameraPhoto.value='';
+    if(window.mealGalleryPhoto) mealGalleryPhoto.value='';
   }
 }
 
 function clearMealPhoto(){
-  mealPhotoDataUrls=[];mealAiData=null;mealPhoto.value='';
+  mealPhotoDataUrls=[];mealAiData=null;
+  if(window.mealCameraPhoto) mealCameraPhoto.value='';
+  if(window.mealGalleryPhoto) mealGalleryPhoto.value='';
   mealCorrection.value='';
   mealPhotoGallery.innerHTML='';mealPhotoCount.textContent='0 / 3 fotos';
   mealAiResult.style.display='none';mealAiStatus.textContent='';
@@ -892,7 +900,20 @@ function useMealAnalysis(){
   mealAiStatus.textContent='Datos pasados al registro. Puedes corregirlos y luego tocar “Guardar comida”.';
 }
 
-mealPhoto.addEventListener('change',e=>chooseMealPhoto(e.target.files?.[0]));
+mealCameraPhoto.addEventListener('change',async e=>{
+  await chooseMealPhoto(e.target.files?.[0]);
+});
+mealGalleryPhoto.addEventListener('change',async e=>{
+  const files=[...(e.target.files||[])];
+  for(const file of files){
+    if(mealPhotoDataUrls.length>=3) break;
+    await chooseMealPhoto(file);
+  }
+  if(files.length && mealPhotoDataUrls.length>=3 && files.length>3){
+    mealAiStatus.textContent='Se cargaron las primeras 3 fotos. Ese es el máximo por comida.';
+  }
+  mealGalleryPhoto.value='';
+});
 btnClearMealPhoto.onclick=clearMealPhoto;
 btnAnalyzeMeal.onclick=analyzeMealPhoto;
 btnAnalyzeAgain.onclick=analyzeMealPhoto;
