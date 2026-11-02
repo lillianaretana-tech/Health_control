@@ -3,8 +3,8 @@
   "short_name": "Health Control",
   "description": "Diario de alimentación y bienestar",
   "lang": "es",
-  "start_url": "./",
-  "scope": "./",
+  "start_url": "/Health_control/",
+  "scope": "/Health_control/",
   "display": "standalone",
   "background_color": "#F8F4ED",
   "theme_color": "#B89576",
@@ -21,5 +21,7 @@
       "type": "image/png",
       "purpose": "any maskable"
     }
-  ]
+  ],
+  "id": "/Health_control/",
+  "prefer_related_applications": false
 }
