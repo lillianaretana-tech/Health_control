@@ -1,0 +1,19 @@
+{
+  "name": "Health Control — Calma",
+  "short_name": "Health Control",
+  "description": "Diario de alimentación y bienestar",
+  "lang": "es",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#F8F4ED",
+  "theme_color": "#B89576",
+  "icons": [
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
