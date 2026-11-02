@@ -1,9 +1,10 @@
-<!doctype html>
+<!DOCTYPE html>
+
 <html lang="es">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Control Salud & Nutrición</title>
+<meta charset="utf-8"/>
+<meta content="width=device-width,initial-scale=1" name="viewport"/>
+<title>Control Salud &amp; Nutrición</title>
 <style>
 :root{
   --bg:#f7f7f4; --card:#ffffff; --ink:#1f2a38; --muted:#6f7784;
@@ -104,331 +105,351 @@ header .wrap{position:relative;z-index:1}
 @media(max-width:700px){.heroGoal:after{display:none}.kcalRing{width:105px;height:105px}}
 
 </style>
-</head>
+<style>
+/* Health Control · edición calma */
+:root{--bg:#f8f4ed;--card:#fffdf9;--ink:#4a3b30;--muted:#85766a;--line:#e8ddd0;--accent:#84664d;--accent2:#b89576;--soft:#f2e8dc;--good:#6c8469;--warn:#a67e4c}
+body{background:radial-gradient(ellipse at 100% 4%,rgba(189,155,113,.12),transparent 33%),linear-gradient(180deg,#f9f6f0,#f4eee5)!important;color:var(--ink)}
+body:before{content:'✿';position:fixed;right:-45px;bottom:-95px;font-size:320px;color:rgba(155,123,89,.045);pointer-events:none;z-index:0}
+main,header{position:relative;z-index:1}
+header{background:linear-gradient(115deg,#e7d7c2,#f8efe3)!important;color:#49382b;padding:20px 14px}
+header:after{border-color:rgba(128,98,65,.06)}header p{color:#766556}
+.wrap{max-width:1040px;padding:14px}
+.card{background:rgba(255,253,249,.96);border:1px solid #e8ddd0;box-shadow:0 6px 22px rgba(91,70,48,.045)}
+.tabs{display:flex;flex-wrap:nowrap;overflow-x:auto;gap:7px;padding:3px 0 11px;scrollbar-width:thin;position:sticky;top:0;z-index:10;background:rgba(248,244,237,.97)}
+.tab{white-space:nowrap;flex:0 0 auto;background:#efe5d8;color:#67503c;font-weight:650}.tab.active{background:#84664d;color:#fff}
+.primary{background:#84664d;color:#fff}.secondary,.choice{background:#f1e7dc;color:#654e3d}.danger{background:#f5e7e1}
+input,select,textarea{border-color:#dfd1c2;background:#fffdfa;color:#49382b}
+input:focus,select:focus,textarea:focus{outline:2px solid #c8ab8b;outline-offset:1px}
+.motivation-card{background:linear-gradient(115deg,#e9dccb,#f5eadd)!important;color:#574432;box-shadow:none;border:1px solid #e6d5c1;padding:13px 16px;margin:9px 0 13px}
+.motivation-card .mot-kicker{color:#806349}.motivation-card .mot-text{font-weight:600}.motivation-card .mot-sub{color:#806f61}
+.heroGoal{background:linear-gradient(120deg,#b79c80,#d5bfa7)!important;color:#382b20}.heroGoal .small{color:#47372a}
+.coach,.reminderCard,.dayBudget,.illustration,.ai-photo-box{background:#faf5ed!important;border-color:#e7d9c9!important}
+.ai-metric,.kpi,.reminderBubble,.rest,.notice{background:#f6eee3!important;border-color:#e9dccb!important;color:#604b38}
+.ai-metric b,.kcalRing b,.illustration strong{color:#76573e}.kcalRing{background:conic-gradient(#a88a6b var(--pct,0%),#eee3d6 0)}
+.badge,.pill,.milestone{background:#f0e5d8;color:#70563d}.milestone.current{background:#84664d;color:white}
+th{background:#f4eadf}.collapse-toggle{background:#f0e5d8;color:#6e523d}
+#comidas>.grid,#movimiento>.grid{align-items:start}
+#comidas>.grid>.card,#movimiento>.grid>.card{min-width:0}
+#comidas .span4{grid-column:span 6}#comidas .span8{grid-column:span 12}
+#movimiento .span4,#movimiento .span8{grid-column:span 6}
+.calm-head{display:flex;align-items:center;gap:8px;margin-bottom:10px}.calm-head h2,.calm-head h3{margin:0;flex:1}
+.calm-toggle{background:#f0e5d8;color:#6a503b;padding:8px 11px;border-radius:999px;font-size:.85rem}
+.calm-collapsed>.calm-body{display:none}.calm-collapsed{padding-bottom:14px}
+.quick-note{font-size:.87rem;color:#786755;margin:0 0 14px}
+@media(max-width:760px){#comidas .span4,#comidas .span8,#movimiento .span4,#movimiento .span8{grid-column:span 12}.wrap{padding:10px}.card{padding:14px}.tabs{margin-bottom:10px}header h1{font-size:1.55rem}.motivation-card .mot-text{font-size:.94rem}.formgrid{gap:9px}.f6{grid-column:span 6}.f4,.f3{grid-column:span 6}.f12{grid-column:span 12}.card h2{font-size:1.13rem}}
+@media(max-width:390px){.f6{grid-column:span 12}}
+
+.calm-module>.calm-body > h2:first-child,.calm-module>.calm-body > h3:first-child{display:none}
+</style></head>
 <body>
 <header>
-  <div class="wrap">
-    <h1>Control Salud & Nutrición</h1>
-    <p>Tu acompañamiento para bajar de peso, moverte y sostener el proceso.</p><div class="version">Proyecto Lilly · 90 días · v3.4</div>
-  </div>
+<div class="wrap">
+<h1>Control Salud &amp; Nutrición</h1>
+<p>Tu acompañamiento para bajar de peso, moverte y sostener el proceso.</p><div class="version">Proyecto Lilly · 90 días · v3.4</div>
+</div>
 </header>
-
 <main class="wrap">
 <section class="motivation-card" id="dailyMotivation">
 <div class="mot-kicker">💙 Mensaje de hoy</div>
 <div class="mot-text" id="motivationText">Hoy no necesitás hacerlo perfecto. Necesitás seguir aquí.</div>
 <div class="mot-sub" id="motivationSub">Proyecto Lilly · No desaparecer del proceso.</div>
 </section>
-  <div class="tabs noprint">
-    <button class="tab active" data-tab="inicio">Hoy</button>
-    <button class="tab" data-tab="movimiento">Movimiento</button>
-    <button class="tab" data-tab="medidas">Peso y medidas</button>
-    <button class="tab" data-tab="comidas">Alimentación</button>
-    <button class="tab" data-tab="reportes">Reportes</button>
-<button class="tab" data-tab="plan">Plan de entrenamiento</button>
-    <button class="tab" data-tab="respaldo">Respaldo</button>
-<button class="tab" data-tab="cuenta">Cuenta / Nube</button>
-  </div>
+<div class="tabs noprint">
 
-  <section id="inicio" class="panel active">
-    <div class="grid">
-      <div class="card span12 heroGoal">
-        <div class="small">OBJETIVO ACTUAL</div><div style="display:flex;justify-content:space-between;gap:16px;align-items:end;flex-wrap:wrap"><div><div class="stat" id="goalHeadline">—</div><div id="goalSub" class="small"></div></div><div style="min-width:240px;flex:1;max-width:520px"><div class="progress"><div id="goalBar" style="width:0%"></div></div><div class="small" id="goalProgressText"></div></div></div>
-      </div>
-      <div class="card span8 coach"><h3>💙 Tu acompañamiento de hoy</h3><div id="coachMessage" class="coachText"></div><div class="actions" id="coachActions"></div></div>
-      <div class="card span4"><h3>Movimiento de hoy</h3><div class="minirow"><div><label>Pasos</label><input type="number" id="quickSteps" min="0" step="100" placeholder="Ej. 6500"></div><div><label>¿Cómo estuvo mi energía hoy? (1–5)</label><select id="quickEnergy"><option value="">—</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option></select></div></div><div class="actions"><button class="primary" id="quickSave" type="button">Actualizar mi día</button></div><div id="todayMoveStatus" class="small" style="margin-top:8px"></div></div>
-      <div class="card span6 dayBudget">
-        <h3>🍽️ Presupuesto de hoy</h3>
-        <div style="display:grid;grid-template-columns:130px 1fr;gap:18px;align-items:center">
-          <div class="kcalRing" id="kcalRing"><div class="inside"><b id="kcalRemaining">—</b><div class="small">restantes</div></div></div>
-          <div><div class="small">Meta diaria</div><div class="stat" id="kcalTarget">1.600</div>
-          <div style="margin-top:7px">Consumidas registradas: <b id="kcalConsumed">0 kcal</b></div>
-          <div>Proteína registrada: <b id="proteinToday">0 g</b></div>
-          <div id="foodCompleteness" class="small" style="margin-top:7px"></div></div>
-        </div>
-      </div>
-      <div class="card span6 reminderCard">
-        <h3>🔔 Lilly, no te me escondás 😄</h3>
-        <div id="reminderStatus" class="reminderBubble">Revisando cómo vamos hoy…</div>
-        <div class="actions"><button class="primary" type="button" id="enableNotifications">Activar notificaciones</button><button class="secondary" type="button" id="checkNow">Revisar mi día ahora</button></div>
-        <div class="small" style="margin-top:8px"><span id="notifDot" class="notificationDot"></span><span id="notifState">Notificaciones del navegador sin activar.</span></div>
-      </div>
-      <div class="card span12 illustration"><div class="art">👟🥗💪🐾</div><div><strong>Destino: Lilly a los 60</strong><div class="small">Más ligera, fuerte, con energía y sin cargar “un Bruno” extra. Verse regia no cancela la meta. Los datos mandan; la culpa no.</div><div class="milestones"><span class="milestone">93</span><span class="milestone">89</span><span class="milestone">85</span><span class="milestone">80</span><span class="milestone">77</span><span class="milestone">75 kg 🎯</span></div></div></div>
 
-      <div class="card span3"><div class="small">Último peso</div><div class="stat" id="kPeso">—</div><div class="small" id="kPesoFecha"></div></div>
-      <div class="card span3"><div class="small">Cambio acumulado</div><div class="stat" id="kCambio">—</div><div class="small">desde el primer registro</div></div>
-      <div class="card span3"><div class="small">Cintura actual</div><div class="stat" id="kCintura">—</div><div class="small">última medición disponible</div></div>
-      <div class="card span3"><div class="small">Días con comidas</div><div class="stat" id="kDiasComida">0</div><div class="small">días registrados</div></div>
-      <div class="card span8">
-        <h3>Evolución del peso</h3>
-        <canvas id="chartPeso" width="900" height="300"></canvas>
-      </div>
-      <div class="card span4">
-        <h3>Esta semana</h3>
-        <div id="semanaResumen" class="small">Todavía no hay datos suficientes.</div>
-      </div>
-      <div class="card span12 truth"><h3>🧭 Regla de oro</h3><div id="truthMessage">No nos comparamos con otras personas ni declaramos victoria porque 3–4 kg ya se noten. Si algo no se registró, lo preguntamos. Si hubo hamburguesa y papas, también se registran: <b>el dato nunca es una falta.</b></div></div>
-      <div class="card span12 notice">
+
+
+
+
+
+
+<button class="tab active" data-tab="comidas">Alimentación</button><button class="tab" data-tab="movimiento">Movimiento</button><button class="tab" data-tab="inicio">Hoy</button><button class="tab" data-tab="medidas">Peso y medidas</button><button class="tab" data-tab="reportes">Reportes</button><button class="tab" data-tab="plan">Plan de entrenamiento</button><button class="tab" data-tab="respaldo">Respaldo</button><button class="tab" data-tab="cuenta">Cuenta / Nube</button></div>
+<section class="panel" id="inicio">
+<div class="grid">
+<div class="card span12 heroGoal">
+<div class="small">OBJETIVO ACTUAL</div><div style="display:flex;justify-content:space-between;gap:16px;align-items:end;flex-wrap:wrap"><div><div class="stat" id="goalHeadline">—</div><div class="small" id="goalSub"></div></div><div style="min-width:240px;flex:1;max-width:520px"><div class="progress"><div id="goalBar" style="width:0%"></div></div><div class="small" id="goalProgressText"></div></div></div>
+</div>
+<div class="card span8 coach"><h3>💙 Tu acompañamiento de hoy</h3><div class="coachText" id="coachMessage"></div><div class="actions" id="coachActions"></div></div>
+<div class="card span4"><h3>Movimiento de hoy</h3><div class="minirow"><div><label>Pasos</label><input id="quickSteps" min="0" placeholder="Ej. 6500" step="100" type="number"/></div><div><label>¿Cómo estuvo mi energía hoy? (1–5)</label><select id="quickEnergy"><option value="">—</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option></select></div></div><div class="actions"><button class="primary" id="quickSave" type="button">Actualizar mi día</button></div><div class="small" id="todayMoveStatus" style="margin-top:8px"></div></div>
+<div class="card span6 dayBudget">
+<h3>🍽️ Presupuesto de hoy</h3>
+<div style="display:grid;grid-template-columns:130px 1fr;gap:18px;align-items:center">
+<div class="kcalRing" id="kcalRing"><div class="inside"><b id="kcalRemaining">—</b><div class="small">restantes</div></div></div>
+<div><div class="small">Meta diaria</div><div class="stat" id="kcalTarget">1.600</div>
+<div style="margin-top:7px">Consumidas registradas: <b id="kcalConsumed">0 kcal</b></div>
+<div>Proteína registrada: <b id="proteinToday">0 g</b></div>
+<div class="small" id="foodCompleteness" style="margin-top:7px"></div></div>
+</div>
+</div>
+<div class="card span6 reminderCard">
+<h3>🔔 Lilly, no te me escondás 😄</h3>
+<div class="reminderBubble" id="reminderStatus">Revisando cómo vamos hoy…</div>
+<div class="actions"><button class="primary" id="enableNotifications" type="button">Activar notificaciones</button><button class="secondary" id="checkNow" type="button">Revisar mi día ahora</button></div>
+<div class="small" style="margin-top:8px"><span class="notificationDot" id="notifDot"></span><span id="notifState">Notificaciones del navegador sin activar.</span></div>
+</div>
+<div class="card span12 illustration"><div class="art">👟🥗💪🐾</div><div><strong>Destino: Lilly a los 60</strong><div class="small">Más ligera, fuerte, con energía y sin cargar “un Bruno” extra. Verse regia no cancela la meta. Los datos mandan; la culpa no.</div><div class="milestones"><span class="milestone">93</span><span class="milestone">89</span><span class="milestone">85</span><span class="milestone">80</span><span class="milestone">77</span><span class="milestone">75 kg 🎯</span></div></div></div>
+<div class="card span3"><div class="small">Último peso</div><div class="stat" id="kPeso">—</div><div class="small" id="kPesoFecha"></div></div>
+<div class="card span3"><div class="small">Cambio acumulado</div><div class="stat" id="kCambio">—</div><div class="small">desde el primer registro</div></div>
+<div class="card span3"><div class="small">Cintura actual</div><div class="stat" id="kCintura">—</div><div class="small">última medición disponible</div></div>
+<div class="card span3"><div class="small">Días con comidas</div><div class="stat" id="kDiasComida">0</div><div class="small">días registrados</div></div>
+<div class="card span8">
+<h3>Evolución del peso</h3>
+<canvas height="300" id="chartPeso" width="900"></canvas>
+</div>
+<div class="card span4">
+<h3>Esta semana</h3>
+<div class="small" id="semanaResumen">Todavía no hay datos suficientes.</div>
+</div>
+<div class="card span12 truth"><h3>🧭 Regla de oro</h3><div id="truthMessage">No nos comparamos con otras personas ni declaramos victoria porque 3–4 kg ya se noten. Si algo no se registró, lo preguntamos. Si hubo hamburguesa y papas, también se registran: <b>el dato nunca es una falta.</b></div></div>
+<div class="card span12 notice">
         Los datos se guardan en este navegador mediante almacenamiento local. Usa la pestaña <b>Respaldo</b> periódicamente para descargar una copia.
       </div>
-    </div>
-  </section>
+</div>
+</section>
+<section class="panel" id="movimiento">
+<div class="grid">
+<div class="card span12 calm-module calm-collapsed" data-module="movimiento-0" id="weeklyMovementCard"><div class="calm-head"><h2>🏃‍♀️ Mi movimiento de la semana</h2><button aria-expanded="false" class="calm-toggle" type="button">Mostrar +</button></div><div class="calm-body">
+<h2>🏃‍♀️ Mi movimiento de la semana</h2>
+<div class="small">Los días son flexibles. Sugerencia para fuerza: lunes · miércoles · sábado. Si un día no se puede, se mueve; no se pierde.</div>
+<div class="ai-result-grid" style="margin-top:12px">
+<div class="ai-metric"><span>🏋️ Fuerza cuerpo completo</span><b id="weekStrength">0 / 3</b></div>
+<div class="ai-metric"><span>❤️ Cardio</span><b id="weekCardio">0 / 180 min</b></div>
+</div>
+<div class="small" id="weekMovementMessage" style="margin-top:10px"></div>
+<div class="notice rest" style="margin-top:10px"><b>Viernes:</b> descanso programado. Lo que no se hizo esta semana no se convierte en deuda para la siguiente.</div>
+</div></div>
+<div class="card span4 calm-module" data-module="movimiento-1"><div class="calm-head"><h2>Registrar movimiento</h2><button aria-expanded="true" class="calm-toggle" type="button">Ocultar −</button></div><div class="calm-body"><h2>Registrar movimiento</h2><form id="formMovimiento"><div class="formgrid">
+<div class="f6"><label>Fecha</label><input id="eFecha" required="" type="date"/></div><div class="f6"><label>Pasos</label><input id="ePasos" min="0" step="100" type="number"/></div>
+<div class="f6"><label>Actividad</label><select id="eTipo"><option>Sin entrenamiento</option><option>Caminata</option><option>Trote</option><option>Fuerza cuerpo completo</option><option>Gimnasio - pesas</option><option>Gimnasio - pesas + cardio</option><option>Bicicleta</option><option>Escaleras / movimiento extra</option><option>Otro</option><option>Descanso</option></select></div>
+<div class="f6"><label>Minutos</label><input id="eMinutos" min="0" step="1" type="number"/></div><div class="f6"><label>¿Cómo estuvo mi energía hoy? (1–5)</label><input id="eEnergia" max="5" min="1" type="number"/></div><div class="f6"><label>Esfuerzo (1–10)</label><input id="eEsfuerzo" max="10" min="1" type="number"/></div>
+<div class="f12"><label>¿Cómo estuvo el día?</label><textarea id="eNotas" placeholder="Cansancio, trabajo pesado, lluvia, ganas, dolor, etc."></textarea></div>
+</div><div class="actions"><button class="primary" type="submit">Guardar movimiento</button><button class="secondary" type="reset">Limpiar</button></div></form></div></div>
+<div class="card span8 calm-module calm-collapsed" data-module="movimiento-2"><div class="calm-head"><h2>Historial de movimiento</h2><button aria-expanded="false" class="calm-toggle" type="button">Mostrar +</button></div><div class="calm-body"><h2>Historial de movimiento</h2><div class="tablewrap"><table><thead><tr><th>Fecha</th><th>Pasos</th><th>Actividad</th><th>Min.</th><th>Energía</th><th>Notas</th><th></th></tr></thead><tbody id="tablaMovimiento"></tbody></table></div></div></div>
+<div class="card span12 calm-module calm-collapsed" data-module="movimiento-3"><div class="calm-head"><h2>Regla del programa</h2><button aria-expanded="false" class="calm-toggle" type="button">Mostrar +</button></div><div class="calm-body"><h3>Regla del programa</h3><p id="movementRule">El objetivo no es hacer un entrenamiento perfecto todos los días. El objetivo es evitar varios días seguidos de inactividad buscando un Plan B realista.</p><div class="notice rest"><b>Viernes:</b> descanso programado. No hay deuda de ejercicio ni obligación de completar pasos.</div></div></div>
+</div>
+</section>
+<section class="panel" id="medidas">
+<div class="grid">
+<div class="card span4 calm-module" data-module="medidas-0"><div class="calm-head"><h2>Registrar peso y medidas</h2><button aria-expanded="true" class="calm-toggle" type="button">Ocultar −</button></div><div class="calm-body">
+<h2>Registrar peso y medidas</h2>
+<form id="formMedidas">
+<div class="formgrid">
+<div class="f6"><label>Fecha</label><input id="mFecha" required="" type="date"/></div>
+<div class="f6"><label>Peso (kg)</label><input id="mPeso" max="300" min="20" step="0.1" type="number"/></div>
+<div class="f6"><label>Cintura (cm)</label><input id="mCintura" step="0.1" type="number"/></div>
+<div class="f6"><label>Cadera (cm)</label><input id="mCadera" step="0.1" type="number"/></div>
+<div class="f6"><label>Muslo (cm)</label><input id="mMuslo" step="0.1" type="number"/></div>
+<div class="f6"><label>Brazo (cm)</label><input id="mBrazo" step="0.1" type="number"/></div>
+<div class="f12"><label>Notas</label><textarea id="mNotas" placeholder="Ej.: dormí bien, retención de líquido, entrenamiento fuerte..."></textarea></div>
+</div>
+<div class="actions"><button class="primary" type="submit">Guardar registro</button><button class="secondary" type="reset">Limpiar</button></div>
+</form>
+</div></div>
+<div class="card span8 calm-module calm-collapsed" data-module="medidas-1"><div class="calm-head"><h2>Historial</h2><button aria-expanded="false" class="calm-toggle" type="button">Mostrar +</button></div><div class="calm-body">
+<h2>Historial</h2>
+<div class="tablewrap"><table>
+<thead><tr><th>Fecha</th><th>Peso</th><th>Cintura</th><th>Cadera</th><th>Muslo</th><th>Brazo</th><th>Notas</th><th></th></tr></thead>
+<tbody id="tablaMedidas"></tbody>
+</table></div>
+</div></div>
+</div>
+</section>
+<section class="panel active" id="comidas"><p class="quick-note">🌿 Empezá por registrar lo que comiste. Abrí solo lo que necesités; lo demás puede esperar.</p>
+<div class="grid">
 
 
-  <section id="movimiento" class="panel">
-    <div class="grid">
-      <div class="card span12" id="weeklyMovementCard">
-        <h2>🏃‍♀️ Mi movimiento de la semana</h2>
-        <div class="small">Los días son flexibles. Sugerencia para fuerza: lunes · miércoles · sábado. Si un día no se puede, se mueve; no se pierde.</div>
-        <div class="ai-result-grid" style="margin-top:12px">
-          <div class="ai-metric"><span>🏋️ Fuerza cuerpo completo</span><b id="weekStrength">0 / 3</b></div>
-          <div class="ai-metric"><span>❤️ Cardio</span><b id="weekCardio">0 / 180 min</b></div>
-        </div>
-        <div class="small" id="weekMovementMessage" style="margin-top:10px"></div>
-        <div class="notice rest" style="margin-top:10px"><b>Viernes:</b> descanso programado. Lo que no se hizo esta semana no se convierte en deuda para la siguiente.</div>
-      </div>
-      <div class="card span4"><h2>Registrar movimiento</h2><form id="formMovimiento"><div class="formgrid">
-        <div class="f6"><label>Fecha</label><input type="date" id="eFecha" required></div><div class="f6"><label>Pasos</label><input type="number" min="0" step="100" id="ePasos"></div>
-        <div class="f6"><label>Actividad</label><select id="eTipo"><option>Sin entrenamiento</option><option>Caminata</option><option>Trote</option><option>Fuerza cuerpo completo</option><option>Gimnasio - pesas</option><option>Gimnasio - pesas + cardio</option><option>Bicicleta</option><option>Escaleras / movimiento extra</option><option>Otro</option><option>Descanso</option></select></div>
-        <div class="f6"><label>Minutos</label><input type="number" min="0" step="1" id="eMinutos"></div><div class="f6"><label>¿Cómo estuvo mi energía hoy? (1–5)</label><input type="number" min="1" max="5" id="eEnergia"></div><div class="f6"><label>Esfuerzo (1–10)</label><input type="number" min="1" max="10" id="eEsfuerzo"></div>
-        <div class="f12"><label>¿Cómo estuvo el día?</label><textarea id="eNotas" placeholder="Cansancio, trabajo pesado, lluvia, ganas, dolor, etc."></textarea></div>
-      </div><div class="actions"><button class="primary" type="submit">Guardar movimiento</button><button class="secondary" type="reset">Limpiar</button></div></form></div>
-      <div class="card span8"><h2>Historial de movimiento</h2><div class="tablewrap"><table><thead><tr><th>Fecha</th><th>Pasos</th><th>Actividad</th><th>Min.</th><th>Energía</th><th>Notas</th><th></th></tr></thead><tbody id="tablaMovimiento"></tbody></table></div></div>
-      <div class="card span12"><h3>Regla del programa</h3><p id="movementRule">El objetivo no es hacer un entrenamiento perfecto todos los días. El objetivo es evitar varios días seguidos de inactividad buscando un Plan B realista.</p><div class="notice rest"><b>Viernes:</b> descanso programado. No hay deuda de ejercicio ni obligación de completar pasos.</div></div>
-    </div>
-  </section>
 
-  <section id="medidas" class="panel">
-    <div class="grid">
-      <div class="card span4">
-        <h2>Registrar peso y medidas</h2>
-        <form id="formMedidas">
-          <div class="formgrid">
-            <div class="f6"><label>Fecha</label><input type="date" id="mFecha" required></div>
-            <div class="f6"><label>Peso (kg)</label><input type="number" step="0.1" min="20" max="300" id="mPeso"></div>
-            <div class="f6"><label>Cintura (cm)</label><input type="number" step="0.1" id="mCintura"></div>
-            <div class="f6"><label>Cadera (cm)</label><input type="number" step="0.1" id="mCadera"></div>
-            <div class="f6"><label>Muslo (cm)</label><input type="number" step="0.1" id="mMuslo"></div>
-            <div class="f6"><label>Brazo (cm)</label><input type="number" step="0.1" id="mBrazo"></div>
-            <div class="f12"><label>Notas</label><textarea id="mNotas" placeholder="Ej.: dormí bien, retención de líquido, entrenamiento fuerte..."></textarea></div>
-          </div>
-          <div class="actions"><button class="primary" type="submit">Guardar registro</button><button class="secondary" type="reset">Limpiar</button></div>
-        </form>
-      </div>
-      <div class="card span8">
-        <h2>Historial</h2>
-        <div class="tablewrap"><table>
-          <thead><tr><th>Fecha</th><th>Peso</th><th>Cintura</th><th>Cadera</th><th>Muslo</th><th>Brazo</th><th>Notas</th><th></th></tr></thead>
-          <tbody id="tablaMedidas"></tbody>
-        </table></div>
-      </div>
-    </div>
-  </section>
-
-  <section id="comidas" class="panel">
-    <div class="grid">
-      <div class="card span4">
-        <h2 id="tituloFormComida">Registrar alimentación</h2>
-        <form id="formComida">
-          <div class="formgrid">
-            <div class="f6"><label>Fecha</label><input type="date" id="cFecha" required></div>
-            <div class="f6"><label>Tipo</label>
-              <select id="cTipo"><option>Desayuno</option><option>Merienda AM</option><option>Almuerzo</option><option>Merienda PM</option><option>Cena</option><option>Extra</option></select>
-            </div>
-            <div class="f12"><label>¿Qué comí?</label><textarea id="cDetalle" required placeholder="Ej.: 2 huevos, gallo pinto, café con leche..."></textarea></div>
-            <div class="f6"><label>Porción / cantidad</label><input id="cPorcion" placeholder="Ej.: 1 taza, 120 g, 2 unidades"></div>
-            <div class="f6"><label>Hambre antes (1-10)</label><input type="number" min="1" max="10" id="cHambre"></div>
-            <div class="f6"><label>Agua (vasos)</label><input type="number" min="0" step="1" id="cAgua"></div>
-            <div class="f6"><label>Proteína aprox. (g)</label><input type="number" min="0" step="0.1" id="cProteina"></div>
-            <div class="f6"><label>Carbohidratos aprox. (g)</label><input type="number" min="0" step="0.1" id="cCarbohidratos"></div>
-            <div class="f6"><label>Grasa aprox. (g)</label><input type="number" min="0" step="0.1" id="cGrasa"></div>
-            <div class="f6"><label>Calorías aprox.</label><input type="number" min="0" step="1" id="cCalorias"></div>
-            <div class="f6"><label>Estado</label>
-              <select id="cEstado"><option value="">—</option><option>Bien planificado</option><option>Improvisado</option><option>Antojo</option><option>Evento social</option></select>
-            </div>
-            <div class="f12"><label>Notas</label><textarea id="cNotas" placeholder="Saciedad, antojos, digestión, energía, etc."></textarea></div>
-          </div>
-          <div class="actions">
-            <button class="primary" id="btnGuardarComida" type="submit">Guardar comida</button>
-            <button class="secondary" id="btnCancelarEdicion" type="button" style="display:none">Cancelar edición</button>
-            <button class="secondary" type="reset">Limpiar</button>
-          </div>
-        </form>
-      </div>
-      <div class="card span8">
-        <div style="display:flex;gap:10px;justify-content:space-between;align-items:end;flex-wrap:wrap">
-          <div><h2 style="margin-bottom:3px">Diario de alimentación</h2><div class="small">Puedes usar calorías y proteína solo si quieres; no son obligatorias.</div></div>
-          <div style="min-width:190px"><label>Filtrar por fecha</label><input type="date" id="filtroComida"></div>
-        </div>
-        <div class="tablewrap" style="margin-top:12px"><table>
-          <thead><tr><th>Fecha</th><th>Tipo</th><th>Detalle</th><th>Porción</th><th>Prot.</th><th>Carb.</th><th>Grasa</th><th>Kcal</th><th>Estado</th><th></th></tr></thead>
-          <tbody id="tablaComidas"></tbody>
-        </table></div>
-
-        <hr>
-        <div class="ai-photo-box">
-          <div class="ai-photo-title">
-            <div>
-              <h3 style="margin:0">📸 Analizar comida con IA</h3>
-              <div class="small">Puedes agregar hasta 3 fotos de la misma comida: plato completo, detalle, empaque o etiqueta. La IA las analiza juntas y tú confirmas antes de registrar.</div>
-            </div>
-          </div>
-          <div class="actions">
-            <label class="primary" style="display:inline-block;cursor:pointer">
+<div class="card span4 calm-module" data-module="comidas-0" style="border:1px solid #4d998b"><div class="calm-head"><h2>🥗 Catálogo nutricional</h2><button aria-expanded="true" class="calm-toggle" type="button">Ocultar −</button></div><div class="calm-body"><h2>🥗 Catálogo nutricional</h2><p class="small">Base inicial: Macros Nutri (nutricionista). También puedes agregar tus propios alimentos. Los valores corresponden a la porción indicada.</p><label>Buscar alimento</label><input autocomplete="off" id="foodSearch" placeholder="Ej.: gallo pinto, arroz, banano"/><select id="foodSelect" size="5" style="width:100%;margin-top:8px"></select><div class="small" id="foodInfo"></div><label>Cantidad de porciones (1 = porción del catálogo)</label><input id="foodQty" min="0.01" step="0.1" type="number" value="1"/><div class="actions"><button class="primary" id="foodAdd" type="button">Agregar a comida</button><button class="secondary" id="foodNewToggle" type="button">+ Nuevo alimento</button></div><div class="small" id="foodSelected" style="margin-top:8px"></div><div id="foodNewPanel" style="display:none;margin-top:12px"><h3>Alimento personalizado</h3><label>Nombre</label><input id="foodNewName"/><label>Porción de referencia (ej.: 100 g)</label><input id="foodNewPortion"/><div class="formgrid"><div class="f6"><label>Carbohidratos (g)</label><input id="foodNewCarbs" min="0" step="0.1" type="number"/></div><div class="f6"><label>Proteína (g)</label><input id="foodNewProtein" min="0" step="0.1" type="number"/></div><div class="f6"><label>Grasas (g)</label><input id="foodNewFat" min="0" step="0.1" type="number"/></div><div class="f6"><label>Calorías (kcal)</label><input id="foodNewCalories" min="0" step="1" type="number"/></div></div><button class="primary" id="foodSaveNew" type="button">Guardar en mi catálogo</button></div></div></div><div class="card span4 calm-module" data-module="comidas-1"><div class="calm-head"><h2>Registrar alimentación</h2><button aria-expanded="true" class="calm-toggle" type="button">Ocultar −</button></div><div class="calm-body">
+<h2 id="tituloFormComida">Registrar alimentación</h2>
+<form id="formComida">
+<div class="formgrid">
+<div class="f6"><label>Fecha</label><input id="cFecha" required="" type="date"/></div>
+<div class="f6"><label>Tipo</label>
+<select id="cTipo"><option>Desayuno</option><option>Merienda AM</option><option>Almuerzo</option><option>Merienda PM</option><option>Cena</option><option>Extra</option></select>
+</div>
+<div class="f12"><label>¿Qué comí?</label><textarea id="cDetalle" placeholder="Ej.: 2 huevos, gallo pinto, café con leche..." required=""></textarea></div>
+<div class="f6"><label>Porción / cantidad</label><input id="cPorcion" placeholder="Ej.: 1 taza, 120 g, 2 unidades"/></div>
+<div class="f6"><label>Hambre antes (1-10)</label><input id="cHambre" max="10" min="1" type="number"/></div>
+<div class="f6"><label>Agua (vasos)</label><input id="cAgua" min="0" step="1" type="number"/></div>
+<div class="f6"><label>Proteína aprox. (g)</label><input id="cProteina" min="0" step="0.1" type="number"/></div>
+<div class="f6"><label>Carbohidratos aprox. (g)</label><input id="cCarbohidratos" min="0" step="0.1" type="number"/></div>
+<div class="f6"><label>Grasa aprox. (g)</label><input id="cGrasa" min="0" step="0.1" type="number"/></div>
+<div class="f6"><label>Calorías aprox.</label><input id="cCalorias" min="0" step="1" type="number"/></div>
+<div class="f6"><label>Estado</label>
+<select id="cEstado"><option value="">—</option><option>Bien planificado</option><option>Improvisado</option><option>Antojo</option><option>Evento social</option></select>
+</div>
+<div class="f12"><label>Notas</label><textarea id="cNotas" placeholder="Saciedad, antojos, digestión, energía, etc."></textarea></div>
+</div>
+<div class="actions">
+<button class="primary" id="btnGuardarComida" type="submit">Guardar comida</button>
+<button class="secondary" id="btnCancelarEdicion" style="display:none" type="button">Cancelar edición</button>
+<button class="secondary" type="reset">Limpiar</button>
+</div>
+</form>
+</div></div><div class="card span8 calm-module calm-collapsed" data-module="comidas-2"><div class="calm-head"><h2>Diario de alimentación</h2><button aria-expanded="false" class="calm-toggle" type="button">Mostrar +</button></div><div class="calm-body">
+<div style="display:flex;gap:10px;justify-content:space-between;align-items:end;flex-wrap:wrap">
+<div><h2 style="margin-bottom:3px">Diario de alimentación</h2><div class="small">Puedes usar calorías y proteína solo si quieres; no son obligatorias.</div></div>
+<div style="min-width:190px"><label>Filtrar por fecha</label><input id="filtroComida" type="date"/></div>
+</div>
+<div class="tablewrap" style="margin-top:12px"><table>
+<thead><tr><th>Fecha</th><th>Tipo</th><th>Detalle</th><th>Porción</th><th>Prot.</th><th>Carb.</th><th>Grasa</th><th>Kcal</th><th>Estado</th><th></th></tr></thead>
+<tbody id="tablaComidas"></tbody>
+</table></div>
+<hr/>
+<div class="ai-photo-box">
+<div class="ai-photo-title">
+<div>
+<h3 style="margin:0">📸 Analizar comida con IA</h3>
+<div class="small">Puedes agregar hasta 3 fotos de la misma comida: plato completo, detalle, empaque o etiqueta. La IA las analiza juntas y tú confirmas antes de registrar.</div>
+</div>
+</div>
+<div class="actions">
+<label class="primary" style="display:inline-block;cursor:pointer">
               📷 Tomar foto ahora
-              <input id="mealCameraPhoto" type="file" accept="image/*" capture="environment" style="display:none">
-            </label>
-            <label class="secondary" style="display:inline-block;cursor:pointer">
+              <input accept="image/*" capture="environment" id="mealCameraPhoto" style="display:none" type="file"/>
+</label>
+<label class="secondary" style="display:inline-block;cursor:pointer">
               🖼️ Elegir de mi galería
-              <input id="mealGalleryPhoto" type="file" accept="image/*" multiple style="display:none">
-            </label>
-            <button class="secondary" type="button" id="btnAnalyzeMeal" disabled>🤖 Analizar foto(s)</button>
-            <button class="secondary" type="button" id="btnClearMealPhoto">Limpiar fotos</button>
-          </div>
-          <div id="mealPhotoGallery" style="display:flex;gap:8px;flex-wrap:wrap;margin-top:10px"></div>
-          <img id="mealPhotoPreview" class="ai-photo-preview" alt="Vista previa de la comida" style="display:none">
-          <div class="small" id="mealPhotoCount" style="margin-top:6px">0 / 3 fotos</div>
-          <div style="margin-top:12px">
-            <label>✏️ Corrección o dato que la foto no puede saber</label>
-            <textarea id="mealCorrection" placeholder="Ej.: Es chayote, no papa. Son 2 huevos. El pan tiene Numar Light. No hay pepino ni zucchini."></textarea>
-          </div>
-          <div id="mealAiStatus" class="ai-status"></div>
-          <div id="mealAiResult" class="ai-result">
-            <div id="mealAiSummary"></div>
-            <div class="ai-result-grid">
-              <div class="ai-metric"><span>Calorías</span><b id="aiKcal">—</b></div>
-              <div class="ai-metric"><span>Proteína</span><b id="aiProtein">—</b></div>
-              <div class="ai-metric"><span>Carbos</span><b id="aiCarbs">—</b></div>
-              <div class="ai-metric"><span>Grasa</span><b id="aiFat">—</b></div>
-            </div>
-            <div class="small"><b>Porciones estimadas:</b> <span id="aiPortions">—</span></div>
-            <div class="small" style="margin-top:6px"><b>Confianza:</b> <span id="aiConfidence">—</span></div>
-            <div class="small" style="margin-top:6px"><b>¿Algo que no se ve?</b> aceite, aderezo, salsa, azúcar/bebida u otro ingrediente puede cambiar la estimación.</div>
-            <div class="actions">
-              <button class="primary" type="button" id="btnUseMealAnalysis">✅ Pasar al registro</button>
-              <button class="secondary" type="button" id="btnAnalyzeAgain">🔄 Recalcular con mi corrección</button>
-            </div>
-          </div>
-        </div>
-
-        <hr>
-        <h3>Importar estimación de ChatGPT</h3>
-        <p class="small">Pega aquí el bloque que te entregue ChatGPT. El sistema buscará las comidas por fecha y tipo, y actualizará sus valores nutricionales.</p>
-        <textarea id="importEstimacion" placeholder='Ejemplo:
+              <input accept="image/*" id="mealGalleryPhoto" multiple="" style="display:none" type="file"/>
+</label>
+<button class="secondary" disabled="" id="btnAnalyzeMeal" type="button">🤖 Analizar foto(s)</button>
+<button class="secondary" id="btnClearMealPhoto" type="button">Limpiar fotos</button>
+</div>
+<div id="mealPhotoGallery" style="display:flex;gap:8px;flex-wrap:wrap;margin-top:10px"></div>
+<img alt="Vista previa de la comida" class="ai-photo-preview" id="mealPhotoPreview" style="display:none"/>
+<div class="small" id="mealPhotoCount" style="margin-top:6px">0 / 3 fotos</div>
+<div style="margin-top:12px">
+<label>✏️ Corrección o dato que la foto no puede saber</label>
+<textarea id="mealCorrection" placeholder="Ej.: Es chayote, no papa. Son 2 huevos. El pan tiene Numar Light. No hay pepino ni zucchini."></textarea>
+</div>
+<div class="ai-status" id="mealAiStatus"></div>
+<div class="ai-result" id="mealAiResult">
+<div id="mealAiSummary"></div>
+<div class="ai-result-grid">
+<div class="ai-metric"><span>Calorías</span><b id="aiKcal">—</b></div>
+<div class="ai-metric"><span>Proteína</span><b id="aiProtein">—</b></div>
+<div class="ai-metric"><span>Carbos</span><b id="aiCarbs">—</b></div>
+<div class="ai-metric"><span>Grasa</span><b id="aiFat">—</b></div>
+</div>
+<div class="small"><b>Porciones estimadas:</b> <span id="aiPortions">—</span></div>
+<div class="small" style="margin-top:6px"><b>Confianza:</b> <span id="aiConfidence">—</span></div>
+<div class="small" style="margin-top:6px"><b>¿Algo que no se ve?</b> aceite, aderezo, salsa, azúcar/bebida u otro ingrediente puede cambiar la estimación.</div>
+<div class="actions">
+<button class="primary" id="btnUseMealAnalysis" type="button">✅ Pasar al registro</button>
+<button class="secondary" id="btnAnalyzeAgain" type="button">🔄 Recalcular con mi corrección</button>
+</div>
+</div>
+</div>
+<hr/>
+<h3>Importar estimación de ChatGPT</h3>
+<p class="small">Pega aquí el bloque que te entregue ChatGPT. El sistema buscará las comidas por fecha y tipo, y actualizará sus valores nutricionales.</p>
+<textarea id="importEstimacion" placeholder='Ejemplo:
 [
   {"fecha":"2026-08-20","tipo":"Desayuno","proteina":18,"carbohidratos":42,"grasa":14,"calorias":370},
   {"fecha":"2026-08-20","tipo":"Almuerzo","proteina":25,"carbohidratos":55,"grasa":20,"calorias":510}
 ]'></textarea>
-        <div class="actions">
-          <button class="primary" type="button" id="btnImportEstimacion">Importar estimación</button>
-          <button class="secondary" type="button" id="btnEjemploEstimacion">Ver ejemplo</button>
-        </div>
-        <div id="importEstimacionStatus" class="small" style="margin-top:8px"></div>
-      </div>
-    </div>
-  </section>
-
-  <section id="reportes" class="panel">
-    <div class="grid">
-      <div class="card span12">
-        <h2>Reportes</h2>
-        <div class="formgrid noprint">
-          <div class="f4"><label>Periodo</label><select id="rPeriodo"><option value="semana">Semana</option><option value="mes">Mes</option><option value="anio">Año</option></select></div>
-          <div class="f4"><label>Fecha de referencia</label><input type="date" id="rFecha"></div>
-          <div class="f4" style="display:flex;align-items:end"><button class="primary" id="btnReporte" type="button" style="width:100%">Generar reporte</button></div>
-        </div>
-        <hr>
-        <div id="reporteSalida"></div>
-        <div class="actions noprint">
-          <button class="secondary" type="button" onclick="window.print()">Imprimir / Guardar PDF</button>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  
-  <section id="plan" class="panel">
-    <div class="grid">
-      <div class="card span12">
-        <div style="display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap">
-          <div>
-            <h2 style="margin-bottom:4px">Plan de entrenamiento</h2>
-            <div class="small">Fase 1 - inicio 24 de agosto de 2026</div>
-          </div>
-          <a href="plan_entrenamiento.pdf" target="_blank" class="secondary" style="text-decoration:none;display:inline-block;padding:10px 14px;border-radius:10px;font-weight:750">Abrir PDF</a>
-        </div>
-        <div style="margin-top:14px;border:1px solid var(--line);border-radius:14px;overflow:hidden;background:#fff">
-          <iframe src="plan_entrenamiento.pdf" title="Plan de entrenamiento" style="width:100%;height:76vh;border:0;display:block"></iframe>
-        </div>
-        <p class="small" style="margin-top:10px">Si tu navegador no muestra el PDF dentro de la página, usa el botón “Abrir PDF”.</p>
-      </div>
-    </div>
-  </section>
-
-  <section id="respaldo" class="panel">
-    <div class="grid">
-      <div class="card span6">
-        <h2>Respaldo completo</h2>
-        <p class="small">Descarga todos tus registros en un archivo JSON. Luego puedes restaurarlo en este u otro navegador.</p>
-        <div class="actions"><button class="primary" id="exportJson">Descargar respaldo</button><label class="secondary" style="display:inline-flex;align-items:center;cursor:pointer;padding:10px 14px;border-radius:10px;font-weight:750">Restaurar respaldo<input type="file" id="importJson" accept=".json,application/json" hidden></label></div>
-      </div>
-      <div class="card span6">
-        <h2>Exportar para Excel</h2>
-        <p class="small">Descarga archivos CSV separados para medidas y alimentación.</p>
-        <div class="actions"><button class="secondary" id="exportMedidas">Medidas CSV</button><button class="secondary" id="exportComidas">Comidas CSV</button><button class="secondary" id="exportMovimiento">Movimiento CSV</button></div>
-      </div>
-      <div class="card span12">
-        <h3>Zona de seguridad</h3>
-        <p class="small">Esto elimina todos los datos almacenados en este navegador.</p>
-        <button class="danger" id="borrarTodo">Borrar todos los datos</button>
-      </div>
-    </div>
-  </section>
-
-  <section id="cuenta" class="panel">
-    <div class="grid">
-      <div class="card span6">
-        <h2>Cuenta y sincronización</h2>
-        <p class="small">Conecta este control a Supabase para guardar tus datos en la nube y acceder desde otros dispositivos.</p>
-        <div id="authLoggedOut">
-          <div class="formgrid">
-            <div class="f12"><label>Correo</label><input type="email" id="authEmail" placeholder="tu@correo.com"></div>
-            <div class="f12"><label>Contraseña</label><input type="password" id="authPassword" placeholder="Mínimo 6 caracteres"></div>
-          </div>
-          <div class="actions">
-            <button class="primary" id="btnLogin" type="button">Iniciar sesión</button>
-            <button class="secondary" id="btnSignup" type="button">Crear cuenta</button>
-          </div>
-        </div>
-        <div id="authLoggedIn" style="display:none">
-          <p>Sesión activa: <b id="authUserEmail"></b></p>
-          <div class="actions">
-            <button class="primary" id="btnSync" type="button">Sincronizar ahora</button>
-            <button class="secondary" id="btnPull" type="button">Traer datos de la nube</button>
-            <button class="secondary" id="btnPush" type="button">Subir datos locales</button>
-            <button class="danger" id="btnLogout" type="button">Cerrar sesión</button>
-          </div>
-        </div>
-        <div id="syncStatus" class="notice" style="margin-top:14px">Modo local activo.</div>
-      </div>
-      <div class="card span6">
-        <h2>Perfil y meta personal</h2><div class="formgrid">
-<div class="f4"><label>Edad</label><input type="number" id="cfgAge" value="58"></div>
-<div class="f4"><label>Estatura (cm)</label><input type="number" id="cfgHeight" value="168"></div>
-<div class="f4"><label>Meta calórica diaria</label><input type="number" id="cfgCalories" value="1600"></div>
-<div class="f6"><label>Peso meta (kg)</label><input type="number" step="0.1" id="cfgGoal" value="75"></div>
-<div class="f6"><label>Primera etapa (kg)</label><input type="number" step="0.1" id="cfgStage" value="89"></div>
-<div class="f12"><button class="secondary" type="button" id="saveConfig">Guardar perfil y meta</button></div></div>
-<hr><h3>Recordatorios</h3><p class="small">Desayuno 11:00 · Almuerzo 16:00 · Cena 20:30 · Movimiento 21:30. Los viernes no se persigue ejercicio.</p><hr><h2>Cómo funciona</h2>
-        <p class="small">Tus datos siguen guardándose localmente. Cuando inicias sesión, puedes sincronizarlos con las tablas exclusivas de esta app en Supabase.</p>
-        <p class="small">La seguridad usa <b>Row Level Security (RLS)</b>: cada usuario solo puede leer y modificar sus propios registros.</p>
-      </div>
-    </div>
-  </section>
-
+<div class="actions">
+<button class="primary" id="btnImportEstimacion" type="button">Importar estimación</button>
+<button class="secondary" id="btnEjemploEstimacion" type="button">Ver ejemplo</button>
+</div>
+<div class="small" id="importEstimacionStatus" style="margin-top:8px"></div>
+</div></div></div>
+</section>
+<section class="panel" id="reportes">
+<div class="grid">
+<div class="card span12">
+<h2>Reportes</h2>
+<div class="formgrid noprint">
+<div class="f4"><label>Periodo</label><select id="rPeriodo"><option value="semana">Semana</option><option value="mes">Mes</option><option value="anio">Año</option></select></div>
+<div class="f4"><label>Fecha de referencia</label><input id="rFecha" type="date"/></div>
+<div class="f4" style="display:flex;align-items:end"><button class="primary" id="btnReporte" style="width:100%" type="button">Generar reporte</button></div>
+</div>
+<hr/>
+<div id="reporteSalida"></div>
+<div class="actions noprint">
+<button class="secondary" onclick="window.print()" type="button">Imprimir / Guardar PDF</button>
+</div>
+</div>
+</div>
+</section>
+<section class="panel" id="plan">
+<div class="grid">
+<div class="card span12">
+<div style="display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap">
+<div>
+<h2 style="margin-bottom:4px">Plan de entrenamiento</h2>
+<div class="small">Fase 1 - inicio 24 de agosto de 2026</div>
+</div>
+<a class="secondary" href="plan_entrenamiento.pdf" style="text-decoration:none;display:inline-block;padding:10px 14px;border-radius:10px;font-weight:750" target="_blank">Abrir PDF</a>
+</div>
+<div style="margin-top:14px;border:1px solid var(--line);border-radius:14px;overflow:hidden;background:#fff">
+<iframe src="plan_entrenamiento.pdf" style="width:100%;height:76vh;border:0;display:block" title="Plan de entrenamiento"></iframe>
+</div>
+<p class="small" style="margin-top:10px">Si tu navegador no muestra el PDF dentro de la página, usa el botón “Abrir PDF”.</p>
+</div>
+</div>
+</section>
+<section class="panel" id="respaldo">
+<div class="grid">
+<div class="card span6">
+<h2>Respaldo completo</h2>
+<p class="small">Descarga todos tus registros en un archivo JSON. Luego puedes restaurarlo en este u otro navegador.</p>
+<div class="actions"><button class="primary" id="exportJson">Descargar respaldo</button><label class="secondary" style="display:inline-flex;align-items:center;cursor:pointer;padding:10px 14px;border-radius:10px;font-weight:750">Restaurar respaldo<input accept=".json,application/json" hidden="" id="importJson" type="file"/></label></div>
+</div>
+<div class="card span6">
+<h2>Exportar para Excel</h2>
+<p class="small">Descarga archivos CSV separados para medidas y alimentación.</p>
+<div class="actions"><button class="secondary" id="exportMedidas">Medidas CSV</button><button class="secondary" id="exportComidas">Comidas CSV</button><button class="secondary" id="exportMovimiento">Movimiento CSV</button></div>
+</div>
+<div class="card span12">
+<h3>Zona de seguridad</h3>
+<p class="small">Esto elimina todos los datos almacenados en este navegador.</p>
+<button class="danger" id="borrarTodo">Borrar todos los datos</button>
+</div>
+</div>
+</section>
+<section class="panel" id="cuenta">
+<div class="grid">
+<div class="card span6">
+<h2>Cuenta y sincronización</h2>
+<p class="small">Conecta este control a Supabase para guardar tus datos en la nube y acceder desde otros dispositivos.</p>
+<div id="authLoggedOut">
+<div class="formgrid">
+<div class="f12"><label>Correo</label><input id="authEmail" placeholder="tu@correo.com" type="email"/></div>
+<div class="f12"><label>Contraseña</label><input id="authPassword" placeholder="Mínimo 6 caracteres" type="password"/></div>
+</div>
+<div class="actions">
+<button class="primary" id="btnLogin" type="button">Iniciar sesión</button>
+<button class="secondary" id="btnSignup" type="button">Crear cuenta</button>
+</div>
+</div>
+<div id="authLoggedIn" style="display:none">
+<p>Sesión activa: <b id="authUserEmail"></b></p>
+<div class="actions">
+<button class="primary" id="btnSync" type="button">Sincronizar ahora</button>
+<button class="secondary" id="btnPull" type="button">Traer datos de la nube</button>
+<button class="secondary" id="btnPush" type="button">Subir datos locales</button>
+<button class="danger" id="btnLogout" type="button">Cerrar sesión</button>
+</div>
+</div>
+<div class="notice" id="syncStatus" style="margin-top:14px">Modo local activo.</div>
+</div>
+<div class="card span6">
+<h2>Perfil y meta personal</h2><div class="formgrid">
+<div class="f4"><label>Edad</label><input id="cfgAge" type="number" value="58"/></div>
+<div class="f4"><label>Estatura (cm)</label><input id="cfgHeight" type="number" value="168"/></div>
+<div class="f4"><label>Meta calórica diaria</label><input id="cfgCalories" type="number" value="1600"/></div>
+<div class="f6"><label>Peso meta (kg)</label><input id="cfgGoal" step="0.1" type="number" value="75"/></div>
+<div class="f6"><label>Primera etapa (kg)</label><input id="cfgStage" step="0.1" type="number" value="89"/></div>
+<div class="f12"><button class="secondary" id="saveConfig" type="button">Guardar perfil y meta</button></div></div>
+<hr/><h3>Recordatorios</h3><p class="small">Desayuno 11:00 · Almuerzo 16:00 · Cena 20:30 · Movimiento 21:30. Los viernes no se persigue ejercicio.</p><hr/><h2>Cómo funciona</h2>
+<p class="small">Tus datos siguen guardándose localmente. Cuando inicias sesión, puedes sincronizarlos con las tablas exclusivas de esta app en Supabase.</p>
+<p class="small">La seguridad usa <b>Row Level Security (RLS)</b>: cada usuario solo puede leer y modificar sus propios registros.</p>
+</div>
+</div>
+</section>
 </main>
 <div class="footer">Control personal de salud y nutrición · HTML local</div>
-
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.112.3/dist/umd/supabase.min.js"></script>
 <script>
 const DBKEY='saludNutricion_v1';
@@ -1205,6 +1226,58 @@ function setupCollapsibleModules(){
 }
 document.addEventListener('DOMContentLoaded',()=>{setupCollapsibleModules();renderDailyMotivation()});
 
+
+// Catálogo: el Excel es una referencia inmutable; los alimentos propios se guardan por separado.
+const BASE_FOODS=[{"id":"nutri-1","nombre":"Aguacate","porcion":"100 g","carbohidratos":8.8,"proteina":2.5,"grasa":15.0,"calorias":160.0,"categoria":"Grasas","fuente":"Nutricionista · Macros Nutri"},{"id":"nutri-2","nombre":"Aceite de oliva","porcion":"100 ml","carbohidratos":0.0,"proteina":0.0,"grasa":93.3,"calorias":840.0,"categoria":"Grasas","fuente":"Nutricionista · Macros Nutri"},{"id":"nutri-3","nombre":"Aceite de Girasol","porcion":"100ml","carbohidratos":3.6,"proteina":0.7,"grasa":100.0,"calorias":929.0,"categoria":"Grasas","fuente":"Nutricionista · Macros Nutri"},{"id":"nutri-4","nombre":"Mantequilla dos pinos","porcion":"100 g","carbohidratos":0.0,"proteina":0.0,"grasa":80.0,"calorias":721.0,"categoria":"Grasas","fuente":"Nutricionista · Macros Nutri"},{"id":"nutri-5","nombre":"Aceitunas verdes","porcion":"100 g","carbohidratos":6.7,"proteina":0.0,"grasa":13.3,"calorias":133.0,"categoria":"Grasas","fuente":"Nutricionista · Macros Nutri"},{"id":"nutri-6","nombre":"Mantequilla numar light","porcion":"100g","carbohidratos":7.7,"proteina":7.7,"grasa":38.5,"calorias":385.0,"categoria":"Grasas","fuente":"Nutricionista · Macros Nutri"},{"id":"nutri-7","nombre":"Agua de Pipa","porcion":"250 ml","carbohidratos":9.3,"proteina":1.8,"grasa":0.5,"calorias":48.0,"categoria":"Fruta","fuente":"Nutricionista · Macros Nutri"},{"id":"nutri-8","nombre":"Banano Mediano","porcion":"66 g","carbohidratos":15.0,"proteina":0.7,"grasa":0.2,"calorias":59.0,"categoria":"Fruta","fuente":"Nutricionista · Macros Nutri"},{"id":"nutri-9","nombre":"Cas","porcion":"145 g","carbohidratos":15.1,"proteina":1.7,"grasa":1.2,"calorias":70.0,"categoria":"Fruta","fuente":"Nutricionista · Macros Nutri"},{"id":"nutri-10","nombre":"Ciruela","porcion":"135 g","carbohidratos":15.4,"proteina":0.9,"grasa":0.3,"calorias":62.0,"categoria":"Fruta","fuente":"Nutricionista · Macros Nutri"},{"id":"nutri-11","nombre":"Fresas","porcion":"200 g","carbohidratos":15.2,"proteina":1.3,"grasa":0.6,"calorias":64.0,"categoria":"Fruta","fuente":"Nutricionista · Macros Nutri"},{"id":"nutri-12","nombre":"Guanábana","porcion":"90 g","carbohidratos":15.1,"proteina":0.9,"grasa":0.3,"calorias":59.0,"categoria":"Fruta","fuente":"Nutricionista · Macros Nutri"},{"id":"nutri-13","nombre":"Guayaba Madura","porcion":"125 g","carbohidratos":14.9,"proteina":1.0,"grasa":0.8,"calorias":64.0,"categoria":"Fruta","fuente":"Nutricionista · Macros Nutri"},{"id":"nutri-14","nombre":"Guayaba Verde","porcion":"68 g","carbohidratos":15.5,"proteina":0.7,"grasa":0.8,"calorias":65.0,"categoria":"Fruta","fuente":"Nutricionista · Macros Nutri"},{"id":"nutri-15","nombre":"Jocote","porcion":"100 g","carbohidratos":26.7,"proteina":1.4,"grasa":0.1,"calorias":102.0,"categoria":"Fruta","fuente":"Nutricionista · Macros Nutri"},{"id":"nutri-16","nombre":"Kiwi","porcion":"100 g","carbohidratos":14.7,"proteina":1.1,"grasa":0.5,"calorias":61.0,"categoria":"Fruta","fuente":"Nutricionista · Macros Nutri"},{"id":"nutri-17","nombre":"Mandarina","porcion":"100 g","carbohidratos":13.0,"proteina":0.8,"grasa":0.3,"calorias":53.0,"categoria":"Fruta","fuente":"Nutricionista · Macros Nutri"},{"id":"nutri-18","nombre":"Mango Maduro","porcion":"100 g","carbohidratos":15.4,"proteina":0.5,"grasa":0.2,"calorias":59.0,"categoria":"Fruta","fuente":"Nutricionista · Macros Nutri"},{"id":"nutri-19","nombre":"Mango Verde","porcion":"100 g","carbohidratos":11.5,"proteina":0.4,"grasa":0.2,"calorias":44.0,"categoria":"Fruta","fuente":"Nutricionista · Macros Nutri"},{"id":"nutri-20","nombre":"Manzana","porcion":"100 g","carbohidratos":13.8,"proteina":0.3,"grasa":0.2,"calorias":52.0,"categoria":"Fruta","fuente":"Nutricionista · Macros Nutri"},{"id":"nutri-21","nombre":"Melocotón","porcion":"100 g","carbohidratos":12.4,"proteina":1.2,"grasa":0.3,"calorias":51.0,"categoria":"Fruta","fuente":"Nutricionista · Macros Nutri"},{"id":"nutri-22","nombre":"Melon","porcion":"100 g","carbohidratos":8.0,"proteina":0.8,"grasa":0.2,"calorias":34.0,"categoria":"Fruta","fuente":"Nutricionista · Macros Nutri"},{"id":"nutri-23","nombre":"Naranja","porcion":"100 g","carbohidratos":11.8,"proteina":0.9,"grasa":0.1,"calorias":47.0,"categoria":"Fruta","fuente":"Nutricionista · Macros Nutri"},{"id":"nutri-24","nombre":"Papaya","porcion":"100 g","carbohidratos":11.0,"proteina":1.0,"grasa":0.3,"calorias":43.0,"categoria":"Fruta","fuente":"Nutricionista · Macros Nutri"},{"id":"nutri-25","nombre":"Pera","porcion":"100 g","carbohidratos":19.0,"proteina":0.6,"grasa":0.6,"calorias":52.0,"categoria":"Fruta","fuente":"Nutricionista · Macros Nutri"},{"id":"nutri-26","nombre":"Piña","porcion":"100 g","carbohidratos":13.5,"proteina":0.5,"grasa":0.1,"calorias":51.0,"categoria":"Fruta","fuente":"Nutricionista · Macros Nutri"},{"id":"nutri-27","nombre":"Sandia","porcion":"100 g","carbohidratos":7.6,"proteina":0.6,"grasa":0.2,"calorias":30.0,"categoria":"Fruta","fuente":"Nutricionista · Macros Nutri"},{"id":"nutri-28","nombre":"Uva","porcion":"100 g","carbohidratos":17.2,"proteina":0.6,"grasa":0.4,"calorias":67.0,"categoria":"Fruta","fuente":"Nutricionista · Macros Nutri"},{"id":"nutri-29","nombre":"Apio Crudo","porcion":"100 g","carbohidratos":3.0,"proteina":0.7,"grasa":0.2,"calorias":14.0,"categoria":"Verdura","fuente":"Nutricionista · Macros Nutri"},{"id":"nutri-30","nombre":"Brocoli Cocido","porcion":"100 g","carbohidratos":7.2,"proteina":2.4,"grasa":0.4,"calorias":35.0,"categoria":"Verdura","fuente":"Nutricionista · Macros Nutri"},{"id":"nutri-31","nombre":"Brocoli Crudo","porcion":"100 g","carbohidratos":6.6,"proteina":2.8,"grasa":0.3,"calorias":34.0,"categoria":"Verdura","fuente":"Nutricionista · Macros Nutri"},{"id":"nutri-32","nombre":"Camote Cocido","porcion":"100 g","carbohidratos":17.7,"proteina":1.4,"grasa":0.1,"calorias":76.0,"categoria":"Verdura","fuente":"Nutricionista · Macros Nutri"},{"id":"nutri-33","nombre":"Camote Crudo","porcion":"100 g","carbohidratos":20.0,"proteina":1.5,"grasa":0.1,"calorias":86.0,"categoria":"Verdura","fuente":"Nutricionista · Macros Nutri"},{"id":"nutri-34","nombre":"Chayote Cocido","porcion":"100 g","carbohidratos":5.1,"proteina":0.6,"grasa":0.5,"calorias":24.0,"categoria":"Verdura","fuente":"Nutricionista · Macros Nutri"},{"id":"nutri-35","nombre":"Chayote Crudo","porcion":"100 g","carbohidratos":7.7,"proteina":0.9,"grasa":0.2,"calorias":31.0,"categoria":"Verdura","fuente":"Nutricionista · Macros Nutri"},{"id":"nutri-36","nombre":"Coliflor Cocida","porcion":"100 g","carbohidratos":4.1,"proteina":1.8,"grasa":0.5,"calorias":23.0,"categoria":"Verdura","fuente":"Nutricionista · Macros Nutri"},{"id":"nutri-37","nombre":"Coliflor Cruda","porcion":"100 g","carbohidratos":5.3,"proteina":2.0,"grasa":0.1,"calorias":25.0,"categoria":"Verdura","fuente":"Nutricionista · Macros Nutri"},{"id":"nutri-38","nombre":"Elote Cocido","porcion":"100 g","carbohidratos":25.1,"proteina":3.3,"grasa":1.8,"calorias":108.0,"categoria":"Verdura","fuente":"Nutricionista · Macros Nutri"},{"id":"nutri-39","nombre":"Elote Crudo","porcion":"100 g","carbohidratos":33.5,"proteina":3.6,"grasa":1.4,"calorias":161.0,"categoria":"Verdura","fuente":"Nutricionista · Macros Nutri"},{"id":"nutri-40","nombre":"Espinaca","porcion":"100 g","carbohidratos":0.6,"proteina":2.9,"grasa":0.4,"calorias":23.0,"categoria":"Verdura","fuente":"Nutricionista · Macros Nutri"},{"id":"nutri-41","nombre":"Hierbabuena","porcion":"100 g","carbohidratos":8.4,"proteina":3.3,"grasa":0.7,"calorias":44.0,"categoria":"Verdura","fuente":"Nutricionista · Macros Nutri"},{"id":"nutri-42","nombre":"Lechuga","porcion":"100 g","carbohidratos":3.0,"proteina":1.0,"grasa":0.3,"calorias":17.0,"categoria":"Verdura","fuente":"Nutricionista · Macros Nutri"},{"id":"nutri-43","nombre":"Papa Cocida","porcion":"100 g","carbohidratos":20.0,"proteina":1.7,"grasa":0.1,"calorias":86.0,"categoria":"Verdura","fuente":"Nutricionista · Macros Nutri"},{"id":"nutri-44","nombre":"Papa Cruda","porcion":"100 g","carbohidratos":17.4,"proteina":2.0,"grasa":0.1,"calorias":77.0,"categoria":"Verdura","fuente":"Nutricionista · Macros Nutri"},{"id":"nutri-45","nombre":"Pepino","porcion":"100 g","carbohidratos":2.2,"proteina":0.6,"grasa":0.2,"calorias":12.0,"categoria":"Verdura","fuente":"Nutricionista · Macros Nutri"},{"id":"nutri-46","nombre":"Perejil","porcion":"100 g","carbohidratos":6.0,"proteina":3.0,"grasa":0.8,"calorias":36.0,"categoria":"Verdura","fuente":"Nutricionista · Macros Nutri"},{"id":"nutri-47","nombre":"Platano Maduro Cocido","porcion":"100 g","carbohidratos":31.9,"proteina":1.3,"grasa":0.4,"calorias":122.0,"categoria":"Verdura","fuente":"Nutricionista · Macros Nutri"},{"id":"nutri-48","nombre":"Platano Maduro Crudo","porcion":"100 g","carbohidratos":31.0,"proteina":1.0,"grasa":0.0,"calorias":128.0,"categoria":"Verdura","fuente":"Nutricionista · Macros Nutri"},{"id":"nutri-49","nombre":"Platano Verde Cocido","porcion":"100 g","carbohidratos":21.8,"proteina":1.0,"grasa":0.3,"calorias":85.0,"categoria":"Verdura","fuente":"Nutricionista · Macros Nutri"},{"id":"nutri-50","nombre":"Platano Verde Crudo","porcion":"100 g","carbohidratos":35.3,"proteina":1.2,"grasa":0.1,"calorias":132.0,"categoria":"Verdura","fuente":"Nutricionista · Macros Nutri"},{"id":"nutri-51","nombre":"Remolacha","porcion":"100 g","carbohidratos":9.5,"proteina":1.6,"grasa":0.1,"calorias":43.0,"categoria":"Verdura","fuente":"Nutricionista · Macros Nutri"},{"id":"nutri-52","nombre":"Repollo","porcion":"100 g","carbohidratos":5.4,"proteina":1.2,"grasa":0.2,"calorias":24.0,"categoria":"Verdura","fuente":"Nutricionista · Macros Nutri"},{"id":"nutri-53","nombre":"Tiquisque","porcion":"100 g","carbohidratos":23.0,"proteina":0.0,"grasa":0.0,"calorias":90.0,"categoria":"Verdura","fuente":"Nutricionista · Macros Nutri"},{"id":"nutri-54","nombre":"Tomate Cherry","porcion":"100 g","carbohidratos":3.0,"proteina":0.0,"grasa":0.2,"calorias":18.0,"categoria":"Verdura","fuente":"Nutricionista · Macros Nutri"},{"id":"nutri-55","nombre":"Tomates","porcion":"100 g","carbohidratos":4.6,"proteina":0.8,"grasa":0.3,"calorias":21.0,"categoria":"Verdura","fuente":"Nutricionista · Macros Nutri"},{"id":"nutri-56","nombre":"Vainicas cocidas","porcion":"100 g","carbohidratos":8.4,"proteina":2.5,"grasa":0.5,"calorias":40.0,"categoria":"Verdura","fuente":"Nutricionista · Macros Nutri"},{"id":"nutri-57","nombre":"Vainicas Crudas","porcion":"100 g","carbohidratos":7.1,"proteina":1.8,"grasa":0.1,"calorias":31.0,"categoria":"Verdura","fuente":"Nutricionista · Macros Nutri"},{"id":"nutri-58","nombre":"Yuca Blanca Cocida","porcion":"100 g","carbohidratos":37.5,"proteina":1.3,"grasa":2.0,"calorias":173.0,"categoria":"Verdura","fuente":"Nutricionista · Macros Nutri"},{"id":"nutri-59","nombre":"Yuca Cruda","porcion":"100 g","carbohidratos":38.1,"proteina":1.3,"grasa":0.2,"calorias":160.0,"categoria":"Verdura","fuente":"Nutricionista · Macros Nutri"},{"id":"nutri-60","nombre":"Zanahoria Cocida","porcion":"100 g","carbohidratos":8.2,"proteina":0.7,"grasa":0.2,"calorias":35.0,"categoria":"Verdura","fuente":"Nutricionista · Macros Nutri"},{"id":"nutri-61","nombre":"Zanahoria Cruda","porcion":"100 g","carbohidratos":9.4,"proteina":0.9,"grasa":0.1,"calorias":41.0,"categoria":"Verdura","fuente":"Nutricionista · Macros Nutri"},{"id":"nutri-62","nombre":"Zuchini cocido","porcion":"100 g","carbohidratos":3.9,"proteina":0.6,"grasa":0.1,"calorias":16.0,"categoria":"Verdura","fuente":"Nutricionista · Macros Nutri"},{"id":"nutri-63","nombre":"Allitas de pollo con piel crudas","porcion":"100 g","carbohidratos":0.0,"proteina":18.3,"grasa":15.9,"calorias":222.0,"categoria":"Proteina","fuente":"Nutricionista · Macros Nutri"},{"id":"nutri-64","nombre":"Carne De Res Semimagra cocida","porcion":"100 g","carbohidratos":0.0,"proteina":26.4,"grasa":16.8,"calorias":264.0,"categoria":"Proteina","fuente":"Nutricionista · Macros Nutri"},{"id":"nutri-65","nombre":"Carne Magra De Res cruda","porcion":"100 g","carbohidratos":0.0,"proteina":22.0,"grasa":3.5,"calorias":126.0,"categoria":"Proteina","fuente":"Nutricionista · Macros Nutri"},{"id":"nutri-66","nombre":"Carne Mechada Cocida","porcion":"100 g","carbohidratos":1.0,"proteina":22.0,"grasa":11.4,"calorias":229.0,"categoria":"Proteina","fuente":"Nutricionista · Macros Nutri"},{"id":"nutri-67","nombre":"Carne Molida Cocida","porcion":"100 g","carbohidratos":0.0,"proteina":29.0,"grasa":8.0,"calorias":193.0,"categoria":"Proteina","fuente":"Nutricionista · Macros Nutri"},{"id":"nutri-68","nombre":"Carne Molida de res CRUDA","porcion":"100 g","carbohidratos":0.7,"proteina":20.1,"grasa":7.7,"calorias":153.0,"categoria":"Proteina","fuente":"Nutricionista · Macros Nutri"},{"id":"nutri-69","nombre":"Cerdo, carne magra, horneada","porcion":"100 g","carbohidratos":0.0,"proteina":28.6,"grasa":9.1,"calorias":204.0,"categoria":"Proteina","fuente":"Nutricionista · Macros Nutri"},{"id":"nutri-70","nombre":"Cerdo, carne semimagra, cocida","porcion":"100 g","carbohidratos":0.0,"proteina":27.6,"grasa":17.2,"calorias":273.0,"categoria":"Proteina","fuente":"Nutricionista · Macros Nutri"},{"id":"nutri-71","nombre":"Chorizo De cerdo","porcion":"100 g","carbohidratos":1.1,"proteina":15.8,"grasa":22.8,"calorias":278.0,"categoria":"Proteina","fuente":"Nutricionista · Macros Nutri"},{"id":"nutri-72","nombre":"Chuleta de cerdo ahumada","porcion":"100 g","carbohidratos":2.0,"proteina":20.0,"grasa":10.0,"calorias":180.0,"categoria":"Proteina","fuente":"Nutricionista · Macros Nutri"},{"id":"nutri-73","nombre":"Chuleta De Cerdo Chuleta Cruda","porcion":"100 g","carbohidratos":0.0,"proteina":24.0,"grasa":14.0,"calorias":231.0,"categoria":"Proteina","fuente":"Nutricionista · Macros Nutri"},{"id":"nutri-74","nombre":"Chuleta De Cerdo Cocida","porcion":"100 g","carbohidratos":0.0,"proteina":27.1,"grasa":13.8,"calorias":240.0,"categoria":"Proteina","fuente":"Nutricionista · Macros Nutri"},{"id":"nutri-75","nombre":"Costillas De Res Crudas","porcion":"100 g","carbohidratos":0.0,"proteina":19.3,"grasa":19.1,"calorias":254.0,"categoria":"Proteina","fuente":"Nutricionista · Macros Nutri"},{"id":"nutri-76","nombre":"Huevo Entero","porcion":"1 Unidad","carbohidratos":1.0,"proteina":6.5,"grasa":5.0,"calorias":77.0,"categoria":"Proteina","fuente":"Nutricionista · Macros Nutri"},{"id":"nutri-77","nombre":"Huevos Claras","porcion":"1 Clara","carbohidratos":0.2,"proteina":3.6,"grasa":0.1,"calorias":17.0,"categoria":"Proteina","fuente":"Nutricionista · Macros Nutri"},{"id":"nutri-78","nombre":"Lengua de res Cocida","porcion":"100 g","carbohidratos":0.0,"proteina":19.3,"grasa":22.3,"calorias":278.0,"categoria":"Proteina","fuente":"Nutricionista · Macros Nutri"},{"id":"nutri-79","nombre":"Lengua de res cruda","porcion":"100 g","carbohidratos":3.7,"proteina":14.9,"grasa":16.1,"calorias":224.0,"categoria":"Proteina","fuente":"Nutricionista · Macros Nutri"},{"id":"nutri-80","nombre":"Lomo Res Magro Crudo","porcion":"100 g","carbohidratos":0.0,"proteina":20.8,"grasa":8.9,"calorias":169.0,"categoria":"Proteina","fuente":"Nutricionista · Macros Nutri"},{"id":"nutri-81","nombre":"Mondongo De res crudo","porcion":"100 g","carbohidratos":1.4,"proteina":14.0,"grasa":2.7,"calorias":90.0,"categoria":"Proteina","fuente":"Nutricionista · Macros Nutri"},{"id":"nutri-82","nombre":"Muslo de Pollo cocido sin piel","porcion":"100 g","carbohidratos":0.0,"proteina":25.0,"grasa":9.79,"calorias":195.0,"categoria":"Proteina","fuente":"Nutricionista · Macros Nutri"},{"id":"nutri-83","nombre":"Pechuga de Pollo Asada Cocida","porcion":"100 g","carbohidratos":0.0,"proteina":28.9,"grasa":3.0,"calorias":151.0,"categoria":"Proteina","fuente":"Nutricionista · Macros Nutri"},{"id":"nutri-84","nombre":"Pechuga de Pollo Asada Cruda","porcion":"100 g","carbohidratos":0.0,"proteina":21.3,"grasa":3.1,"calorias":119.0,"categoria":"Proteina","fuente":"Nutricionista · Macros Nutri"},{"id":"nutri-85","nombre":"Pechuga de Pollo Asada sin Piel","porcion":"100 g","carbohidratos":0.0,"proteina":28.9,"grasa":7.4,"calorias":190.0,"categoria":"Proteina","fuente":"Nutricionista · Macros Nutri"},{"id":"nutri-86","nombre":"Pollo Alas c/piel Fritas","porcion":"100 g","carbohidratos":2.4,"proteina":26.1,"grasa":22.2,"calorias":321.0,"categoria":"Proteina","fuente":"Nutricionista · Macros Nutri"},{"id":"nutri-87","nombre":"Pollo Alas s/piel Cocidas","porcion":"100 g","carbohidratos":0.0,"proteina":27.2,"grasa":7.2,"calorias":181.0,"categoria":"Proteina","fuente":"Nutricionista · Macros Nutri"},{"id":"nutri-88","nombre":"Queso Cottage (2 Cdas)","porcion":"30 g","carbohidratos":1.2,"proteina":4.5,"grasa":0.5,"calorias":27.0,"categoria":"Proteina","fuente":"Nutricionista · Macros Nutri"},{"id":"nutri-89","nombre":"Queso Ligth Turrialba","porcion":"30 g","carbohidratos":1.0,"proteina":6.7,"grasa":4.7,"calorias":73.0,"categoria":"Proteina","fuente":"Nutricionista · Macros Nutri"},{"id":"nutri-90","nombre":"Queso Semi Duro Del Prado","porcion":"30g","carbohidratos":5.0,"proteina":22.0,"grasa":11.0,"calorias":207.0,"categoria":"Proteina","fuente":"Nutricionista · Macros Nutri"},{"id":"nutri-91","nombre":"Res Hígado Cocido","porcion":"100 g","carbohidratos":5.1,"proteina":29.1,"grasa":5.3,"calorias":191.0,"categoria":"Proteina","fuente":"Nutricionista · Macros Nutri"},{"id":"nutri-92","nombre":"Res Higado Crudo","porcion":"100 g","carbohidratos":3.9,"proteina":20.4,"grasa":6.6,"calorias":135.0,"categoria":"Proteina","fuente":"Nutricionista · Macros Nutri"},{"id":"nutri-93","nombre":"Res, carne semimagra, cruda","porcion":"100 g","carbohidratos":0.0,"proteina":18.7,"grasa":17.2,"calorias":234.0,"categoria":"Proteina","fuente":"Nutricionista · Macros Nutri"},{"id":"nutri-94","nombre":"Tocineta cruda","porcion":"100 g","carbohidratos":0.7,"proteina":11.6,"grasa":45.0,"calorias":458.0,"categoria":"Proteina","fuente":"Nutricionista · Macros Nutri"},{"id":"nutri-95","nombre":"Tilapia Cocida","porcion":"100 g","carbohidratos":0.0,"proteina":26.0,"grasa":2.6,"calorias":128.0,"categoria":"Mariscos","fuente":"Nutricionista · Macros Nutri"},{"id":"nutri-96","nombre":"Camarones Crudo","porcion":"100 g","carbohidratos":0.9,"proteina":20.3,"grasa":1.7,"calorias":106.0,"categoria":"Mariscos","fuente":"Nutricionista · Macros Nutri"},{"id":"nutri-97","nombre":"Camarón Cocido","porcion":"100 g","carbohidratos":0.0,"proteina":20.9,"grasa":1.1,"calorias":99.0,"categoria":"Mariscos","fuente":"Nutricionista · Macros Nutri"},{"id":"nutri-98","nombre":"Trucha Cruda","porcion":"100 g","carbohidratos":0.0,"proteina":20.7,"grasa":6.6,"calorias":148.0,"categoria":"Mariscos","fuente":"Nutricionista · Macros Nutri"},{"id":"nutri-99","nombre":"Salmón Crudo","porcion":"100 g","carbohidratos":0.0,"proteina":19.9,"grasa":10.4,"calorias":179.0,"categoria":"Mariscos","fuente":"Nutricionista · Macros Nutri"},{"id":"nutri-100","nombre":"Salmon - Cocido","porcion":"100 g","carbohidratos":0.0,"proteina":25.0,"grasa":12.0,"calorias":208.0,"categoria":"Mariscos","fuente":"Nutricionista · Macros Nutri"},{"id":"nutri-101","nombre":"Calamar Crudo","porcion":"100 g","carbohidratos":3.1,"proteina":15.6,"grasa":1.4,"calorias":92.0,"categoria":"Mariscos","fuente":"Nutricionista · Macros Nutri"},{"id":"nutri-102","nombre":"Calamar Cocido","porcion":"100 g","carbohidratos":7.8,"proteina":17.9,"grasa":7.5,"calorias":175.0,"categoria":"Mariscos","fuente":"Nutricionista · Macros Nutri"},{"id":"nutri-103","nombre":"Corvina Cocida","porcion":"100 g","carbohidratos":0.0,"proteina":20.0,"grasa":3.0,"calorias":110.0,"categoria":"Mariscos","fuente":"Nutricionista · Macros Nutri"},{"id":"nutri-104","nombre":"Corvina Cruda","porcion":"100 g","carbohidratos":0.0,"proteina":17.7,"grasa":3.2,"calorias":104.0,"categoria":"Mariscos","fuente":"Nutricionista · Macros Nutri"},{"id":"nutri-105","nombre":"Alverjas","porcion":"100 g","carbohidratos":60.3,"proteina":24.5,"grasa":1.6,"calorias":341.0,"categoria":"Carbos","fuente":"Nutricionista · Macros Nutri"},{"id":"nutri-106","nombre":"Arroz Blanco Cocido","porcion":"100 g","carbohidratos":28.0,"proteina":2.7,"grasa":0.3,"calorias":130.0,"categoria":"Carbos","fuente":"Nutricionista · Macros Nutri"},{"id":"nutri-107","nombre":"Frijoles Blancos Cocidos","porcion":"100 g","carbohidratos":25.0,"proteina":9.7,"grasa":0.4,"calorias":139.0,"categoria":"Carbos","fuente":"Nutricionista · Macros Nutri"},{"id":"nutri-108","nombre":"Frijoles Negros Cocidos","porcion":"100 g","carbohidratos":24.0,"proteina":9.0,"grasa":1.0,"calorias":130.0,"categoria":"Carbos","fuente":"Nutricionista · Macros Nutri"},{"id":"nutri-109","nombre":"Frijoles Rojos Cocidos","porcion":"100 g","carbohidratos":22.8,"proteina":8.6,"grasa":0.5,"calorias":127.0,"categoria":"Carbos","fuente":"Nutricionista · Macros Nutri"},{"id":"nutri-110","nombre":"Gallo Pinto","porcion":"100 g","carbohidratos":27.0,"proteina":8.0,"grasa":4.0,"calorias":178.0,"categoria":"Carbos","fuente":"Nutricionista · Macros Nutri"},{"id":"nutri-111","nombre":"Grabanzos Cocidos","porcion":"100 g","carbohidratos":14.1,"proteina":6.1,"grasa":0.0,"calorias":91.0,"categoria":"Carbos","fuente":"Nutricionista · Macros Nutri"},{"id":"nutri-112","nombre":"Grabanzos crudos","porcion":"100 g","carbohidratos":61.0,"proteina":19.0,"grasa":6.0,"calorias":364.0,"categoria":"Carbos","fuente":"Nutricionista · Macros Nutri"},{"id":"nutri-113","nombre":"Grabanzos en lata","porcion":"100 g","carbohidratos":19.2,"proteina":4.0,"grasa":0.8,"calorias":98.0,"categoria":"Carbos","fuente":"Nutricionista · Macros Nutri"},{"id":"nutri-114","nombre":"Lentejas Crudas","porcion":"100 g","carbohidratos":60.1,"proteina":25.8,"grasa":1.1,"calorias":353.0,"categoria":"Carbos","fuente":"Nutricionista · Macros Nutri"},{"id":"nutri-115","nombre":"Lentejas Hervidas","porcion":"100 g","carbohidratos":20.0,"proteina":9.0,"grasa":0.4,"calorias":116.0,"categoria":"Carbos","fuente":"Nutricionista · Macros Nutri"},{"id":"nutri-116","nombre":"Pan Baguette","porcion":"100 g","carbohidratos":49.5,"proteina":8.2,"grasa":0.7,"calorias":237.0,"categoria":"Carbos","fuente":"Nutricionista · Macros Nutri"},{"id":"nutri-117","nombre":"Pasta cocida","porcion":"100 g","carbohidratos":31.0,"proteina":6.0,"grasa":0.0,"calorias":158.0,"categoria":"Carbos","fuente":"Nutricionista · Macros Nutri"},{"id":"nutri-118","nombre":"Quinoa Cocida","porcion":"100 g","carbohidratos":213.0,"proteina":44.0,"grasa":19.0,"calorias":120.0,"categoria":"Carbos","fuente":"Nutricionista · Macros Nutri"},{"id":"nutri-119","nombre":"Quinoa Cruda","porcion":"100 g","carbohidratos":68.9,"proteina":13.1,"grasa":5.8,"calorias":374.0,"categoria":"Carbos","fuente":"Nutricionista · Macros Nutri"},{"id":"nutri-120","nombre":"Pan de masa madre","porcion":"100g","carbohidratos":56.0,"proteina":12.0,"grasa":2.0,"calorias":290.0,"categoria":"Carbos","fuente":"Nutricionista · Macros Nutri"},{"id":"nutri-121","nombre":"Arroz con Leche","porcion":"100 g","carbohidratos":24.9,"proteina":3.3,"grasa":3.7,"calorias":146.0,"categoria":"Comidas típicas","fuente":"Nutricionista · Macros Nutri"},{"id":"nutri-122","nombre":"Conserva de Chiverre","porcion":"100 g","carbohidratos":45.0,"proteina":0.0,"grasa":0.0,"calorias":180.0,"categoria":"Comidas típicas","fuente":"Nutricionista · Macros Nutri"},{"id":"nutri-123","nombre":"Empanada de Chiverre Horneada","porcion":"1 Unidad","carbohidratos":24.1,"proteina":0.9,"grasa":8.6,"calorias":177.0,"categoria":"Comidas típicas","fuente":"Nutricionista · Macros Nutri"},{"id":"nutri-124","nombre":"Tamal Cerdo Costa Rica","porcion":"1 Tamal","carbohidratos":40.0,"proteina":12.0,"grasa":30.0,"calorias":478.0,"categoria":"Comidas típicas","fuente":"Nutricionista · Macros Nutri"},{"id":"nutri-125","nombre":"Pure De Papa (Con leche y margarina)","porcion":"100 g","carbohidratos":16.9,"proteina":2.0,"grasa":4.2,"calorias":113.0,"categoria":"Comidas típicas","fuente":"Nutricionista · Macros Nutri"},{"id":"nutri-126","nombre":"Pizza","porcion":"1 Slice","carbohidratos":32.0,"proteina":12.0,"grasa":11.0,"calorias":270.0,"categoria":"Comida rápida","fuente":"Nutricionista · Macros Nutri"},{"id":"nutri-127","nombre":"Papas fritas paqueñas Mc donald´s","porcion":"63 gramos","carbohidratos":27.9,"proteina":2.4,"grasa":10.5,"calorias":223.0,"categoria":"Comida rápida","fuente":"Nutricionista · Macros Nutri"},{"id":"nutri-128","nombre":"Papas fritas grandes Mc donald´s","porcion":"116 gramos","carbohidratos":48.0,"proteina":4.0,"grasa":16.0,"calorias":355.0,"categoria":"Comida rápida","fuente":"Nutricionista · Macros Nutri"},{"id":"nutri-129","nombre":"Queso burguesa Mac donald´s","porcion":"115 gramos","carbohidratos":33.1,"proteina":14.0,"grasa":12.7,"calorias":303.0,"categoria":"Comida rápida","fuente":"Nutricionista · Macros Nutri"},{"id":"nutri-130","nombre":"Triple con bacon Mac donald´s","porcion":"194 gramos","carbohidratos":37.0,"proteina":31.0,"grasa":24.0,"calorias":489.0,"categoria":"Comida rápida","fuente":"Nutricionista · Macros Nutri"},{"id":"nutri-131","nombre":"Cuarto de libra Mac donald´s","porcion":"195 gramos","carbohidratos":34.0,"proteina":34.0,"grasa":32.0,"calorias":564.0,"categoria":"Comida rápida","fuente":"Nutricionista · Macros Nutri"},{"id":"nutri-132","nombre":"Macnifica Mac donald´s","porcion":"195 gramos","carbohidratos":35.0,"proteina":32.0,"grasa":30.0,"calorias":537.0,"categoria":"Comida rápida","fuente":"Nutricionista · Macros Nutri"},{"id":"nutri-133","nombre":"Big Mac - Mac donald´s","porcion":"210 gramos","carbohidratos":49.0,"proteina":29.0,"grasa":27.0,"calorias":480.0,"categoria":"Comida rápida","fuente":"Nutricionista · Macros Nutri"},{"id":"nutri-134","nombre":"Mc Nuggets 4 piezas","porcion":"64 gramos","carbohidratos":7.8,"proteina":9.6,"grasa":9.3,"calorias":153.6,"categoria":"Comida rápida","fuente":"Nutricionista · Macros Nutri"},{"id":"nutri-135","nombre":"Nacion sushi - Spicy tuna roll","porcion":"10 rollos","carbohidratos":43.0,"proteina":40.0,"grasa":18.0,"calorias":500.0,"categoria":"Comida rápida","fuente":"Nutricionista · Macros Nutri"},{"id":"nutri-136","nombre":"Pf Changs spicy tuna roll","porcion":"10 rollos","carbohidratos":39.0,"proteina":19.0,"grasa":6.0,"calorias":370.0,"categoria":"Comida rápida","fuente":"Nutricionista · Macros Nutri"},{"id":"nutri-137","nombre":"Wopper","porcion":"1","carbohidratos":48.9,"proteina":30.4,"grasa":36.0,"calorias":641.0,"categoria":"Comida rápida","fuente":"Nutricionista · Macros Nutri"},{"id":"nutri-138","nombre":"Quesadilla de pollo taco bell","porcion":"1","carbohidratos":38.0,"proteina":27.0,"grasa":28.0,"calorias":510.0,"categoria":"Comida rápida","fuente":"Nutricionista · Macros Nutri"},{"id":"nutri-139","nombre":"Crunchwrap supreme","porcion":"1","carbohidratos":71.0,"proteina":16.0,"grasa":21.0,"calorias":530.0,"categoria":"Comida rápida","fuente":"Nutricionista · Macros Nutri"},{"id":"nutri-140","nombre":"Tacos de res el arreo","porcion":"2 unidades","carbohidratos":20.0,"proteina":8.0,"grasa":5.0,"calorias":155.0,"categoria":"Comida rápida","fuente":"Nutricionista · Macros Nutri"},{"id":"nutri-141","nombre":"Helado Mmio","porcion":"70","carbohidratos":21.0,"proteina":3.0,"grasa":17.0,"calorias":249.0,"categoria":"Helados Y postres","fuente":"Nutricionista · Macros Nutri"},{"id":"nutri-142","nombre":"In line delactomy","porcion":"100","carbohidratos":19.0,"proteina":4.0,"grasa":5.0,"calorias":127.0,"categoria":"Helados Y postres","fuente":"Nutricionista · Macros Nutri"},{"id":"nutri-143","nombre":"Pan Baguette 1 Barra","porcion":"100 g","carbohidratos":49.5,"proteina":8.2,"grasa":0.7,"calorias":237.0,"categoria":"Otros","fuente":"Nutricionista · Macros Nutri"}];
+const FOOD_CUSTOM_KEY='health_custom_foods_v1';
+let customFoods=[];
+try{const x=JSON.parse(localStorage.getItem(FOOD_CUSTOM_KEY)||'[]');if(Array.isArray(x))customFoods=x;}catch(e){}
+let foodComposition=[];
+const foodById=id=>[...BASE_FOODS,...customFoods].find(x=>x.id===id);
+const fRound=n=>Math.round(n*10)/10;
+const foodAll=()=>[...BASE_FOODS,...customFoods];
+function refreshFoodSearch(){
+ const q=document.getElementById('foodSearch').value.toLocaleLowerCase('es').trim();
+ const sel=document.getElementById('foodSelect');sel.replaceChildren();
+ foodAll().filter(x=>x.nombre.toLocaleLowerCase('es').includes(q)).slice(0,75).forEach(x=>{
+ const op=document.createElement('option');op.value=x.id;op.textContent=x.nombre+' · '+x.porcion;sel.appendChild(op);
+ });
+ if(sel.options.length)sel.selectedIndex=0;
+ refreshFoodInfo();
+}
+function refreshFoodInfo(){const x=foodById(document.getElementById('foodSelect').value);document.getElementById('foodInfo').textContent=x?`${x.fuente} · ${x.calorias} kcal · P ${x.proteina} g · C ${x.carbohidratos} g · G ${x.grasa} g por ${x.porcion}`:'Sin coincidencias';}
+function refreshFoodComposition(){
+ const box=document.getElementById('foodSelected');box.replaceChildren();
+ foodComposition.forEach((entry,i)=>{const x=foodById(entry.id);if(!x)return;const line=document.createElement('div');line.textContent=`${x.nombre} × ${entry.qty} (${fRound(x.calorias*entry.qty)} kcal) `;const b=document.createElement('button');b.type='button';b.className='secondary';b.textContent='Quitar';b.addEventListener('click',()=>{foodComposition.splice(i,1);refreshFoodComposition();});line.appendChild(b);box.appendChild(line);});
+ const totals={proteina:0,carbohidratos:0,grasa:0,calorias:0};
+ foodComposition.forEach(e=>{const x=foodById(e.id);if(x)Object.keys(totals).forEach(k=>totals[k]+=x[k]*e.qty);});
+ for(const [key,id] of Object.entries({proteina:'cProteina',carbohidratos:'cCarbohidratos',grasa:'cGrasa',calorias:'cCalorias'}))if(foodComposition.length)document.getElementById(id).value=fRound(totals[key]);
+ if(foodComposition.length){document.getElementById('cDetalle').value=foodComposition.map(e=>foodById(e.id).nombre+' × '+e.qty+' porción(es)').join(', ');document.getElementById('cPorcion').value=foodComposition.map(e=>foodById(e.id).porcion+' × '+e.qty).join('; ');}
+}
+document.getElementById('foodSearch').addEventListener('input',refreshFoodSearch);
+document.getElementById('foodSelect').addEventListener('change',refreshFoodInfo);
+document.getElementById('foodAdd').addEventListener('click',()=>{const id=document.getElementById('foodSelect').value,qty=Number(document.getElementById('foodQty').value);if(!foodById(id)||!Number.isFinite(qty)||qty<=0){alert('Selecciona un alimento y una cantidad válida.');return;}const e=foodComposition.find(x=>x.id===id);if(e)e.qty+=qty;else foodComposition.push({id,qty});refreshFoodComposition();});
+document.getElementById('foodNewToggle').addEventListener('click',()=>{const p=document.getElementById('foodNewPanel');p.style.display=p.style.display==='none'?'block':'none';});
+document.getElementById('foodSaveNew').addEventListener('click',()=>{
+ const nombre=document.getElementById('foodNewName').value.trim(),porcion=document.getElementById('foodNewPortion').value.trim();
+ const fields=['foodNewCarbs','foodNewProtein','foodNewFat','foodNewCalories'];
+ if(!nombre||!porcion||fields.some(id=>document.getElementById(id).value.trim()===''||!Number.isFinite(Number(document.getElementById(id).value))||Number(document.getElementById(id).value)<0)){alert('Completa el nombre, la porción y los cuatro valores nutricionales.');return;}
+ if(foodAll().some(x=>x.nombre.toLocaleLowerCase('es')===nombre.toLocaleLowerCase('es')&&x.porcion.toLocaleLowerCase('es')===porcion.toLocaleLowerCase('es'))){alert('Ya existe un alimento con ese nombre y porción.');return;}
+ const vals=fields.map(id=>Number(document.getElementById(id).value));customFoods.push({id:'personal-'+Date.now(),nombre,porcion,carbohidratos:vals[0],proteina:vals[1],grasa:vals[2],calorias:vals[3],categoria:'Personalizado',fuente:'Ingreso manual · verificar etiqueta o referencia'});
+ localStorage.setItem(FOOD_CUSTOM_KEY,JSON.stringify(customFoods));document.getElementById('foodSearch').value=nombre;refreshFoodSearch();document.getElementById('foodNewPanel').style.display='none';
+});
+document.getElementById('formComida').addEventListener('submit',()=>{foodComposition=[];refreshFoodComposition();});
+document.getElementById('formComida').addEventListener('reset',()=>{foodComposition=[];refreshFoodComposition();});
+refreshFoodSearch();
 </script>
-</body>
+<script>
+document.querySelectorAll('.calm-module').forEach(card=>{
+ const button=card.querySelector(':scope > .calm-head > button');
+ const key='healthCalm_'+card.dataset.module;
+ const stored=localStorage.getItem(key);
+ if(stored!==null)card.classList.toggle('calm-collapsed',stored==='1');
+ function refresh(){const closed=card.classList.contains('calm-collapsed');button.textContent=closed?'Mostrar +':'Ocultar −';button.setAttribute('aria-expanded',String(!closed));}
+ refresh();button.addEventListener('click',()=>{card.classList.toggle('calm-collapsed');localStorage.setItem(key,card.classList.contains('calm-collapsed')?'1':'0');refresh();});
+});
+</script></body>
 </html>
