@@ -1330,7 +1330,7 @@ function hcaiPlanView(plan){
   const heading=document.createElement('h3');heading.textContent=section.title;body.append(heading);
   const rows=document.createElement('div');rows.className='hcai-exercise-rows';body.append(rows);
   section.lines.forEach((line,j)=>{
-   const text=line.replace(/^[-•*]\s*/,'').replace(/^\d+[.)]\s*/,'').replace(/\*\*/g,'').trim();if(!text)return;
+   const text=line.replace(/^[-•]\s*/,'').replace(/^\d+[.)]\s*/,'').replace(/\*\*/g,'').replace(/^\*+\s*/,'').trim();if(!text||/^---+$/.test(text))return; if(/^(?:calentamiento|ejercicios|enfriamiento|estiramientos|progresi[oó]n por semanas|notas y precauciones)\s*:?$/i.test(text)){const h=document.createElement('div');h.className='hcai-section-title';h.textContent=text.replace(/:$/,'');rows.append(h);return;}
    if(/^(?:calentamiento|enfriamiento|estiramientos|objetivo|duración|duracion|descanso|nota|recomendaci[oó]n|progresi[oó]n)/i.test(text)||text.length>230){
     const note=document.createElement('div');note.className='hcai-plan-note';note.textContent=text;rows.append(note);return;
    }
