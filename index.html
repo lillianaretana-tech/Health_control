@@ -2,6 +2,9 @@
 
 <html lang="es">
 <head>
+<link rel="manifest" href="./manifest.webmanifest">
+<meta name="theme-color" content="#B89576">
+<link rel="icon" href="./icon.svg" type="image/svg+xml">
 <meta charset="utf-8"/>
 <meta content="width=device-width,initial-scale=1" name="viewport"/>
 <title>Control Salud &amp; Nutrición</title>
@@ -1279,5 +1282,6 @@ document.querySelectorAll('.calm-module').forEach(card=>{
  function refresh(){const closed=card.classList.contains('calm-collapsed');button.textContent=closed?'Mostrar +':'Ocultar −';button.setAttribute('aria-expanded',String(!closed));}
  refresh();button.addEventListener('click',()=>{card.classList.toggle('calm-collapsed');localStorage.setItem(key,card.classList.contains('calm-collapsed')?'1':'0');refresh();});
 });
-</script></body>
+</script><script>if('serviceWorker' in navigator){window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(console.warn));}</script>
+</body>
 </html>
